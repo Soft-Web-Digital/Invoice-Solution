@@ -8,7 +8,7 @@
 										</div>
 										<div class="col-auto">
 											<router-link to="/invoices" class="btn-right btn btn-sm btn-outline-primary">
-												View All 
+												View Page
 											</router-link>
 										</div>
 									</div>
