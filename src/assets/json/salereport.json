@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "no": "1",
+        "date": "7 Jan 2021",
+        "category": "Accessories",
+        "sales": "$42",
+        "refunded": "$0",
+        "discounts": "$163",
+        "taxs": "$221",
+        "amount": "$762"
+    },
+    {
+        "id": 2,
+        "no": "2",
+        "date": "28 Feb 2021",
+        "category": "Books",
+        "sales": "$1249",
+        "refunded": "$36",
+        "discounts": "$3",
+        "taxs": "$80",
+        "amount": "$1238"
+    },
+    {
+        "id": 3,
+        "no": "3",
+        "date": "10 Mar 2021",
+        "category": "Others",
+        "sales": "$76",
+        "refunded": "$0",
+        "discounts": "$0",
+        "taxs": "$4",
+        "amount": "$80"
+    }
+]

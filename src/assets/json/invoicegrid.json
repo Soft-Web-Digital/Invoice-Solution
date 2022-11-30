@@ -1,0 +1,90 @@
+[
+    {
+        "id": 1,
+        "invoiceno": "IN093439#@09",
+        "img": "avatar-04.jpg",
+        "name": "Barbara Moore",
+        "detail": "Amount",
+        "rate": "$1,54,220",
+        "detail1": "Due Date",
+        "rate1": "23 Mar, 2022",
+        "status": "Paid"
+    },
+    {
+        "id": 2,
+        "invoiceno": "IN093439#@10",
+        "img": "avatar-06.jpg",
+        "name": "Karlene Chaidez",
+        "detail": "Amount",
+        "rate": "$1,222",
+        "detail1": "Due Date",
+        "rate1": "18 Mar 2022",
+        "status": "Overdue"
+    },
+    {
+        "id": 3,
+        "invoiceno": "IN093439#@11",
+        "img": "avatar-08.jpg",
+        "name": "Russell Copeland",
+        "detail": "Amount",
+        "rate": "$3,470",
+        "detail1": "Due Date",
+        "rate1": "10 Mar 2022",
+        "status": "Cancelled"
+    },
+    {
+        "id": 4,
+        "invoiceno": "IN093439#@12",
+        "img": "avatar-10.jpg",
+        "name": "Joseph Collins",
+        "detail": "Amount",
+        "rate": "$8,265",
+        "detail1": "Due Date",
+        "rate1": "30 Mar 2022",
+        "status": "Sent"
+    },
+    {
+        "id": 5,
+        "invoiceno": "IN093439#@13",
+        "img": "avatar-11.jpg",
+        "name": "Jennifer Floyd",
+        "detail": "Amount",
+        "rate": "$5,200",
+        "detail1": "Due Date",
+        "rate1": "20 Mar 2022",
+        "status": "Cancelled"
+    },
+    {
+        "id": 6,
+        "invoiceno": "IN093439#@14",
+        "img": "avatar-09.jpg",
+        "name": "Leatha Bailey",
+        "detail": "Amount",
+        "rate": "$480",
+        "detail1": "Due Date",
+        "rate1": "15 Mar 2022",
+        "status": "Sent"
+    },
+    {
+        "id": 7,
+        "invoiceno": "IN093439#@15",
+        "img": "avatar-12.jpg",
+        "name": "Alex Campbell",
+        "detail": "Amount",
+        "rate": "$1,999",
+        "detail1": "Due Date",
+        "rate1": "08 Mar 2022",
+        "status": "Overdue"
+    },
+    {
+        "id": 8,
+        "invoiceno": "IN093439#@016",
+        "img": "avatar-03.jpg",
+        "name": "Marie Canales",
+        "detail": "Amount",
+        "rate": "$2,700",
+        "detail1": "Due Date",
+        "rate1": "18 Mar, 2022",
+        "status": "Paid"
+    }
+]

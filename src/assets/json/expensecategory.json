@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "category": "Accounts",
+        "description": "Lorem ipsum dollar",
+        "status": "Active"
+    },
+    {
+        "id": 2,
+        "category": "Sales",
+        "description": "Lorem ipsum dollar",
+        "status": "Inactive"
+    }
+]

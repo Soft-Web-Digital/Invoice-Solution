@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "no": "1",
+        "date": "7 Jan 2021",
+        "economiczone": "Tax Free Customers",
+        "tax": "Tax Free",
+        "taxrate": "5%",
+        "netrevenue": "$108",
+        "grossrevenue": "$108",
+        "amount":"$0"
+    },
+    {
+        "id": 2,
+        "no": "2",
+        "date": "28 Feb 2021",
+        "economiczone": "Default",
+        "tax": "General Sales Tax",
+        "taxrate": "6%",
+        "netrevenue": "$3660",
+        "grossrevenue": "$3898",
+        "amount":"$238"
+    },
+    {
+        "id": 3,
+        "no": "3",
+        "date": "10 Mar 2021",
+        "economiczone": "Default",
+        "tax": "General Sales Tax",
+        "taxrate": "7%",
+        "netrevenue": "$4517",
+        "grossrevenue": "$4889",
+        "amount":"$372"
+    }
+]

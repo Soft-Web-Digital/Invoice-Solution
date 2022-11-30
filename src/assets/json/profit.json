@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "no": "1",
+        "date": "5 Jan 2021",
+        "income": "Service Rendered",
+        "amount": "$ 90000",
+        "expense": "Salaries",
+        "expenseamount": "$20000",
+        "netprofit": "$70000"
+    },
+    {
+        "id": 2,
+        "no": "2",
+        "date": "6 Jan 2021",
+        "income": "Service Rendered",
+        "amount": "$ 50000",
+        "expense": "Salaries",
+        "expenseamount": "$10000",
+        "netprofit": "$40000"
+    },
+    {
+        "id": 3,
+        "no": "3",
+        "date": "6 Jan 2021",
+        "income": "Service Rendered",
+        "amount": "$ 50000",
+        "expense": "Salaries",
+        "expenseamount": "$10000",
+        "netprofit": "$40000"
+    }
+]

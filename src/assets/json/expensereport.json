@@ -1,0 +1,65 @@
+[
+    {
+        "id": 1,
+        "category": "Advertising",
+        "customername": "Barbara Moore",
+        "img": "avatar-04.jpg",
+        "expensedate": "15 Nov 2020",
+        "amount": "$145",
+        "status": "Approved"
+    },
+    {
+        "id": 2,
+       "category": "Food",
+        "customername": "Russell Copeland",
+        "img": "avatar-02.jpg",
+        "expensedate": "19 Sep 2020",
+        "amount": "$214",
+        "status": "Pending"
+    },
+    {
+        "id": 3,
+       "category": "Marketing",
+        "customername": "Brian Johnson",
+        "img": "avatar-05.jpg",
+        "expensedate": "11 Nov 2020",
+        "amount": "$254",
+        "status": "Pending"
+    },
+    {
+        "id": 4,
+       "category": "Repairs",
+        "customername": "Marie Canales",
+        "img": "avatar-06.jpg",
+        "expensedate": "3 Oct 2020",
+        "amount": "$60",
+        "status": "Pending"
+    },
+    {
+        "id": 5,
+       "category": "Software",
+        "customername": "Greg Lynch",
+        "img": "avatar-03.jpg",
+        "expensedate": "23 Oct 2020",
+        "amount": "$145",
+        "status": "Approved"
+    },
+    {
+        "id": 6,
+       "category": "Stationary",
+        "customername": "John Blair",
+        "img": "avatar-07.jpg",
+        "expensedate": "29 Sep 2020",
+        "amount": "$154",
+        "status": "Pending"
+    },
+    {
+        "id": 7,
+       "category": "Travel",
+        "customername": "Karlene Chaidez",
+        "img": "avatar-08.jpg",
+        "expensedate": "09 Oct 2020",
+        "amount": "$75",
+        "status": "Approved"
+    }
+]

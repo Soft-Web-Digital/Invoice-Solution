@@ -1,0 +1,141 @@
+<template>
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <layout-header></layout-header>
+        <layout-sidebar></layout-sidebar>
+        
+        <!-- Page Wrapper -->
+        <div class="page-wrapper">
+            <div class="content container-fluid">
+                <clipboardheader></clipboardheader>
+                <div class="row">
+					
+                    <!-- Drag Card -->					
+                    <div class="col-md-12">	
+                    
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Copy from input</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="clipboard">
+                                    <form class="form-horizontal">
+                                        <input type="text" class="form-control mb-4" id="message1" v-model="message1">
+                                        <button type="button" @click="doCopy5" class="mb-1 btn me-1 clip-btn btn-primary"><i class="far fa-copy"></i> Copy from Input</button>
+                                        <button type="button" @click="doCut5" class="mb-1 btn clip-btn btn-dark"><i class="fas fa-cut"></i> Cut from Input</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Copy from Text Area</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="clipboard">
+                                    <form class="form-horizontal">
+                                        <textarea class="form-control mb-4" v-model="message2" rows="3" id="paragraph-copy3">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</textarea>
+                                        <button type="button" @click="doCopy4" class="mb-1 btn me-1 clip-btn btn-primary"><i class="far fa-copy"></i> Copy from Input</button>
+                                        <button type="button" @click="doCut4" class="mb-1 btn clip-btn btn-dark"><i class="fas fa-cut"></i> Cut from Input</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Copy Text from Paragraph</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="clipboard copy-txt">
+                                    <p class="otp-pass">Here is your OTP <span id="paragraph-copy1">22991</span>.</p>
+                                    <p class="mb-4">Please do not share it to anyone</p>
+                                    <button type="button" @click="doCopy2" class="mb-1 btn clip-btn btn-primary"><i class="far fa-copy"></i> Copy from Input</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Copy Hidden Text (Advanced)</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="clipboard copy-txt">
+                                    <p class="mb-4">Link -&gt; <span id="advanced-paragraph">http://www.example.com/example</span></p>
+                                    <button type="button" @click="doCopy3" class="mb-1 btn me-1 clip-btn btn-primary"><i class="far fa-copy"></i> Copy Link</button>
+                                    <button type="button" @click="doCut1" class="mb-1 btn clip-btn btn-warning"><i class="far fa-copy"></i> Copy Hidden Code</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <!-- /Drag Card -->
+                </div>
+            </div>			
+        </div>
+        <!-- /Page Wrapper -->
+    
+    </div>
+    <!-- /Main Wrapper -->
+</template>
+<script>
+    import Vue from 'vue'
+
+   import VueClipboard from 'vue-clipboard2'
+    export default {
+      data() {
+          
+      
+      return {
+          message1: 'http://www.admin-dashboard.com',
+          message2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+      }
+      },
+      components: {
+          
+      },
+      mounted() {
+
+  
+      },
+      methods: {
+        doCopy1: function () {
+          this.$copyText(this.message1).then(function (e) {
+            console.log(e)
+          }, function (e) {
+            alert('Can not copy')
+            console.log(e)
+          })
+        },
+
+        doCut1 : function () {
+          document.getElementById('advanced-paragraph').style.display	= "none"
+        },
+        doCopy3 : function () {
+          document.getElementById('advanced-paragraph').style.backgroundColor	= "#007bff"
+          document.getElementById('advanced-paragraph').style.color= "#fff"
+        },
+       
+        doCopy2 : function () {
+          document.getElementById('paragraph-copy1').style.backgroundColor	= "#007bff"
+          document.getElementById('paragraph-copy1').style.color= "#fff"
+        },
+        doCut4 : function () {
+          document.getElementById('paragraph-copy3').style.display	= "none"
+        },
+        doCopy4 : function () {
+          document.getElementById('paragraph-copy3').style.backgroundColor	= "#007bff"
+          document.getElementById('paragraph-copy3').style.color= "#fff"
+        },
+        doCut5 : function () {
+          document.getElementById('message1').style.display	= "none"
+        },
+        doCopy5 : function () {
+          document.getElementById('message1').style.backgroundColor	= "#007bff"
+          document.getElementById('message1').style.color= "#fff"
+        },
+      },
+      name: 'clipboard'
+    }
+  </Script>
