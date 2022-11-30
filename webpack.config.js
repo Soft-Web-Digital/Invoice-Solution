@@ -26,16 +26,16 @@ module.exports = (env = {}) => ({
         test: /\.vue$/,
         use: 'vue-loader'
       },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: "babel-loader"
-      },
       // {
-      //   test: /\.mjs$/,
-      //   include: /node_modules/,
-      //   type: "javascript/auto"
+      //   test: /\.js$/,
+      //   exclude: /node_modules/,
+      //   loader: "babel-loader"
       // },
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: "javascript/auto"
+      },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
