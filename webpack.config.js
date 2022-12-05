@@ -13,7 +13,7 @@ module.exports = (env = {}) => ({
   context: path.resolve(__dirname, 'src'),
   mode: env.production ? 'production' : 'development',
   entry: {
-    app: './src/main.js'
+    app: '../src/main.js'
   },
   output: {
     path: path.resolve(__dirname, "dist"),
