@@ -114,7 +114,7 @@ export default {
           this.axios.post('https://api.codedevents.com/admin/auth/login', this.user)
           .then((res) => {
             $cookies.set("user", res.data.data.token, 60 * 60 * 12)
-            // router.push('/')
+            router.push('/')
             console.log(res.data);
             this.fetchUser();
           })
