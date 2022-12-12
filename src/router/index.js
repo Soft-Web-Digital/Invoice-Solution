@@ -126,22 +126,25 @@ import iconflag from '../views/uiinterface/icons/icon-flag'
 import invoiceitems from '../views/invoices/invoice-items'
 import invoicecategory from '../views/invoices/invoice-category'
 
+
+
+
 const routes = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: () => import('../views/pages/Login'),
-    meta: {
-    requiresAuth: true
-  }
+  //   meta: {
+  //   requiresAuth: true
+  // }
   },
   {
-    path: '/index',
+    path: '/',
     name: 'index',
     component: () => import('../views/dashboard/index/Index'),
     meta: {
-    requiresAuth: true
-  }
+      requiresAuth: true
+    }
   },
     {
       path: '/add-customer',
@@ -1139,8 +1142,78 @@ const routes = [
     }
     },
   ];
-export const router = createRouter({
-    history: createWebHistory('vuejs/template'),
-    linkActiveClass: 'active',
-    routes
-});
+
+const router = createRouter({
+  history: createWebHistory('vuejs/template'),
+  linkActiveClass: 'active',
+  routes
+})
+
+
+// router.afterEach((to, from, next) => {
+//     var token =  localStorage.getItem('token');
+//     if (token) {
+//         window.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+//         axios.get('/api/user')
+//         .then(res => {
+//             if (to.path == '/chats') {
+//                 axios.put('/api/update/status/' + res.data.id + '/?status=1')
+//                     .then(res => {
+
+//                     })
+//                     .catch(err => {
+
+//                     })
+//             }
+//             if (from.path == '/chats') {
+//                 axios.put('/api/update/status/' + res.data.id + '/?status=0')
+//                     .then(res => {
+
+//                     })
+//                     .catch(err => {
+
+//                     })
+//             }
+//         })
+//         .catch(err => {
+//             console.log(err.message);
+//         })
+//     }
+// });
+
+
+
+
+function loggedIn() {
+  return $cookies.get('user');
+}
+// function verified() {
+//     return localStorage.getItem('v-token');
+// }
+
+router.beforeEach((to, from, next) => {
+if(to.matched.some(record => record.meta.requiresAuth)){
+if(!loggedIn()){
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+} else {
+    next();
+}
+} else if(to.matched.some(record => record.meta.guest)) {
+    if(verified()) {
+      next({
+        path: '/forum',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+        next();
+      }
+    } else {
+        next();
+    }
+})
+
+
+export default router;

@@ -12,19 +12,19 @@
 								<h1>Login</h1>
 								<p class="account-subtitle">Access to our dashboard</p>
 								
-								<Form class="login" @submit="onSubmit" :validation-schema="schema" v-slot="{ errors }">
+								<Form class="login" @submit="loginUser" :validation-schema="schema" v-slot="{ errors }">
 									<div class="form-group">
 										<label class="form-control-label">Email Address</label>
-										<Field name="email" type="text" value="admin@dreamguys.in" class="form-control mt-2" :class="{ 'is-invalid': errors.email }" />
-                                        <div class="invalid-feedback">{{errors.email}}</div>
-                                        <div class="emailshow text-danger" id="email"></div>
+										<Field name="email" type="text" class="form-control mt-2" :class="{ 'is-invalid': errors.email }" v-model="user.email" />
+                      <div class="invalid-feedback">{{errors.email}}</div>
+                      <div class="emailshow text-danger" id="email"></div>
 									</div>
 									<div class="form-group">
 										<label class="form-control-label">Password</label>
 										<div class="pass-group">
-											<Field name="password" type="password" value="123456" class="form-control pass-input mt-2" :class="{ 'is-invalid': errors.password }" /><span class="fa fa-eye-slash toggle-password pt-4"></span>
-                                            <div class="invalid-feedback">{{errors.password}}</div>
-                                            <div class="emailshow text-danger" id="password"></div>
+											<Field name="password" type="password" v-model="user.password" class="form-control pass-input mt-2" :class="{ 'is-invalid': errors.password }" /><span class="fa fa-eye-slash toggle-password pt-4"></span>
+                        <div class="invalid-feedback">{{errors.password}}</div>
+                        <div class="emailshow text-danger" id="password"></div>
 										</div>
 									</div>
 									<div class="form-group">
@@ -40,7 +40,11 @@
 											</div>
 										</div>
 									</div>
-									<button class="btn btn-lg btn-block btn-primary w-100" type="submit" value="Login">Login</button>
+									<button class="btn btn-lg btn-block btn-primary w-100" type="submit" value="Login">
+                    <span v-if="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                    <span v-if="!isLoading">Login</span>
+                    <span v-if="isLoading">Loading...</span>
+                  </button>
 									<div class="login-or">
 										<span class="or-line"></span>
 										<span class="span-or">or</span>
@@ -64,7 +68,7 @@
 </template>
 <script>
 import { ref } from 'vue'
-import { router } from '../../router';
+import router from '../../router';
 import VueRouter from 'vue-router'
 import { useStore } from 'vuex'
 import { Form, Field } from 'vee-validate';
@@ -74,61 +78,113 @@ export default {
         Form,
         Field,
     },
-    mounted() {
-    if($('.toggle-password').length > 0) {
-    $(document).on('click', '.toggle-password', function() {
-      $(this).toggleClass("fa-eye fa-eye-slash");
-      var input = $(".pass-input");
-      if (input.attr("type") == "password") {
-        input.attr("type", "text");
-      } else {
-        input.attr("type", "password");
+    data(){
+      return {
+        isLoading: false,
+        user: {
+          email: 'admin@codedevents.com',
+          password: 'password',
+        },
+        error: {
+          email: false,
+          password: false,
+        }
       }
+    },
+    mounted() {
+      // this.fetchUser();
+
+      if($('.toggle-password').length > 0) {
+      $(document).on('click', '.toggle-password', function() {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $(".pass-input");
+        if (input.attr("type") == "password") {
+          input.attr("type", "text");
+        } else {
+          input.attr("type", "password");
+        }
     });
+
   }
   },
-setup() {
-  let users = localStorage.getItem('storedData');
-    if (users === null) {
-      let password = [
-        {
-          email: 'admin@dreamguys.in',
-          password: '123456',
-        },
-      ];
-      const jsonData = JSON.stringify(password);
-      localStorage.setItem('storedData', jsonData);
-    }
-     const schema = Yup.object().shape({
-            email: Yup.string()
-                .required('Email is required')
-                .email('Email is invalid'),
-            password: Yup.string()
-                .min(6, 'Password must be at least 6 characters')
-                .required('Password is required'),
-        });
-    const onSubmit = (values) => {
-    document.getElementById("email").innerHTML = ""
-    document.getElementById("password").innerHTML = ""
-    let data = localStorage.getItem('storedData');
-      var Pdata= JSON.parse(data)
-      const Eresult= Pdata.find(({ email }) => email === values.email);
-     if (Eresult) {
-      if (Eresult.password === values.password) {
-      router.push('/index')  
-      } else {
-          document.getElementById("password").innerHTML = "Incorrect password"
+  methods: {
+      loginUser() {
+        this.isLoading = true;
+        // document.getElementById("email").innerHTML = " "
+          this.axios.post('https://api.codedevents.com/admin/auth/login', this.user)
+          .then((res) => {
+            $cookies.set("user", res.data.data.token, 60 * 60 * 12)
+            // router.push('/')
+            console.log(res.data);
+            this.fetchUser();
+          })
+          .catch((err) => {
+              console.log(err);
+              document.getElementById("email").innerHTML =  err.response.data.error
+          })
+          .finally(() => {
+                this.isLoading =  false
+          });
+      },
+      fetchUser() {
+        // this.axios.defaults.headers.common['Authorization'] = `Bearer 402|3JCVMJTgRUzw3NqHhiJInAaU5Ql9PKp10Z1f5WeV`;
+        this.axios.defaults.headers.common['Authorization'] = `Bearer ${$cookies.get("user")}`;
+        // if ($cookies.get("user")) {
+          this.axios.get('https://api.codedevents.com/admin/auth/user')
+          .then((res) => {
+              console.log(res);
+          })
+          .catch((err) => {
+              console.log(err);
+          })
+        // } else {
+        //   $cookies.remove("user");
+        // }
       }
-    } else {
-          document.getElementById("email").innerHTML = "Email is not valid"
     }
-          };
-        return {
-            schema,
-            onSubmit,
-        };
+// setup() {
+//   let users = localStorage.getItem('storedData');
+//     if (users === null) {
+//       let password = [
+//         {
+//           email: 'admin@dreamguys.in',
+//           password: '123456',
+//         },
+//       ];
+//       const jsonData = JSON.stringify(password);
+//       $cookies.set("User", JSON.stringify(password), 60 * 60 * 2);
+//       // localStorage.setItem('storedData', jsonData);
+//     }
+//      const schema = Yup.object().shape({
+//             email: Yup.string()
+//                 .required('Email is required')
+//                 .email('Email is invalid'),
+//             password: Yup.string()
+//                 .min(6, 'Password must be at least 6 characters')
+//                 .required('Password is required'),
+//         });
+//     const onSubmit = (values) => {
+//     document.getElementById("email").innerHTML = ""
+//     document.getElementById("password").innerHTML = ""
+//     let data = localStorage.getItem('storedData');
+//       var Pdata= JSON.parse(data)
+//       const Eresult= Pdata.find(({ email }) => email === values.email);
+//      if (Eresult) {
+//       if (Eresult.password === values.password) {
+//       router.push('/index')  
+//       } else {
+//           document.getElementById("password").innerHTML = "Incorrect password"
+//       }
+//     } else {
+//           document.getElementById("email").innerHTML = "Email is not valid"
+//     }
+//           };
+//         return {
+//             schema,
+//             onSubmit,
+//         };
 
-    }
+//     }
 
 
 }

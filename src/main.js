@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { router } from './router';
+import  router  from './router';
 import Vue3Autocounter from 'vue3-autocounter';
 import './assets/css/fontawesome/css/fontawesome.min.css'
 import './assets/css/fontawesome/css/all.min.css'
@@ -348,11 +348,20 @@ import 'pe7-icon/dist/dist/pe-icon-7-stroke.css';
 import 'weathericons/css/weather-icons.css'
 
 import swal from 'sweetalert2';
+
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+import VueCookies from 'vue-cookies'
+
 window.Swal = swal;
 
 const app = createApp(App)
 app.component('vue-select', VueSelect);
 app.component('datepicker', DatePicker);
+
+app.use(VueAxios, axios);
+app.use(VueCookies, { expires: '1d'});
+
 import Alertify from '@kyvg/vue3-notification'
 /** Layouts **/
 app.component('layout-header', Header);

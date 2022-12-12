@@ -66,7 +66,7 @@
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { Form, Field } from 'vee-validate';
-import { router } from '../../router';
+import router from '../../router';
 import VueRouter from 'vue-router'
 import * as Yup from 'yup';
 export default {
