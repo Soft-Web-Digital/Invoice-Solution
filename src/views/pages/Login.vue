@@ -109,38 +109,40 @@ export default {
   },
   methods: {
       loginUser() {
-        this.isLoading = true;
-        // document.getElementById("email").innerHTML = " "
-          this.axios.post('https://api.codedevents.com/admin/auth/login', this.user)
-          .then((res) => {
-            $cookies.set("user", res.data.data.token, 60 * 60 * 12)
-            router.push('/')
-            console.log(res.data);
-            this.fetchUser();
-          })
-          .catch((err) => {
-              console.log(err);
-              document.getElementById("email").innerHTML =  err.response.data.error
-          })
-          .finally(() => {
-                this.isLoading =  false
-          });
+        // this.isLoading = true;
+        // // document.getElementById("email").innerHTML = " "
+        //   this.axios.post('https://api.codedevents.com/admin/auth/login', this.user)
+        //   .then((res) => {
+        //     $cookies.set("user", res.data.data.token, 60 * 60 * 12)
+        //     router.push('/')
+        //     console.log(res.data);
+        //     this.fetchUser();
+        //   })
+        //   .catch((err) => {
+        //       console.log(err);
+        //       document.getElementById("email").innerHTML =  err.response.data.error
+        //   })
+        //   .finally(() => {
+        //         this.isLoading =  false
+        //   });
+        this.$store.dispatch("auth/getData", this.user);
+        this.$store.dispatch("auth/increaseCount");
       },
-      fetchUser() {
-        // this.axios.defaults.headers.common['Authorization'] = `Bearer 402|3JCVMJTgRUzw3NqHhiJInAaU5Ql9PKp10Z1f5WeV`;
-        this.axios.defaults.headers.common['Authorization'] = `Bearer ${$cookies.get("user")}`;
-        // if ($cookies.get("user")) {
-          this.axios.get('https://api.codedevents.com/admin/auth/user')
-          .then((res) => {
-              console.log(res);
-          })
-          .catch((err) => {
-              console.log(err);
-          })
-        // } else {
-        //   $cookies.remove("user");
-        // }
-      }
+      // fetchUser() {
+      //   this.axios.defaults.headers.common['Authorization'] = `Bearer 402|3JCVMJTgRUzw3NqHhiJInAaU5Ql9PKp10Z1f5WeV`;
+      //   this.axios.defaults.headers.common['Authorization'] = `Bearer ${$cookies.get("user")}`;
+      //   if ($cookies.get("user")) {
+      //     this.axios.get('https://api.codedevents.com/admin/auth/user')
+      //     .then((res) => {
+      //         console.log(res);
+      //     })
+      //     .catch((err) => {
+      //         console.log(err);
+      //     })
+      //   } else {
+      //     $cookies.remove("user");
+      //   }
+      // }
     }
 // setup() {
 //   let users = localStorage.getItem('storedData');
