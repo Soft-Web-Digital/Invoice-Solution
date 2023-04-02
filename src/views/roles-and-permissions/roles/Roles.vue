@@ -11,16 +11,16 @@
         <div class="page-header">
           <div class="row align-items-center">
             <div class="col">
-              <h3 class="page-title">Admins</h3>
+              <h3 class="page-title">Roles and Permissions</h3>
               <ul class="breadcrumb">
                 <li class="breadcrumb-item">
                   <router-link to="/">Dashboard</router-link>
                 </li>
-                <li class="breadcrumb-item active">Admins</li>
+                <li class="breadcrumb-item active">Roles and Permissions</li>
               </ul>
             </div>
             <div class="col-auto">
-              <router-link to="/add-admin" class="btn btn-primary me-2">
+              <router-link to="/add-role" class="btn btn-primary me-2">
                 <i class="fas fa-plus"></i>
               </router-link>
               <a
@@ -78,8 +78,8 @@
                     <thead class="thead-light">
                       <tr>
                         <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
+                        <th>No of Admins</th>
+                        <th>No of Permissions</th>
                         <th>Date Added</th>
                         <th class="text-end">Action</th>
                       </tr>
@@ -87,12 +87,10 @@
                     <tbody>
                       <tr v-for="item in payments" :key="item.id">
                         <td>
-                          <a href="javascript:void(0);">{{
-                            item.customer_name
-                          }}</a>
+                          <a href="javascript:void(0);">Manager</a>
                         </td>
-                        <td>softwebdigital@gmail.com</td>
-                        <td>Manager</td>
+                        <td>3</td>
+                        <td>2</td>
                         <td>{{ item.date }}</td>
                         <td class="text-center">
                           <div class="dropdown dropdown-action">
@@ -108,7 +106,7 @@
                               style="width: fit-content"
                             >
                               <router-link
-                                to="/edit-admin"
+                                to="/edit-role"
                                 class="dropdown-item"
                                 href="javascript:void(0);"
                                 ><i class="fa fa-edit me-2"></i>
@@ -117,14 +115,7 @@
                               <a
                                 class="dropdown-item"
                                 href="javascript:void(0);"
-                                ><i class="fa fa-user-circle me-2"></i> Change
-                                Role</a
-                              >
-                              <a
-                                class="dropdown-item"
-                                href="javascript:void(0);"
-                                ><i class="fa fa-user-times me-2"></i>
-                                Restrict</a
+                                ><i class="fa fa-trash me-2"></i>Delete</a
                               >
                             </div>
                           </div>

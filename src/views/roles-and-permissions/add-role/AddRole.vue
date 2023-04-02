@@ -16,9 +16,11 @@
                   <router-link to="/">Dashboard</router-link>
                 </li>
                 <li class="breadcrumb-item">
-                  <router-link to="/admin">Admin</router-link>
+                  <router-link to="/roles-and-permissions"
+                    >Roles and Permissions</router-link
+                  >
                 </li>
-                <li class="breadcrumb-item active">Add Admin</li>
+                <li class="breadcrumb-item active">Add Role</li>
               </ul>
             </div>
           </div>
@@ -32,32 +34,13 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" />
-                      </div>
-                      <div class="form-group">
-                        <label>Phone</label>
+                        <label>Role Name</label>
                         <input type="text" class="form-control" />
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <!-- <div class="form-group">
-                        <label>Date:</label>
-                        <div class="cal-icon">
-                          <datepicker
-                            v-model="startdate"
-                            class="picker"
-                            :editable="true"
-                            :clearable="false"
-                          />
-                        </div>
-                      </div> -->
                       <div class="form-group">
-                        <label>Email</label>
-                        <input type="text" class="form-control" />
-                      </div>
-                      <div class="form-group">
-                        <label>Role:</label>
+                        <label>Permissions:</label>
                         <select class="select">
                           <option>Select Role</option>
                           <option>Advertising</option>
@@ -68,7 +51,7 @@
                       </div>
                       <div class="text-end mt-4">
                         <button type="submit" class="btn btn-primary">
-                          Add Admin
+                          Add Role
                         </button>
                       </div>
                     </div>
