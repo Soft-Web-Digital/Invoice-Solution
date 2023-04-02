@@ -138,15 +138,12 @@ import Filter from "./views/Filter";
 import EstimateFilter from "./views/estimate/estimates/EstimateFilter";
 import ExpenseFilter from "./views/expense/expense/ExpenseFilter";
 import ExpenseReportFilter from "./views/report/expensereport/ExpenseReportFilter";
-import PaymentFilter from "./views/payment/payment/PaymentFilter";
 import ProfitFilter from "./views/report/profitlossreport/ProfitFilter";
 import SalesReportFilter from "./views/report/salesreport/SalesReportFilter";
 import TaxReportFilter from "./views/report/taxreport/TaxReportFilter";
-import CustomerFilter from "./views/customer/customer/CustomerFilter";
 /*************Form ************/
 import FormAddCustomer from "./views/customer/addcustomer/FormAddCustomer";
 import FormAddEstimate from "./views/estimate/addestimate/FormAddEstimate";
-import FormAddExpense from "./views/expense/addexpense/FormAddExpense";
 import FormAddInvoice from "./views/invoices/addinvoice/FormAddInvoice";
 import FormAddPayment from "./views/payment/addpayment/FormAddPayment";
 import FormChangePassword from "./views/settings/changepassword/FormChangePassword";
@@ -177,7 +174,6 @@ import EstimateTable from "./views/estimate/estimates/estimatetable.vue";
 import ExpenseCategoryTable from "./views/settings/expensecategory/ExpenseCategoryTable.vue";
 import ExpenseTable from "./views/expense/expense/ExpenseTable.vue";
 import ExpenseReportTable from "./views/report/expensereport/ExpenseReportTable.vue";
-import PaymentTable from "./views/payment/payment/PaymentTable.vue";
 import ProfitTable from "./views/report/profitlossreport/ProfitTable.vue";
 import SalesReportTable from "./views/report/salesreport/SalesReportTable.vue";
 import ResponsiveTable from "./views/uiinterface/table/tablebasic/ResponsiveTable.vue";
@@ -257,7 +253,6 @@ import Icontypicon from "./views/uiinterface/icons/icon-typicon.vue";
 import Iconflag from "./views/uiinterface/icons/icon-flag.vue";
 
 /*************Customer page ********/
-import CustomerTable from "./views/customer/customer/CustomerTable.vue";
 /*************Form page ************/
 import CardInputSize from "./views/uiinterface/form/formbasic/CardInputSize.vue";
 import CardBasicInput from "./views/uiinterface/form/formbasic/CardBasicInput.vue";
@@ -503,15 +498,12 @@ app.component("filter", Filter);
 app.component("estimatefilter", EstimateFilter);
 app.component("expensefilter", ExpenseFilter);
 app.component("expensereportfilter", ExpenseReportFilter);
-app.component("paymentfilter", PaymentFilter);
 app.component("profitfilter", ProfitFilter);
 app.component("salereportfilter", SalesReportFilter);
 app.component("taxreportfilter", TaxReportFilter);
-app.component("customerfilter", CustomerFilter);
 /************form ********************/
 app.component("formaddcustomer", FormAddCustomer);
 app.component("formaddestimate", FormAddEstimate);
-app.component("formaddexpense", FormAddExpense);
 app.component("formaddinvoice", FormAddInvoice);
 app.component("formaddpayment", FormAddPayment);
 app.component("formchangepassword", FormChangePassword);
@@ -561,7 +553,6 @@ app.component("estimatetable", EstimateTable);
 app.component("expensecategorytable", ExpenseCategoryTable);
 app.component("expensetable", ExpenseTable);
 app.component("expensereporttable", ExpenseReportTable);
-app.component("paymenttable", PaymentTable);
 app.component("profittable", ProfitTable);
 app.component("salereporttable", SalesReportTable);
 app.component("tableview", TableView);
@@ -640,7 +631,6 @@ app.component("invoice-items", InvoiceItems);
 app.component("invoice-category", Invoicecategory);
 
 /************customer ******************/
-app.component("customertable", CustomerTable);
 /************datatable ****************/
 app.component("datatableform", DataTableForm);
 /************email ****************/

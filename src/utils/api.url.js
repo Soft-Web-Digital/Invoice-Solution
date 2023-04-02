@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const API = axios.create({
-  baseURL: `https://api.codedevents.com/admin`,
+  baseURL: `http://167.71.252.13/admin`,
 });
 
 export const apiConfig = (multipart = false) => {
@@ -11,7 +11,7 @@ export const apiConfig = (multipart = false) => {
 function getHeaders(type) {
   const header = {};
   const token = $cookies.get("user");
-  if (token) header.Authorization = `Bearer${token}`;
+  if (token) header.Authorization = `Bearer ${token}`;
   header.accept = `application/json`;
   if (type) header["Content-Type"] = "multipart/form-data";
   return header;
@@ -19,6 +19,9 @@ function getHeaders(type) {
 
 export const ROUTES = function (param = null) {
   return {
-    login: `/auth/login`
+    login: "/login",
+    authuser: "/user",
+    resetlink: "/password/reset/send-link",
+    transactions: "/transactions",
   };
 };

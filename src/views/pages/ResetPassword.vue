@@ -33,19 +33,33 @@
         <div class="loginbox">
           <div class="login-right">
             <div class="login-right-wrap">
-              <h1>Forgot Password?</h1>
+              <h1>Reset Password?</h1>
               <p class="account-subtitle">
-                Enter your email to get a password reset link
+                Enter the token sent to your email and your new password
               </p>
 
               <!-- Form -->
-              <form @submit.prevent="sendResetPassword">
+              <Form
+                @submit.prevent="sendResetPassword"
+                :validation-schema="schema"
+              >
                 <div class="form-group">
-                  <label class="form-control-label">Email Address</label
+                  <label class="form-control-label">Token</label
                   ><span class="text-danger">*</span>
-                  <input
+                  <Field
+                    name="token"
                     class="form-control"
-                    v-model="form.email"
+                    v-model="form.token"
+                    type="text"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-control-label">New Password</label
+                  ><span class="text-danger">*</span>
+                  <Field
+                    name="password"
+                    class="form-control"
+                    v-model="form.password"
                     type="text"
                   />
                 </div>
@@ -65,7 +79,7 @@
                     <span v-if="isLoading">Loading...</span>
                   </button>
                 </div>
-              </form>
+              </Form>
               <!-- /Form -->
 
               <div class="text-center dont-have">
@@ -83,10 +97,9 @@
 <script setup>
 import { ref } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { Form, Field } from "vee-validate";
 
 const store = useStore();
-const router = useRouter();
 
 const isLoading = ref(false);
 
@@ -103,10 +116,9 @@ const sendResetPassword = async () => {
   if (result) {
     isLoading.value = false;
     success.value = store.state.auth.success;
-    // setTimeout(() => {
-    //   success.value = "";
-    //   router.push({ name: "reset-password" });
-    // }, 3000);
+    setTimeout(() => {
+      success.value = "";
+    }, 3000);
   } else {
     isLoading.value = false;
     error.value = store.state.auth.error;

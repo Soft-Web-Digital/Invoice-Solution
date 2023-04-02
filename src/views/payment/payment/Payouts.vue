@@ -11,18 +11,18 @@
         <div class="page-header">
           <div class="row align-items-center">
             <div class="col">
-              <h3 class="page-title">Admins</h3>
+              <h3 class="page-title">Payouts</h3>
               <ul class="breadcrumb">
                 <li class="breadcrumb-item">
                   <router-link to="/">Dashboard</router-link>
                 </li>
-                <li class="breadcrumb-item active">Admins</li>
+                <li class="breadcrumb-item active">Payouts</li>
               </ul>
             </div>
             <div class="col-auto">
-              <router-link to="/add-admin" class="btn btn-primary me-2">
-                <i class="fas fa-plus"></i>
-              </router-link>
+              <!-- <router-link to="/add-payments" class="btn btn-primary me-2">
+                  <i class="fas fa-plus"></i>
+                </router-link> -->
               <a
                 class="btn btn-primary filter-btn"
                 href="javascript:void(0);"
@@ -77,10 +77,13 @@
                   >
                     <thead class="thead-light">
                       <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Date Added</th>
+                        <th>Reference ID</th>
+                        <th>User</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Bank Info</th>
+                        <th>Status</th>
                         <th class="text-end">Action</th>
                       </tr>
                     </thead>
@@ -88,12 +91,32 @@
                       <tr v-for="item in payments" :key="item.id">
                         <td>
                           <a href="javascript:void(0);">{{
-                            item.customer_name
+                            item.reference_id
                           }}</a>
                         </td>
-                        <td>softwebdigital@gmail.com</td>
-                        <td>Manager</td>
+                        <td>
+                          <h2 class="table-avatar">
+                            <router-link to="/profile">
+                              {{ item.customer_name }}</router-link
+                            >
+                          </h2>
+                        </td>
+                        <td>{{ item.amount }}</td>
                         <td>{{ item.date }}</td>
+                        <td>
+                          {{ item.payment_card }}
+                          <strong>{{ item.card_no }}</strong>
+                        </td>
+                        <td>3128651365</td>
+                        <td>
+                          <span class="badge badge-pill bg-success-light"
+                            >Successful</span
+                          >
+                          <!-- <span class="badge badeg-pill bg-warning"
+                              >Warning</span
+                            >
+                            <span class="badge bg-danger">Danger</span> -->
+                        </td>
                         <td class="text-center">
                           <div class="dropdown dropdown-action">
                             <a
@@ -107,24 +130,17 @@
                               class="dropdown-menu dropdown-menu-right"
                               style="width: fit-content"
                             >
-                              <router-link
-                                to="/edit-admin"
+                              <a
                                 class="dropdown-item"
                                 href="javascript:void(0);"
-                                ><i class="fa fa-edit me-2"></i>
-                                Edit</router-link
+                                ><i class="far fa-check-circle me-2"></i>
+                                Approve</a
                               >
                               <a
                                 class="dropdown-item"
                                 href="javascript:void(0);"
-                                ><i class="fa fa-user-circle me-2"></i> Change
-                                Role</a
-                              >
-                              <a
-                                class="dropdown-item"
-                                href="javascript:void(0);"
-                                ><i class="fa fa-user-times me-2"></i>
-                                Restrict</a
+                                ><i class="far fa-times-circle me-2"></i>
+                                Decline</a
                               >
                             </div>
                           </div>
@@ -170,4 +186,8 @@ onMounted(() => {
   util.datatable("#paymentTable");
   store.dispatch("transactions/getTransactions");
 });
+
+const loadImg = (imgPath) => {
+  images("./" + imgPath).default;
+};
 </script>

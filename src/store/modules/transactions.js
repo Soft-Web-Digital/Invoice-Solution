@@ -4,13 +4,14 @@ import router from "../../router/index";
 export default {
   namespaced: true,
   state: {
-    user: [],
+    transactions: [],
     success: "",
     error: "",
+    per_page: 50,
   },
   mutations: {
-    SET_DATA(state, data) {
-      state.user = data;
+    SET_TRANSACTIONS(state, data) {
+      state.transactions = data;
     },
     SET_MESSAGE(state, data) {
       state.message = data;
@@ -20,12 +21,13 @@ export default {
     },
   },
   actions: {
-    async login({ commit }, payload) {
-      let result = API.post(ROUTES().login, payload)
+    async getTransactions({ state, commit }) {
+      let result = await API.get(
+        `${ROUTES().transactions}?per_page=${state.per_page}`,
+        apiConfig()
+      )
         .then((res) => {
-          $cookies.set("user", res.data.data.token);
-          router.push("/");
-          console.log($cookies.get("user"));
+          console.log(res);
         })
         .catch((err) => {
           if (err.response) {
@@ -58,8 +60,8 @@ export default {
     },
   },
   getters: {
-    user(state) {
-      return state.user;
+    transactions(state) {
+      return state.transactions;
     },
   },
 };

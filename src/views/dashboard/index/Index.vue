@@ -8,7 +8,6 @@
     <div class="page-wrapper">
       <div class="content container-fluid">
         <dashboardwidget />
-		{{ count }}
         <dashboardgraph />
 
         <div class="row">
@@ -26,12 +25,12 @@
 import { onMounted } from "vue";
 import { useStore } from "vuex";
 const store = useStore();
-const count = store.state.auth.count
+const count = store.state.auth.count;
 const updateCount = () => {
   store.dispatch("auth/increaseCount");
 };
 
 onMounted(() => {
-	updateCount();
-})
+  updateCount();
+});
 </script>
