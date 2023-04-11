@@ -34,7 +34,7 @@ import FormVertical from "../views/uiinterface/form/formvertical/FormVertical";
 import Inbox from "../views/application/email/inbox/Inbox";
 import Dashboard from "../views/dashboard/index/Index";
 import invoices from "../views/invoices/invoicelist/invoices";
-import Notification from "../views/settings/notification/Notification";
+// import Notification from "../views/settings/notification/Notification";
 import Payment from "../views/payment/payment/Payment";
 import Preference from "../views/settings/preferences/Preference";
 import Profile from "../views/pages/profile/Profile";
@@ -185,6 +185,54 @@ const routes = [
     name: "edit-role",
     component: () =>
       import("../views/roles-and-permissions/edit-role/EditRole"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/coupons",
+    name: "coupons",
+    component: () => import("../views/coupons/coupon/Coupons"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/add-coupon",
+    name: "add-coupon",
+    component: () => import("../views/coupons/add-coupon/AddCoupon"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/edit-coupon",
+    name: "edit-coupon",
+    component: () => import("../views/coupons/edit-coupon/EditCoupon"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/notification",
+    name: "notification",
+    component: () => import("../views/notification/Notification"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/create-notification",
+    name: "create-notification",
+    component: () => import("../views/notification/create-notification/Index"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/edit-notification",
+    name: "edit-notification",
+    component: () => import("../views/notification/edit-notification/Index"),
     meta: {
       requiresAuth: true,
     },
@@ -419,14 +467,14 @@ const routes = [
     name: "reset-password",
     component: () => import("../views/pages/ResetPassword"),
   },
-  {
-    path: "/notifications",
-    name: "notifications",
-    component: () => import("../views/settings/notification/Notification"),
-    meta: {
-      requiresAuth: true,
-    },
-  },
+  // {
+  //   path: "/notifications",
+  //   name: "notifications",
+  //   component: () => import("../views/settings/notification/Notification"),
+  //   meta: {
+  //     requiresAuth: true,
+  //   },
+  // },
   {
     path: "/subscriptions",
     name: "subscriptions",
@@ -1006,15 +1054,15 @@ const routes = [
       requiresAuth: true,
     },
   },
-  {
-    path: "/notification",
-    name: "notification",
-    component: () =>
-      import("../views/uiinterface/elements/notificationelement"),
-    meta: {
-      requiresAuth: true,
-    },
-  },
+  // {
+  //   path: "/notification",
+  //   name: "notification",
+  //   component: () =>
+  //     import("../views/uiinterface/elements/notificationelement"),
+  //   meta: {
+  //     requiresAuth: true,
+  //   },
+  // },
   {
     path: "/stickynote",
     name: "stickynote",

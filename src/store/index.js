@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import auth from "./modules/auth";
-import transactions from "./modules/transactions";
+import transaction from "./modules/transaction";
 import persistedStateVuex from "persisted-state-vuex";
 
 persistedStateVuex.config({
@@ -10,7 +10,7 @@ persistedStateVuex.config({
 export default createStore({
   modules: {
     auth,
-    transactions,
+    transaction,
   },
   plugins: [persistedStateVuex.init],
 });

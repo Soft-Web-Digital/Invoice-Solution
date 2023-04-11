@@ -11,18 +11,21 @@
         <div class="page-header">
           <div class="row align-items-center">
             <div class="col">
-              <h3 class="page-title">All Transactions</h3>
+              <h3 class="page-title">Notifications</h3>
               <ul class="breadcrumb">
                 <li class="breadcrumb-item">
                   <router-link to="/">Dashboard</router-link>
                 </li>
-                <li class="breadcrumb-item active">All Transactions</li>
+                <li class="breadcrumb-item active">Notifications</li>
               </ul>
             </div>
             <div class="col-auto">
-              <!-- <router-link to="/add-payments" class="btn btn-primary me-2">
+              <router-link
+                to="/create-notification"
+                class="btn btn-primary me-2"
+              >
                 <i class="fas fa-plus"></i>
-              </router-link> -->
+              </router-link>
               <a
                 class="btn btn-primary filter-btn"
                 href="javascript:void(0);"
@@ -77,46 +80,32 @@
                   >
                     <thead class="thead-light">
                       <tr>
-                        <th>Reference ID</th>
                         <th>User</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Method</th>
+                        <th>User count</th>
+                        <th>Title</th>
+                        <th>Date Created</th>
                         <th>Status</th>
                         <th class="text-end">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="item in transactions" :key="item.id">
+                      <tr v-for="item in payments" :key="item.id">
                         <td>
-                          <a href="javascript:void(0);">{{ item.reference }}</a>
+                          <a href="javascript:void(0);">{{
+                            item.customer_name
+                          }}</a>
                         </td>
+                        <td>43</td>
+                        <td>The new feature is coming</td>
+                        <td>{{ item.date }}</td>
                         <td>
-                          <!-- <h2 class="table-avatar">
-                            <router-link to="/profile">
-                              {{ item.customer_name }}</router-link
-                            >
-                          </h2> -->
-                        </td>
-                        <td>{{ item.amount }}</td>
-                        <td>
-                          {{ formatted(item.created_at) }}
-                        </td>
-                        <td class="text-capitalize">{{ item.type }}</td>
-                        <td class="text-capitalize">
-                          {{ item.method }}
-                        </td>
-                        <td>
-                          <span
-                            class="badge badge-pill text-capitalize"
-                            :class="{
-                              'bg-warning': item.status == 'pending',
-                              'bg-danger': item.status == 'declined',
-                              'bg-success-light': item.status == 'approved',
-                            }"
-                            >{{ item.status }}</span
+                          <span class="badge badge-pill bg-success-light"
+                            >Successful</span
                           >
+                          <!-- <span class="badge badeg-pill bg-warning"
+                              >Warning</span
+                            >
+                            <span class="badge bg-danger">Danger</span> -->
                         </td>
                         <td class="text-center">
                           <div class="dropdown dropdown-action">
@@ -131,17 +120,17 @@
                               class="dropdown-menu dropdown-menu-right"
                               style="width: fit-content"
                             >
-                              <a
+                              <router-link
+                                to="/edit-notification"
                                 class="dropdown-item"
                                 href="javascript:void(0);"
-                                ><i class="far fa-check-circle me-2"></i>
-                                Approve</a
+                                ><i class="fa fa-edit me-2"></i>
+                                Resend</router-link
                               >
                               <a
                                 class="dropdown-item"
                                 href="javascript:void(0);"
-                                ><i class="far fa-times-circle me-2"></i>
-                                Decline</a
+                                ><i class="fa fa-trash me-2"></i>Delete</a
                               >
                             </div>
                           </div>
@@ -164,7 +153,13 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
-import { formatted } from "../../../assets/composables/date";
+import paymentz from "../../assets/json/payments.json";
+import util from "../../assets/utils/util";
+const images = require.context(
+  "../../assets/img/profiles",
+  false,
+  /\.png$|\.jpg$/
+);
 
 const store = useStore();
 
@@ -174,27 +169,11 @@ const toggleFilter = () => {
   filter.value = !filter.value;
 };
 
-// const payments = paymentz;
+const payments = paymentz;
 const paymentfilter = ["Payment Mode", "Cash", "Cheque", "Card", "Online"];
 
-const transactions = store.state.transaction.transactions;
-
-const datatable = (transactions) => {
-  // Datatable
-  if ($(transactions).length > 0) {
-    $(transactions).DataTable({
-      bFilter: true,
-      paging: true,
-      language: {
-        search: '<i class="fas fa-search"></i>',
-        searchPlaceholder: "Search",
-      },
-    });
-  }
-};
-
 onMounted(() => {
-  datatable("#paymentTable");
-  store.dispatch("transaction/getTransactions");
+  util.datatable("#paymentTable");
+  store.dispatch("transactions/getTransactions");
 });
 </script>

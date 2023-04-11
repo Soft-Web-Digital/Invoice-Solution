@@ -27,7 +27,7 @@ export default {
         apiConfig()
       )
         .then((res) => {
-          console.log(res);
+          commit("SET_TRANSACTIONS", res.data.data);
         })
         .catch((err) => {
           if (err.response) {
