@@ -3,17 +3,26 @@
   <div class="main-wrapper login-body">
     <!-- Notification -->
     <div
-      v-if="error || success"
+      v-if="store.state.auth.error"
       style="width: fit-content; position: fixed; right: 10px; top: 5px"
-      class="alert alert-dismissible fade show pb-2 text-sm"
+      class="alert alert-danger alert-dismissible fade show pb-2 text-sm"
       role="alert"
-      :class="{
-        'alert-danger': error,
-        'alert-success': success,
-      }"
     >
-      <p>{{ error }}</p>
-      <p>{{ success }}</p>
+      <p>{{ store.state.auth.error }}</p>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div
+      v-if="store.state.auth.message"
+      style="width: fit-content; position: fixed; right: 10px; top: 5px"
+      class="alert alert-success alert-dismissible fade show pb-2 text-sm"
+      role="alert"
+    >
+      <p>{{ store.state.auth.message }}</p>
       <button
         type="button"
         class="btn-close"
@@ -112,31 +121,22 @@ import * as Yup from "yup";
 
 const store = useStore();
 
-const error = ref("");
-const success = ref("");
-
 const isLoading = ref(false);
 const form = reactive({
   email: "babatundehezekiah7@gmail.com",
   password: "password",
 });
 
-const loginUser = async () => {
+const loginUser = () => {
   isLoading.value = true;
-  let result = await store.dispatch("auth/login", form);
-  if (result) {
-    isLoading.value = false;
-    success.value = store.state.auth.success;
-    setTimeout(() => {
-      success.value = "";
-    }, 3000);
-  } else {
-    isLoading.value = false;
-    error.value = store.state.auth.error;
-    setTimeout(() => {
-      error.value = "";
-    }, 3000);
-  }
+  store
+    .dispatch("auth/login", form)
+    .then(() => {
+      isLoading.value = false;
+    })
+    .catch(() => {
+      isLoading.value = false;
+    });
 };
 onMounted(() => {
   if ($(".toggle-password").length > 0) {

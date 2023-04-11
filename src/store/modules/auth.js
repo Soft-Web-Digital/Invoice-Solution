@@ -5,7 +5,7 @@ export default {
   namespaced: true,
   state: {
     user: [],
-    success: "",
+    message: "",
     error: "",
   },
   mutations: {
@@ -14,35 +14,48 @@ export default {
     },
     SET_MESSAGE(state, data) {
       state.message = data;
+      console.log("babz");
     },
     SET_ERROR(state, data) {
       state.error = data;
+      console.log("error");
     },
   },
   actions: {
     async login({ commit }, payload) {
-      let result = API.post(ROUTES().login, payload)
+      let result = await API.post(ROUTES().login, payload)
         .then((res) => {
           $cookies.set("user", res.data.data.token);
+          commit("SET_MESSAGE", res.data.message);
           router.push("/");
-          console.log($cookies.get("user"));
+          setTimeout(() => {
+            commit("SET_MESSAGE", "");
+          }, 3000);
         })
         .catch((err) => {
-          if (err.response) {
-            commit("SET_ERROR", err.response.data.error);
-          }
+          commit("SET_ERROR", err.response.data.error);
+          setTimeout(() => {
+            commit("SET_ERROR", "");
+          }, 3000);
         });
+
       return result;
     },
     async sendPasswordReset({ commit }, payload) {
-      let result = API.post(ROUTES().resetlink, payload)
+      let result = await API.post(ROUTES().resetlink, payload)
         .then((res) => {
-          console.log(res);
+          commit("SET_MESSAGE", res.data.message);
+          setTimeout(() => {
+            commit("SET_MESSAGE", "");
+            router.push({ name: "reset-password" });
+          }, 3000);
         })
         .catch((err) => {
           if (err.response) {
             commit("SET_ERROR", err.response.data.error);
-            console.log(err.response);
+            setTimeout(() => {
+              commit("SET_ERROR", "");
+            }, 3000);
           }
         });
       return result;

@@ -151,6 +151,15 @@
             </li>
             <li
               v-bind:class="{
+                active: currentPath == 'users',
+              }"
+            >
+              <router-link to="/users"
+                ><i data-feather="users"></i><span>Users</span></router-link
+              >
+            </li>
+            <li
+              v-bind:class="{
                 active: currentPath == 'customers',
               }"
             >
@@ -194,6 +203,32 @@
               >
             </li>
             <li
+              v-bind:class="{
+                active:
+                  currentPath == 'coupons' ||
+                  currentPath == 'add-coupon' ||
+                  currentPath == 'edit-coupon',
+              }"
+            >
+              <router-link to="/coupons"
+                ><i data-feather="shopping-bag"></i>
+                <span>Coupon</span></router-link
+              >
+            </li>
+            <li
+              v-bind:class="{
+                active:
+                  currentPath == 'notification' ||
+                  currentPath == 'create-notification' ||
+                  currentPath == 'edit-notification',
+              }"
+            >
+              <router-link to="/notification"
+                ><i data-feather="bell"></i>
+                <span>Notification</span></router-link
+              >
+            </li>
+            <!-- <li
               class="submenu"
               v-bind:class="{
                 active:
@@ -273,7 +308,7 @@
                 <li><router-link to="/calendar">Calendar</router-link></li>
                 <li><router-link to="/inbox">Email</router-link></li>
               </ul>
-            </li>
+            </li> -->
             <!-- <li class="menu-title">
               <span>Pages</span>
             </li>

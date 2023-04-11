@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const API = axios.create({
-  baseURL: `http://167.71.252.13/admin`,
+  baseURL: `https://invoice.softwebdigital.com/admin`,
 });
 
 export const apiConfig = (multipart = false) => {

@@ -3,17 +3,26 @@
   <div class="main-wrapper login-body">
     <!-- Notification -->
     <div
-      v-if="error || success"
+      v-if="store.state.auth.error"
       style="width: fit-content; position: fixed; right: 10px; top: 5px"
-      class="alert alert-dismissible fade show pb-2 text-sm"
+      class="alert alert-danger alert-dismissible fade show pb-2 text-sm"
       role="alert"
-      :class="{
-        'alert-danger': error,
-        'alert-success': success,
-      }"
     >
-      <p>{{ error }}</p>
-      <p>{{ success }}</p>
+      <p>{{ store.state.auth.error }}</p>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div
+      v-if="store.state.auth.message"
+      style="width: fit-content; position: fixed; right: 10px; top: 5px"
+      class="alert alert-success alert-dismissible fade show pb-2 text-sm"
+      role="alert"
+    >
+      <p>{{ store.state.auth.message }}</p>
       <button
         type="button"
         class="btn-close"
@@ -90,29 +99,19 @@ const router = useRouter();
 
 const isLoading = ref(false);
 
-const error = ref("");
-const success = ref("");
-
 const form = ref({
   email: "",
 });
 
-const sendResetPassword = async () => {
+const sendResetPassword = () => {
   isLoading.value = true;
-  let result = await store.dispatch("auth/sendPasswordReset", form.value);
-  if (result) {
-    isLoading.value = false;
-    success.value = store.state.auth.success;
-    // setTimeout(() => {
-    //   success.value = "";
-    //   router.push({ name: "reset-password" });
-    // }, 3000);
-  } else {
-    isLoading.value = false;
-    error.value = store.state.auth.error;
-    setTimeout(() => {
-      error.value = "";
-    }, 3000);
-  }
+  store
+    .dispatch("auth/sendPasswordReset", form.value)
+    .then(() => {
+      isLoading.value = false;
+    })
+    .catch(() => {
+      isLoading.value = false;
+    });
 };
 </script>
