@@ -17,9 +17,30 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
+                  <div
+                    class="d-flex align-items-center justify-content-between p-4"
+                  >
+                    <div>
+                      <span>Show</span>
+                      <select class="mx-1 py-1" v-model="perPage" name="" id="">
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="500">500</option>
+                      </select>
+                      <span>transactions</span>
+                    </div>
+
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search"
+                      />
+                    </div>
+                  </div>
                   <table
                     class="table table-stripped table-center table-hover datatable"
-                    id="usersTable"
                   >
                     <thead class="thead-light">
                       <tr>
@@ -32,24 +53,23 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="item in users" :key="item.id">
+                      <tr v-for="user in users.data" :key="user.id">
                         <td>
                           <h2 class="table-avatar">
                             <router-link to="/profile"
                               ><img
                                 class="avatar avatar-sm me-2 avatar-img rounded-circle"
-                                :src="loadImg(item.customer_image)"
-                                alt="User Image"
+                                :src="user.image"
                               />
-                              {{ item.customer_name }}</router-link
+                              {{ user.name }}</router-link
                             >
                           </h2>
                         </td>
-                        <td>Nigeria</td>
-                        <td>#30,000</td>
-                        <td>{{ item.registered_on }}</td>
+                        <td>{{ user.country }}</td>
+                        <td>{{ useCurrency(user.wallet_balance) }}</td>
+                        <td>{{ formatted(user.created_at) }}</td>
                         <td>
-                          <span
+                          <!-- <span
                             class="badge badge-pill bg-success-light"
                             v-if="item.status == 'Active'"
                             >Active</span
@@ -58,7 +78,7 @@
                             class="badge badge-pill bg-danger-light"
                             v-if="item.status == 'Inactive'"
                             >Inactive</span
-                          >
+                          > -->
                         </td>
                         <td class="text-center">
                           <div class="dropdown dropdown-action">
@@ -114,6 +134,47 @@
                       </tr>
                     </tbody>
                   </table>
+                  <div
+                    class="d-flex align-items-center justify-content-between p-4"
+                  >
+                    <p v-if="users.meta">
+                      Showing {{ users.data.length }} of
+                      {{ users.meta.total }} users
+                    </p>
+                    <div>
+                      <ul class="pagination mb-4">
+                        <li
+                          class="page-item"
+                          @click="previousPage"
+                          :class="{ disabled: currentPage == 1 }"
+                        >
+                          <a class="page-link" href="javascript:;" tabindex="-1"
+                            >Previous</a
+                          >
+                        </li>
+                        <li
+                          class="page-item"
+                          v-for="pageNumber in pageNumbers"
+                          :key="pageNumber"
+                          @click="setPage(pageNumber)"
+                          :class="{
+                            active: pageNumber === currentPage,
+                          }"
+                        >
+                          <a class="page-link" href="javascript:;">{{
+                            pageNumber
+                          }}</a>
+                        </li>
+                        <li
+                          class="page-item"
+                          @click="nextPage"
+                          :class="{ disabled: pageNumbers.length <= 1 }"
+                        >
+                          <a class="page-link" href="javascript:;">Next</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -127,7 +188,10 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
+import { useStore } from "vuex";
+import { formatted } from "../../../assets/composables/date";
+import { useCurrency } from "../../../assets/composables/currency";
 import userz from "../../../assets/json/users.json";
 import util from "../../../assets/utils/util";
 const images = require.context(
@@ -136,10 +200,86 @@ const images = require.context(
   /\.png$|\.jpg$/
 );
 
-const users = userz;
+const store = useStore();
+const filter = ref(false);
+const currentPage = ref(1);
+const perPage = ref(50);
+
+const toggleFilter = () => {
+  filter.value = !filter.value;
+};
+
+watch(perPage, (newValue) => {
+  perPage.value = newValue;
+  getUsers();
+});
+
+const paymentfilter = ["Payment Mode", "Cash", "Cheque", "Card", "Online"];
+
+const users = computed(() => {
+  return store.getters["users/users"];
+});
+
+const getUsers = () => {
+  let data = {
+    page: currentPage.value,
+    per_page: perPage.value,
+    query: "",
+  };
+  store.dispatch("users/getUsers", data);
+  console.log(pageNumbers);
+};
+
+const approveTransaction = (id) => {
+  store.dispatch("transaction/approveTransaction", id).then(() => {
+    store.dispatch("transaction/getTransactions", "");
+  });
+};
+const declineTransaction = (id) => {
+  store.dispatch("transaction/declineTransaction", id).then(() => {
+    store.dispatch("transaction/getTransactions", "");
+  });
+};
+
+// Pagination start
+const total = computed(() => {
+  return store.getters["users/total"];
+});
+
+const setPage = (pageNumber) => {
+  currentPage.value = pageNumber;
+  getUsers();
+};
+
+const nextPage = () => {
+  if (pageNumbers.length > 1) {
+    currentPage.value++;
+    getUsers();
+  }
+};
+
+const previousPage = () => {
+  if (currentPage.value != 1) {
+    currentPage.value--;
+    getUsers();
+  }
+};
+
+const pageNumbers = computed(() => {
+  const pageNumbers = [];
+  for (let i = 1; i <= total.value; i++) {
+    pageNumbers.push(i);
+  }
+  if (pageNumbers.length > 10) {
+    return pageNumbers.splice(0, 10);
+  } else {
+    return pageNumbers;
+  }
+});
+// Pagination End
 
 onMounted(() => {
-  util.datatable("#usersTable");
+  getUsers();
 });
 
 const loadImg = (imgPath) => {

@@ -23,5 +23,8 @@ export const ROUTES = function (param = null) {
     authuser: "/user",
     resetlink: "/password/reset/send-link",
     transactions: "/transactions",
+    approveTransaction: `transactions/${param}/approve`,
+    declineTransaction: `transactions/${param}/decline`,
+    users: `/users`,
   };
 };
