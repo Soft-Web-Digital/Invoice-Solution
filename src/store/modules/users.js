@@ -4,25 +4,25 @@ import router from "../../router/index";
 export default {
   namespaced: true,
   state: {
-    transactions: [],
+    users: [],
     message: "",
     error: "",
     total: null,
   },
   mutations: {
-    SET_TRANSACTIONS(state, data) {
-      state.transactions = data;
+    SET_USERS(state, data) {
+      state.users = data;
     },
     SET_TOTALPAGES(state, data) {
       state.total = data;
     },
-    CHANGE_TRANSACTION_STATUS(state, id) {
-      const transactionIndex = state.transactions.findIndex(
-        (transaction) => transaction.id === id
-      );
-      state.transactions[transactionIndex].status =
-        result.data.data.product.verified_at;
-    },
+    // CHANGE_TRANSACTION_STATUS(state, id) {
+    //   const transactionIndex = state.transactions.findIndex(
+    //     (transaction) => transaction.id === id
+    //   );
+    //   state.transactions[transactionIndex].status =
+    //     result.data.data.product.verified_at;
+    // },
     SET_MESSAGE(state, data) {
       state.message = data;
     },
@@ -31,15 +31,15 @@ export default {
     },
   },
   actions: {
-    async getTransactions({ commit }, { page, per_page, query }) {
+    async getUsers({ commit }, { page, per_page, query }) {
       let result = await API.get(
         `${
-          ROUTES().transactions
-        }?current_page=${page}&per_page=${per_page}&type=${query}`,
+          ROUTES().users
+        }?current_page=${page}&per_page=${per_page}&query=${query}`,
         apiConfig()
       )
         .then((res) => {
-          commit("SET_TRANSACTIONS", res.data);
+          commit("SET_USERS", res.data);
           commit(
             "SET_TOTALPAGES",
             Math.ceil(res.data.meta.total / res.data.meta.perPage)
@@ -89,8 +89,8 @@ export default {
     },
   },
   getters: {
-    transactions(state) {
-      return state.transactions;
+    users(state) {
+      return state.users;
     },
     total(state) {
       return state.total;

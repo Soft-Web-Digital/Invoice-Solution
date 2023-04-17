@@ -4,6 +4,49 @@
     <layout-header></layout-header>
     <layout-sidebar></layout-sidebar>
 
+    <!-- Notification -->
+    <div
+      v-if="store.state.transaction.error"
+      style="
+        width: fit-content;
+        position: fixed;
+        right: 10px;
+        top: 5px;
+        z-index: 9999;
+      "
+      class="alert alert-danger alert-dismissible fade show pb-2 text-sm"
+      role="alert"
+    >
+      <p>{{ store.state.transaction.error }}</p>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div
+      v-if="store.state.transaction.message"
+      style="
+        width: fit-content;
+        position: fixed;
+        right: 10px;
+        top: 5px;
+        z-index: 9999;
+      "
+      class="alert alert-success alert-dismissible fade show pb-2 text-sm"
+      role="alert"
+    >
+      <p>{{ store.state.transaction.message }}</p>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <!-- Notification end -->
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
       <div class="content container-fluid">
@@ -21,8 +64,8 @@
             </div>
             <div class="col-auto">
               <!-- <router-link to="/add-payments" class="btn btn-primary me-2">
-                  <i class="fas fa-plus"></i>
-                </router-link> -->
+                <i class="fas fa-plus"></i>
+              </router-link> -->
               <a
                 class="btn btn-primary filter-btn"
                 href="javascript:void(0);"
@@ -71,10 +114,29 @@
             <div class="card card-table">
               <div class="card-body">
                 <div class="table-responsive">
-                  <table
-                    class="table table-center table-hover datatable"
-                    id="paymentTable"
+                  <div
+                    class="d-flex align-items-center justify-content-between p-4"
                   >
+                    <div>
+                      <span>Show</span>
+                      <select class="mx-1 py-1" v-model="perPage" name="" id="">
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="500">500</option>
+                      </select>
+                      <span>transactions</span>
+                    </div>
+
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search"
+                      />
+                    </div>
+                  </div>
+                  <table class="table table-center table-hover datatable">
                     <thead class="thead-light">
                       <tr>
                         <th>Reference ID</th>
@@ -82,35 +144,41 @@
                         <th>Amount</th>
                         <th>Date</th>
                         <th>Type</th>
+                        <th>Method</th>
                         <th>Status</th>
                         <th class="text-end">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="item in payments" :key="item.id">
+                      <tr v-for="item in transactions.data" :key="item.id">
                         <td>
-                          <a href="javascript:void(0);">{{
-                            item.reference_id
-                          }}</a>
+                          <a href="javascript:void(0);">{{ item.reference }}</a>
                         </td>
                         <td>
-                          <h2 class="table-avatar">
+                          <!-- <h2 class="table-avatar">
                             <router-link to="/profile">
                               {{ item.customer_name }}</router-link
                             >
-                          </h2>
+                          </h2> -->
                         </td>
                         <td>{{ item.amount }}</td>
-                        <td>{{ item.date }}</td>
-                        <td>Deposit</td>
                         <td>
-                          <span class="badge badge-pill bg-success-light"
-                            >Successful</span
+                          {{ formatted(item.created_at) }}
+                        </td>
+                        <td class="text-capitalize">{{ item.type }}</td>
+                        <td class="text-capitalize">
+                          {{ item.method }}
+                        </td>
+                        <td>
+                          <span
+                            class="badge badge-pill text-capitalize"
+                            :class="{
+                              'bg-warning': item.status == 'pending',
+                              'bg-danger': item.status == 'declined',
+                              'bg-success-light': item.status == 'approved',
+                            }"
+                            >{{ item.status }}</span
                           >
-                          <!-- <span class="badge badeg-pill bg-warning"
-                              >Warning</span
-                            >
-                            <span class="badge bg-danger">Danger</span> -->
                         </td>
                         <td class="text-center">
                           <div class="dropdown dropdown-action">
@@ -127,13 +195,17 @@
                             >
                               <a
                                 class="dropdown-item"
+                                v-if="item.status == 'pending'"
                                 href="javascript:void(0);"
+                                @click="approveTransaction(item.id)"
                                 ><i class="far fa-check-circle me-2"></i>
                                 Approve</a
                               >
                               <a
                                 class="dropdown-item"
+                                v-if="item.status == 'pending'"
                                 href="javascript:void(0);"
+                                @click="declineTransaction(item.id)"
                                 ><i class="far fa-times-circle me-2"></i>
                                 Decline</a
                               >
@@ -143,6 +215,43 @@
                       </tr>
                     </tbody>
                   </table>
+                  <div
+                    class="d-flex align-items-center justify-content-between p-4"
+                  >
+                    <p v-if="transactions.meta">
+                      Showing {{ transactions.data.length }} of
+                      {{ transactions.meta.total }} transactions
+                    </p>
+                    <div>
+                      <ul class="pagination mb-4">
+                        <li
+                          class="page-item"
+                          @click="previousPage"
+                          :class="{ disabled: currentPage == 1 }"
+                        >
+                          <a class="page-link" href="javascript:;" tabindex="-1"
+                            >Previous</a
+                          >
+                        </li>
+                        <li
+                          class="page-item"
+                          v-for="pageNumber in pageNumbers"
+                          :key="pageNumber"
+                          @click="setPage(pageNumber)"
+                          :class="{
+                            active: pageNumber === currentPage,
+                          }"
+                        >
+                          <a class="page-link" href="javascript:;">{{
+                            pageNumber
+                          }}</a>
+                        </li>
+                        <li class="page-item" @click="nextPage">
+                          <a class="page-link" href="javascript:;">Next</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -156,29 +265,86 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
-import paymentz from "../../../assets/json/payments.json";
-import util from "../../../assets/utils/util";
-const images = require.context(
-  "../../../assets/img/profiles",
-  false,
-  /\.png$|\.jpg$/
-);
+import { formatted } from "../../../assets/composables/date";
 
 const store = useStore();
-
 const filter = ref(false);
+const currentPage = ref(1);
+const perPage = ref(50);
 
 const toggleFilter = () => {
   filter.value = !filter.value;
 };
 
-const payments = paymentz;
+watch(perPage, (newValue) => {
+  perPage.value = newValue;
+  getTransactions();
+});
+
 const paymentfilter = ["Payment Mode", "Cash", "Cheque", "Card", "Online"];
 
+const transactions = computed(() => {
+  return store.getters["transaction/transactions"];
+});
+
+const getTransactions = () => {
+  let data = {
+    page: currentPage.value,
+    per_page: perPage.value,
+    query: "deposit",
+  };
+  store.dispatch("transaction/getTransactions", data);
+};
+
+const approveTransaction = (id) => {
+  store.dispatch("transaction/approveTransaction", id).then(() => {
+    store.dispatch("transaction/getTransactions", "");
+  });
+};
+const declineTransaction = (id) => {
+  store.dispatch("transaction/declineTransaction", id).then(() => {
+    store.dispatch("transaction/getTransactions", "");
+  });
+};
+
+// Pagination start
+const total = computed(() => {
+  return store.getters["transaction/total"];
+});
+
+const setPage = (pageNumber) => {
+  currentPage.value = pageNumber;
+  getTransactions();
+};
+
+const nextPage = () => {
+  currentPage.value++;
+  getTransactions();
+};
+
+const previousPage = () => {
+  if (currentPage.value != 1) {
+    currentPage.value--;
+    getTransactions();
+  }
+};
+
+const pageNumbers = computed(() => {
+  const pageNumbers = [];
+  for (let i = 1; i <= total.value; i++) {
+    pageNumbers.push(i);
+  }
+  if (pageNumbers.length > 10) {
+    return pageNumbers.splice(0, 10);
+  }
+
+  return pageNumbers;
+});
+// Pagination End
+
 onMounted(() => {
-  util.datatable("#paymentTable");
-  store.dispatch("transactions/getTransactions");
+  getTransactions();
 });
 </script>
