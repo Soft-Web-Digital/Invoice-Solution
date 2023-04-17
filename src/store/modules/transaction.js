@@ -35,7 +35,7 @@ export default {
       let result = await API.get(
         `${
           ROUTES().transactions
-        }?current_page=${page}&per_page=${per_page}&query=${query}`,
+        }?current_page=${page}&per_page=${per_page}&type=${query}`,
         apiConfig()
       )
         .then((res) => {
