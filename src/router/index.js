@@ -181,7 +181,7 @@ const routes = [
     },
   },
   {
-    path: "/edit-role",
+    path: "/edit-role/:id",
     name: "edit-role",
     component: () =>
       import("../views/roles-and-permissions/edit-role/EditRole"),
@@ -206,7 +206,7 @@ const routes = [
     },
   },
   {
-    path: "/edit-coupon",
+    path: "/edit-coupon/:id",
     name: "edit-coupon",
     component: () => import("../views/coupons/edit-coupon/EditCoupon"),
     meta: {
@@ -326,7 +326,7 @@ const routes = [
     },
   },
   {
-    path: "/edit-admin",
+    path: "/edit-admin/:id",
     name: "edit-admin",
     component: () => import("../views/expense/editexpense/EditExpense"),
     meta: {
@@ -479,6 +479,23 @@ const routes = [
     path: "/subscriptions",
     name: "subscriptions",
     component: () => import("../views/subscriptions/Subscription"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/add-subscriptions",
+    name: "addsubscriptions",
+    component: () => import("../views/subscriptions/add/Add-Subscription.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/edit-subscriptions",
+    name: "editsubscriptions",
+    component: () =>
+      import("../views/subscriptions/edit/Edit-Subscription.vue"),
     meta: {
       requiresAuth: true,
     },
