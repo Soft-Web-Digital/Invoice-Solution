@@ -276,7 +276,6 @@ const openModal = (item) => {
   myModal.show();
 
   selectedItem.value = item;
-  console.log(selectedItem.value);
 };
 const closeModal = () => {
   var myModal = document.getElementById("top-modal");

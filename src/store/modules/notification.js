@@ -4,18 +4,25 @@ import router from "../../router/index";
 export default {
   namespaced: true,
   state: {
-    admins: [],
-    admin: [],
+    notifications: [],
+    coupon: [],
+    role: [],
     message: "",
     error: "",
     total: null,
   },
   mutations: {
-    SET_ADMINS(state, data) {
-      state.admins = data;
+    SET_NOTIFICATIONS(state, data) {
+      state.notifications = data;
     },
-    SET_ADMIN(state, data) {
-      state.admin = data;
+    SET_COUPON(state, data) {
+      state.coupon = data;
+    },
+    REMOVE_NOTIFICATIONS(state, id) {
+      let notificationIndex = state.notifications.data.findIndex(
+        (notification) => notification.id === id
+      );
+      state.notifications.data.splice(notificationIndex, 1);
     },
     SET_TOTALPAGES(state, data) {
       state.total = data;
@@ -28,15 +35,15 @@ export default {
     },
   },
   actions: {
-    async getAdmins({ commit }, { page, per_page, query }) {
+    async getNotifications({ commit }, { page, per_page, query }) {
       let result = await API.get(
         `${
-          ROUTES().admins
+          ROUTES().notifications
         }?current_page=${page}&per_page=${per_page}&query=${query}`,
         apiConfig()
       )
         .then((res) => {
-          commit("SET_ADMINS", res.data);
+          commit("SET_NOTIFICATIONS", res.data);
           commit(
             "SET_TOTALPAGES",
             Math.ceil(res.data.meta.total / res.data.meta.perPage)
@@ -49,10 +56,10 @@ export default {
         });
       return result;
     },
-    async getAdmin({ commit }, id) {
-      let result = await API.get(`${ROUTES().admins}/${id}`, apiConfig())
+    async getCoupon({ commit }, id) {
+      let result = await API.get(`${ROUTES().coupons}/${id}`, apiConfig())
         .then((res) => {
-          commit("SET_ADMIN", res.data.data);
+          commit("SET_COUPON", res.data.data);
         })
         .catch((err) => {
           if (err.response) {
@@ -61,12 +68,12 @@ export default {
         });
       return result;
     },
-    async createAdmin({ commit }, payload) {
-      let result = API.post(ROUTES().admins, payload, apiConfig())
+    async createNotification({ commit }, payload) {
+      let result = API.post(ROUTES().notifications, payload, apiConfig())
         .then((res) => {
           commit("SET_MESSAGE", res.data.message);
           setTimeout(() => {
-            router.push("/admin");
+            router.push("/notification");
             commit("SET_MESSAGE", "");
           }, 2000);
         })
@@ -80,31 +87,8 @@ export default {
         });
       return result;
     },
-    async editAdmin({ commit }, { id, payload }) {
-      let result = await API.put(
-        `${ROUTES().admins}/${id}`,
-        payload,
-        apiConfig()
-      )
-        .then((res) => {
-          commit("SET_MESSAGE", res.data.message);
-          setTimeout(() => {
-            router.push("/admin");
-            commit("SET_MESSAGE", "");
-          }, 2000);
-        })
-        .catch((err) => {
-          if (err.response) {
-            commit("SET_ERROR", err.response.data.error);
-            setTimeout(() => {
-              commit("SET_ERROR", "");
-            }, 3000);
-          }
-        });
-      return result;
-    },
-    async restrictAdmin({ commit, dispatch }, id) {
-      let result = API.put(`${ROUTES().admins}/${id}/restrict`, {}, apiConfig())
+    async resendNotification({ commit }, id) {
+      let result = API.post(`${ROUTES().notifications}/${id}`, {}, apiConfig())
         .then((res) => {
           commit("SET_MESSAGE", res.data.message);
           setTimeout(() => {
@@ -121,12 +105,9 @@ export default {
         });
       return result;
     },
-    async restoreAdmin({ commit, dispatch }, id) {
-      let result = API.put(
-        `${ROUTES().admins}/${id}/reinstate`,
-        {},
-        apiConfig()
-      )
+    async deleteNotification({ commit }, id) {
+      commit("REMOVE_NOTIFICATIONS", id);
+      let result = API.delete(`${ROUTES().notifications}/${id}`, apiConfig())
         .then((res) => {
           commit("SET_MESSAGE", res.data.message);
           setTimeout(() => {
@@ -145,11 +126,8 @@ export default {
     },
   },
   getters: {
-    admins(state) {
-      return state.admins;
-    },
-    admin(state) {
-      return state.admin;
+    notifications(state) {
+      return state.notifications;
     },
     total(state) {
       return state.total;

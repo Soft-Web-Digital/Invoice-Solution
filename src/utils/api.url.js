@@ -32,5 +32,6 @@ export const ROUTES = function (param = null) {
     showrole: `/roles/${param}`,
     permissions: `/permissions`,
     coupons: `/coupons`,
+    notifications: `/notifications`,
   };
 };

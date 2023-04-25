@@ -4,6 +4,49 @@
     <layout-header></layout-header>
     <layout-sidebar></layout-sidebar>
 
+    <!-- Notification -->
+    <div
+      v-if="store.state.notification.error"
+      style="
+        width: fit-content;
+        position: fixed;
+        right: 10px;
+        top: 5px;
+        z-index: 9999;
+      "
+      class="alert alert-danger alert-dismissible fade show pb-2 text-sm"
+      role="alert"
+    >
+      <p>{{ store.state.notification.error }}</p>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div
+      v-if="store.state.notification.message"
+      style="
+        width: fit-content;
+        position: fixed;
+        right: 10px;
+        top: 5px;
+        z-index: 9999;
+      "
+      class="alert alert-success alert-dismissible fade show pb-2 text-sm"
+      role="alert"
+    >
+      <p>{{ store.state.notification.message }}</p>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <!-- Notification end -->
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
       <div class="content container-fluid">
@@ -28,28 +71,50 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-body">
-                <form action="#">
+                <form @submit.prevent="Send">
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Title</label>
-                        <input type="text" class="form-control" />
-                      </div>
-                      <div class="form-group">
-                        <label>User</label>
-                        <vue-select
-                          :options="['All users', 'All verified users']"
+                        <input
+                          type="text"
+                          v-model="form.subject"
+                          class="form-control"
+                          required
                         />
                       </div>
-                    </div>
-                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Recipients</label>
+                        <v-select
+                          v-model="form.recipients"
+                          :options="recipients"
+                          label="name"
+                          :required="true"
+                          :reduce="(recipient) => recipient.value"
+                        />
+                      </div>
                       <div class="form-group">
                         <label>Body</label>
-                        <textarea class="form-control"></textarea>
+                        <textarea
+                          v-model="form.body"
+                          class="form-control"
+                          required
+                        ></textarea>
                       </div>
                       <div class="text-end mt-4">
-                        <button type="submit" class="btn btn-primary">
-                          Add Coupon
+                        <button
+                          class="btn btn-primary"
+                          type="submit"
+                          :disabled="isLoading"
+                        >
+                          <span
+                            v-if="isLoading"
+                            class="spinner-border spinner-border-sm me-1"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                          <span v-if="!isLoading">Send</span>
+                          <span v-if="isLoading">Sending...</span>
                         </button>
                       </div>
                     </div>
@@ -65,19 +130,49 @@
   </div>
   <!-- /Main Wrapper -->
 </template>
+
 <script setup>
-import { ref, onMounted } from "vue";
-const currentDate = ref(new Date());
+import { ref } from "vue";
+import { useStore } from "vuex";
 
-const startdate = ref(currentDate);
+const store = useStore();
+const isLoading = ref(false);
 
-onMounted(() => {
-  // Select 2
-  if ($(".select").length > 0) {
-    $(".select").select2({
-      minimumResultsForSearch: -1,
-      width: "100%",
-    });
-  }
+const form = ref({
+  recipients: "",
+  subject: "",
+  body: "",
+  inapp_notification: true,
 });
+
+const recipients = [
+  { name: "All Users", value: "all_users" },
+  { name: "All Verified Users", value: "all_verified_users" },
+];
+
+const openModal = (item) => {
+  selectedItem.value = item;
+  var myModal = new bootstrap.Modal(document.getElementById("top-modal"), {
+    backdrop: "static",
+  });
+  myModal.show();
+};
+const closeModal = () => {
+  var myModal = document.getElementById("top-modal");
+  var modalTrigger = document.querySelector('[data-bs-dismiss="modal"]');
+  modalTrigger.setAttribute("data-bs-target", "#" + myModal.id);
+  modalTrigger.click();
+};
+
+const Send = () => {
+  isLoading.value = true;
+  store
+    .dispatch("notification/createNotification", form.value)
+    .then(() => {
+      isLoading.value = false;
+    })
+    .catch(() => {
+      isLoading.value = false;
+    });
+};
 </script>

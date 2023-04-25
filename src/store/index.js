@@ -6,6 +6,7 @@ import users from "./modules/users";
 import admin from "./modules/admin";
 import roles from "./modules/roles";
 import coupon from "./modules/coupon";
+import notification from "./modules/notification";
 import persistedStateVuex from "persisted-state-vuex";
 
 persistedStateVuex.config({
@@ -21,6 +22,7 @@ export default createStore({
     subscription,
     roles,
     coupon,
+    notification,
   },
   plugins: [persistedStateVuex.init],
 });

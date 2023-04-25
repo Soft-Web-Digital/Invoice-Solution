@@ -140,10 +140,8 @@
 <script setup>
 import { ref } from "vue";
 import { useStore } from "vuex";
-const currentDate = ref(new Date());
 
 const store = useStore();
-const startdate = ref(currentDate);
 const isLoading = ref(false);
 
 const form = ref({
