@@ -56,11 +56,7 @@
                       <tr v-for="user in users.data" :key="user.id">
                         <td>
                           <h2 class="table-avatar">
-                            <router-link to="/profile"
-                              ><img
-                                class="avatar avatar-sm me-2 avatar-img rounded-circle"
-                                :src="user.image"
-                              />
+                            <router-link to="/profile">
                               {{ user.name }}</router-link
                             >
                           </h2>
@@ -69,16 +65,14 @@
                         <td>{{ useCurrency(user.wallet_balance) }}</td>
                         <td>{{ formatted(user.created_at) }}</td>
                         <td>
-                          <!-- <span
+                          <span
                             class="badge badge-pill bg-success-light"
-                            v-if="item.status == 'Active'"
+                            v-if="user.active"
                             >Active</span
                           >
-                          <span
-                            class="badge badge-pill bg-danger-light"
-                            v-if="item.status == 'Inactive'"
+                          <span class="badge badge-pill bg-danger-light" v-else
                             >Inactive</span
-                          > -->
+                          >
                         </td>
                         <td class="text-center">
                           <div class="dropdown dropdown-action">
@@ -192,18 +186,25 @@ import { ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { formatted } from "../../../assets/composables/date";
 import { useCurrency } from "../../../assets/composables/currency";
-import userz from "../../../assets/json/users.json";
-import util from "../../../assets/utils/util";
-const images = require.context(
-  "../../../assets/img/profiles",
-  false,
-  /\.png$|\.jpg$/
-);
 
 const store = useStore();
 const filter = ref(false);
 const currentPage = ref(1);
 const perPage = ref(50);
+const search = ref("");
+
+watch(search, (newValue) => {
+  Search(newValue);
+});
+
+const Search = (keyword) => {
+  let data = {
+    page: currentPage.value,
+    per_page: perPage.value,
+    query: keyword,
+  };
+  store.dispatch("users/getUsers", data);
+};
 
 const toggleFilter = () => {
   filter.value = !filter.value;
@@ -227,18 +228,6 @@ const getUsers = () => {
     query: "",
   };
   store.dispatch("users/getUsers", data);
-  console.log(pageNumbers);
-};
-
-const approveTransaction = (id) => {
-  store.dispatch("transaction/approveTransaction", id).then(() => {
-    store.dispatch("transaction/getTransactions", "");
-  });
-};
-const declineTransaction = (id) => {
-  store.dispatch("transaction/declineTransaction", id).then(() => {
-    store.dispatch("transaction/getTransactions", "");
-  });
 };
 
 // Pagination start
@@ -281,8 +270,4 @@ const pageNumbers = computed(() => {
 onMounted(() => {
   getUsers();
 });
-
-const loadImg = (imgPath) => {
-  return images("./" + imgPath).default;
-};
 </script>

@@ -4,6 +4,49 @@
     <layout-header></layout-header>
     <layout-sidebar></layout-sidebar>
 
+    <!-- Notification -->
+    <div
+      v-if="store.state.coupon.error"
+      style="
+        width: fit-content;
+        position: fixed;
+        right: 10px;
+        top: 5px;
+        z-index: 9999;
+      "
+      class="alert alert-danger alert-dismissible fade show pb-2 text-sm"
+      role="alert"
+    >
+      <p>{{ store.state.coupon.error }}</p>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div
+      v-if="store.state.coupon.message"
+      style="
+        width: fit-content;
+        position: fixed;
+        right: 10px;
+        top: 5px;
+        z-index: 9999;
+      "
+      class="alert alert-success alert-dismissible fade show pb-2 text-sm"
+      role="alert"
+    >
+      <p>{{ store.state.coupon.message }}</p>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <!-- Notification end -->
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
       <div class="content container-fluid">
@@ -28,37 +71,57 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-body">
-                <form action="#">
+                <form @submit.prevent="createCoupon">
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" class="form-control" />
+                        <label>Code</label>
+                        <input
+                          v-model="form.code"
+                          type="text"
+                          class="form-control"
+                        />
                       </div>
                       <div class="form-group">
                         <label>User Count</label>
-                        <input type="text" class="form-control" />
+                        <input
+                          v-model="form.total"
+                          type="text"
+                          class="form-control"
+                        />
                       </div>
-                    </div>
-                    <div class="col-md-6">
                       <div class="form-group">
                         <label>Discount</label>
-                        <input type="text" class="form-control" />
+                        <input
+                          v-model="form.discount"
+                          type="text"
+                          class="form-control"
+                        />
                       </div>
                       <div class="form-group">
                         <label>Expiry Date:</label>
-                        <div class="cal-icon">
-                          <datepicker
-                            v-model="startdate"
-                            class="picker"
-                            :editable="true"
-                            :clearable="false"
+                        <div>
+                          <input
+                            style="width: 100%; height: 40px"
+                            type="datetime-local"
+                            v-model="form.expiry_date"
                           />
                         </div>
                       </div>
                       <div class="text-end mt-4">
-                        <button type="submit" class="btn btn-primary">
-                          Add Coupon
+                        <button
+                          class="btn btn-primary"
+                          type="submit"
+                          :disabled="isLoading"
+                        >
+                          <span
+                            v-if="isLoading"
+                            class="spinner-border spinner-border-sm me-1"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                          <span v-if="!isLoading">Add Coupon</span>
+                          <span v-if="isLoading">Adding...</span>
                         </button>
                       </div>
                     </div>
@@ -75,18 +138,28 @@
   <!-- /Main Wrapper -->
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
-const currentDate = ref(new Date());
+import { ref } from "vue";
+import { useStore } from "vuex";
 
-const startdate = ref(currentDate);
+const store = useStore();
+const isLoading = ref(false);
 
-onMounted(() => {
-  // Select 2
-  if ($(".select").length > 0) {
-    $(".select").select2({
-      minimumResultsForSearch: -1,
-      width: "100%",
-    });
-  }
+const form = ref({
+  code: "",
+  discount: null,
+  total: null,
+  expiry_date: "",
 });
+
+const createCoupon = () => {
+  isLoading.value = true;
+  store
+    .dispatch("coupon/createCoupon", form.value)
+    .then(() => {
+      isLoading.value = false;
+    })
+    .catch(() => {
+      isLoading.value = false;
+    });
+};
 </script>

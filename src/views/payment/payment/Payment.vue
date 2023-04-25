@@ -132,6 +132,7 @@
                       <input
                         type="text"
                         class="form-control"
+                        v-model="search"
                         placeholder="Search"
                       />
                     </div>
@@ -161,7 +162,7 @@
                             >
                           </h2> -->
                         </td>
-                        <td>{{ item.amount }}</td>
+                        <td>{{ useCurrency(item.amount) }}</td>
                         <td>
                           {{ formatted(item.created_at) }}
                         </td>
@@ -268,11 +269,27 @@
 import { ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { formatted } from "../../../assets/composables/date";
+import { useCurrency } from "../../../assets/composables/currency";
 
 const store = useStore();
 const filter = ref(false);
 const currentPage = ref(1);
 const perPage = ref(50);
+const search = ref("");
+
+watch(search, (newValue) => {
+  Search(newValue);
+});
+
+const Search = (keyword) => {
+  let data = {
+    page: currentPage.value,
+    per_page: perPage.value,
+    type: "",
+    query: keyword,
+  };
+  store.dispatch("transaction/getTransactions", data);
+};
 
 const toggleFilter = () => {
   filter.value = !filter.value;
@@ -293,6 +310,7 @@ const getTransactions = () => {
   let data = {
     page: currentPage.value,
     per_page: perPage.value,
+    type: "",
     query: "",
   };
   store.dispatch("transaction/getTransactions", data);

@@ -132,6 +132,7 @@
                       <input
                         type="text"
                         class="form-control"
+                        v-model="search"
                         placeholder="Search"
                       />
                     </div>
@@ -273,6 +274,21 @@ const store = useStore();
 const filter = ref(false);
 const currentPage = ref(1);
 const perPage = ref(50);
+const search = ref("");
+
+watch(search, (newValue) => {
+  Search(newValue);
+});
+
+const Search = (keyword) => {
+  let data = {
+    page: currentPage.value,
+    per_page: perPage.value,
+    type: "deposit",
+    query: keyword,
+  };
+  store.dispatch("transaction/getTransactions", data);
+};
 
 const toggleFilter = () => {
   filter.value = !filter.value;
@@ -293,7 +309,8 @@ const getTransactions = () => {
   let data = {
     page: currentPage.value,
     per_page: perPage.value,
-    query: "deposit",
+    type: "deposit",
+    query: "",
   };
   store.dispatch("transaction/getTransactions", data);
 };

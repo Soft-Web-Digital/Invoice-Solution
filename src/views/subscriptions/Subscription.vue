@@ -21,14 +21,12 @@
             </div>
             <div class="col-auto">
               <div class="btn btn-primary me-4">
-                <a
-                  href="javascript:;"
-                  data-bs-toggle="modal"
+                <router-link
                   class="text-white"
-                  data-bs-target="#add_items"
+                  :to="{ name: 'addsubscriptions' }"
                 >
                   <i data-feather="plus-circle"></i> Add New Plan
-                </a>
+                </router-link>
               </div>
               <a
                 class="btn btn-primary filter-btn"
@@ -78,10 +76,29 @@
             <div class="card card-table">
               <div class="card-body">
                 <div class="table-responsive">
-                  <table
-                    class="table table-center table-hover datatable"
-                    id="customerTable"
+                  <div
+                    class="d-flex align-items-center justify-content-between p-4"
                   >
+                    <div>
+                      <span>Show</span>
+                      <select class="mx-1 py-1" v-model="perPage" name="" id="">
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="500">500</option>
+                      </select>
+                      <span>subscriptions</span>
+                    </div>
+
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search"
+                      />
+                    </div>
+                  </div>
+                  <table class="table table-center table-hover datatable">
                     <thead class="thead-light">
                       <tr>
                         <th>Type</th>
@@ -92,11 +109,11 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="item in customers" :key="item.id">
-                        <td>Premium</td>
-                        <td>#50,000</td>
+                      <tr v-for="item in subscriptions.data" :key="item.id">
+                        <td>{{ item.name }}</td>
+                        <td>{{ useCurrency(item.amount) }}</td>
                         <td>1%</td>
-                        <td>1 year</td>
+                        <td class="text-capitalize">{{ item.duration }}</td>
                         <td>
                           <div class="dropdown dropdown-action">
                             <a
@@ -113,17 +130,11 @@
                               <a
                                 class="dropdown-item"
                                 href="javascript:void(0);"
-                                data-bs-toggle="modal"
-                                @click="open"
-                                data-bs-target="#add_items"
                                 ><i class="fa fa-edit me-2"></i> Edit</a
                               >
                               <a
                                 class="dropdown-item"
                                 href="javascript:void(0);"
-                                data-bs-toggle="modal"
-                                @click="open"
-                                data-bs-target="#delete_paid"
                                 ><i class="fa fa-trash me-2"></i> Delete</a
                               >
                             </div>
@@ -132,6 +143,44 @@
                       </tr>
                     </tbody>
                   </table>
+                  <div
+                    v-if="subscriptions.meta"
+                    class="d-flex align-items-center justify-content-between p-4"
+                  >
+                    <p v-if="subscriptions.meta">
+                      Showing {{ subscriptions.data.length }} of
+                      {{ subscriptions.meta.total }} transactions
+                    </p>
+                    <div>
+                      <ul class="pagination mb-4">
+                        <li
+                          class="page-item"
+                          @click="previousPage"
+                          :class="{ disabled: currentPage == 1 }"
+                        >
+                          <a class="page-link" href="javascript:;" tabindex="-1"
+                            >Previous</a
+                          >
+                        </li>
+                        <li
+                          class="page-item"
+                          v-for="pageNumber in pageNumbers"
+                          :key="pageNumber"
+                          @click="setPage(pageNumber)"
+                          :class="{
+                            active: pageNumber === currentPage,
+                          }"
+                        >
+                          <a class="page-link" href="javascript:;">{{
+                            pageNumber
+                          }}</a>
+                        </li>
+                        <li class="page-item" @click="nextPage">
+                          <a class="page-link" href="javascript:;">Next</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -227,7 +276,7 @@
     <!-- /Add Items Modal -->
 
     <!-- Delete Items Modal -->
-    <div
+    <!-- <div
       class="modal custom-modal fade"
       id="delete_paid"
       tabindex="-1"
@@ -264,41 +313,87 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- /Delete Items Modal -->
   </div>
   <!-- /Main Wrapper -->
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import customer from "../../assets/json/customers.json";
-import util from "../../assets/utils/util";
-const images = require.context(
-  "../../assets/img/profiles",
-  false,
-  /\.png$|\.jpg$/
-);
+import { ref, onMounted, computed, watch } from "vue";
+import { useStore } from "vuex";
+import { useCurrency } from "../../assets/composables/currency";
 
+const store = useStore();
 const filter = ref(false);
+const currentPage = ref(1);
+const perPage = ref(50);
 
 const toggleFilter = () => {
   filter.value = !filter.value;
 };
 
-const customers = customer;
+watch(perPage, (newValue) => {
+  perPage.value = newValue;
+  getSubscriptions();
+});
+
 const paymentfilter = ["Payment Mode", "Cash", "Cheque", "Card", "Online"];
 
-const loadImg = (imgPath) => {
-  return images("./" + imgPath).default;
+const subscriptions = computed(() => {
+  return store.getters["subscription/subscriptions"];
+});
+
+const getSubscriptions = () => {
+  let data = {
+    page: currentPage.value,
+    per_page: perPage.value,
+    query: "",
+  };
+  store.dispatch("subscription/getSubscriptions", data);
 };
+
+// Pagination start
+const total = computed(() => {
+  return store.getters["subscription/total"];
+});
+
+const setPage = (pageNumber) => {
+  currentPage.value = pageNumber;
+  getSubscriptions();
+};
+
+const nextPage = () => {
+  currentPage.value++;
+  getSubscriptions();
+};
+
+const previousPage = () => {
+  if (currentPage.value != 1) {
+    currentPage.value--;
+    getSubscriptions();
+  }
+};
+
+const pageNumbers = computed(() => {
+  const pageNumbers = [];
+  for (let i = 1; i <= total.value; i++) {
+    pageNumbers.push(i);
+  }
+  if (pageNumbers.length > 10) {
+    return pageNumbers.splice(0, 10);
+  }
+
+  return pageNumbers;
+});
+// Pagination End
+
+onMounted(() => {
+  getSubscriptions();
+});
 
 const open = () => {
   console.log("babz");
   $("#delete_paid").modal("dispose");
 };
-
-onMounted(() => {
-  util.datatable("#customerTable");
-});
 </script>

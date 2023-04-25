@@ -26,5 +26,12 @@ export const ROUTES = function (param = null) {
     approveTransaction: `transactions/${param}/approve`,
     declineTransaction: `transactions/${param}/decline`,
     users: `/users`,
+    subscriptions: `/plans`,
+    admins: `/admins`,
+    roles: `/roles`,
+    showrole: `/roles/${param}`,
+    permissions: `/permissions`,
+    coupons: `/coupons`,
+    notifications: `/notifications`,
   };
 };

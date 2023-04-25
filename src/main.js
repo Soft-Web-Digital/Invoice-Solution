@@ -1,6 +1,8 @@
 import { createApp } from "vue";
 import router from "./router";
 import store from "./store";
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
 import Vue3Autocounter from "vue3-autocounter";
 import "./assets/css/fontawesome/css/fontawesome.min.css";
 import "./assets/css/fontawesome/css/all.min.css";
@@ -354,6 +356,7 @@ window.Swal = swal;
 const app = createApp(App);
 app.component("vue-select", VueSelect);
 app.component("datepicker", DatePicker);
+app.component("v-select", vSelect);
 
 app.use(VueAxios, axios);
 app.use(VueCookies, { expires: "1d" });
