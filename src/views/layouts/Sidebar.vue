@@ -228,7 +228,7 @@
                 <span>Notification</span></router-link
               >
             </li>
-            <li
+            <!-- <li
               class="submenu"
               v-bind:class="{
                 active:
@@ -620,7 +620,7 @@
                   <router-link to="/data-tables">Data Table </router-link>
                 </li>
               </ul>
-            </li>
+            </li> -->
           </ul>
         </div>
       </perfect-scrollbar>
