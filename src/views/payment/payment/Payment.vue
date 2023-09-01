@@ -318,12 +318,12 @@ const getTransactions = () => {
 
 const approveTransaction = (id) => {
   store.dispatch("transaction/approveTransaction", id).then(() => {
-    store.dispatch("transaction/getTransactions", "");
+    getTransactions();
   });
 };
 const declineTransaction = (id) => {
   store.dispatch("transaction/declineTransaction", id).then(() => {
-    store.dispatch("transaction/getTransactions", "");
+    getTransactions();
   });
 };
 

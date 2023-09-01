@@ -20,7 +20,7 @@
               >
             </li>
 
-            <!-- <li
+            <li
               v-bind:class="{
                 active:
                   currentPath == 'estimates' ||
@@ -33,7 +33,7 @@
                 ><i data-feather="file-text"></i>
                 <span>Estimates</span></router-link
               >
-            </li> -->
+            </li>
             <!-- <li
               class="submenu"
               v-bind:class="{
@@ -308,8 +308,8 @@
                 <li><router-link to="/calendar">Calendar</router-link></li>
                 <li><router-link to="/inbox">Email</router-link></li>
               </ul>
-            </li> -->
-            <!-- <li class="menu-title">
+            </li>
+            <li class="menu-title">
               <span>Pages</span>
             </li>
             <li v-bind:class="{ active: currentPath == 'profile' }">

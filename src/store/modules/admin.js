@@ -103,7 +103,7 @@ export default {
         });
       return result;
     },
-    async restrictAdmin({ commit, dispatch }, id) {
+    async restrictAdmin({ commit }, id) {
       let result = API.put(`${ROUTES().admins}/${id}/restrict`, {}, apiConfig())
         .then((res) => {
           commit("SET_MESSAGE", res.data.message);
@@ -121,7 +121,7 @@ export default {
         });
       return result;
     },
-    async restoreAdmin({ commit, dispatch }, id) {
+    async restoreAdmin({ commit }, id) {
       let result = API.put(
         `${ROUTES().admins}/${id}/reinstate`,
         {},
