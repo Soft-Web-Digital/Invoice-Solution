@@ -35,24 +35,37 @@
                 <ul class="nav nav-tabs nav-tabs-bottom">
                   <li class="nav-item">
                     <a
-                      class="nav-link active"
+                      class="nav-link"
+                      :class="{ 'active': active === 'invoice' }"
                       href="#bottom-tab1"
                       data-bs-toggle="tab"
                       >Invoices</a
                     >
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#bottom-tab2" data-bs-toggle="tab"
+                    <a
+                      class="nav-link"
+                      :class="{ 'active': active === 'estimates' }"
+                      href="#bottom-tab2"
+                      data-bs-toggle="tab"
                       >Estimates</a
                     >
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#bottom-tab3" data-bs-toggle="tab"
+                    <a
+                      class="nav-link"
+                      :class="{ 'active': active === 'expenses' }"
+                      href="#bottom-tab3"
+                      data-bs-toggle="tab"
                       >Expenses</a
                     >
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#bottom-tab4" data-bs-toggle="tab"
+                    <a
+                      class="nav-link"
+                      :class="{ 'active': active === 'transactions' }"
+                      href="#bottom-tab4"
+                      data-bs-toggle="tab"
                       >Transactions</a
                     >
                   </li>
@@ -78,12 +91,14 @@
 </template>
 
 <script setup>
-import { onMounted, computed, defineAsyncComponent } from "vue";
+import { onMounted, computed, ref, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
 const store = useStore();
 const route = useRoute();
+
+const active = ref("invoice");
 
 const Invoices = defineAsyncComponent(() => import("./tabs/UserInvoices.vue"));
 const Estimates = defineAsyncComponent(() =>

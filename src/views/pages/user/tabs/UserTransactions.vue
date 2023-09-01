@@ -9,7 +9,7 @@
           <option value="200">200</option>
           <option value="500">500</option>
         </select>
-        <span>estimates</span>
+        <span>transactions</span>
       </div>
 
       <div>
