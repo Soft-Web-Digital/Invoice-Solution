@@ -4,6 +4,49 @@
     <layout-header></layout-header>
     <layout-sidebar></layout-sidebar>
 
+    <!-- Notification -->
+    <div
+      v-if="store.state.users.error"
+      style="
+        width: fit-content;
+        position: fixed;
+        right: 10px;
+        top: 5px;
+        z-index: 9999;
+      "
+      class="alert alert-danger alert-dismissible fade show pb-2 text-sm"
+      role="alert"
+    >
+      <p>{{ store.state.users.error }}</p>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div
+      v-if="store.state.users.message"
+      style="
+        width: fit-content;
+        position: fixed;
+        right: 10px;
+        top: 5px;
+        z-index: 9999;
+      "
+      class="alert alert-success alert-dismissible fade show pb-2 text-sm"
+      role="alert"
+    >
+      <p>{{ store.state.users.message }}</p>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <!-- Notification end -->
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
       <div class="content container-fluid">
@@ -87,40 +130,37 @@
                               class="dropdown-menu dropdown-menu-right"
                               style="width: fit-content"
                             >
-                              <router-link
-                                to="/"
-                                class="dropdown-item"
-                                href="javascript:void(0);"
+                              <!-- <router-link to="/" class="dropdown-item"
                                 ><i class="fa fa-eye me-2"></i> View
                                 Users</router-link
-                              >
+                              > -->
                               <router-link
-                                to="/"
+                                :to="{
+                                  name: 'user-activities',
+                                  params: { id: user.id },
+                                }"
                                 class="dropdown-item"
-                                href="javascript:void(0);"
-                                ><i class="fa fa-eye me-2"></i> View
+                                ><i class="fa fa-signal me-2"></i> View
                                 Activities</router-link
                               >
-                              <router-link
-                                to="/"
-                                class="dropdown-item"
-                                href="javascript:void(0);"
+                              <!-- <router-link to="/" class="dropdown-item"
                                 ><i class="fa fa-eye me-2"></i> View
                                 Settings</router-link
-                              >
-                              <router-link
-                                to="/"
-                                class="dropdown-item"
-                                href="javascript:void(0);"
+                              > -->
+                              <!-- <router-link to="/" class="dropdown-item"
                                 ><i class="fa fa-bell me-2"></i> Send
                                 Notification</router-link
-                              >
-                              <router-link
-                                to="/"
+                              > -->
+                              <a
                                 class="dropdown-item"
                                 href="javascript:void(0);"
-                                ><i class="fa fa-user-times me-2"></i>
-                                Restrict</router-link
+                                @click="openModal(user)"
+                                ><i
+                                  v-if="user.active"
+                                  class="fa fa-user-times me-2"
+                                ></i>
+                                <i v-else class="fa fa-user-plus me-2"></i>
+                                {{ user.active ? "Restrict" : "Restore" }}</a
                               >
                             </div>
                           </div>
@@ -177,6 +217,61 @@
       </div>
     </div>
     <!-- /Page Wrapper -->
+    <div
+      id="top-modal"
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-top">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="topModalLabel">User</h4>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p v-if="selectedItem">
+              Are you sure you want to
+              {{ selectedItem.active ? "restrict" : "restore" }}
+              <span v-if="selectedItem">{{ selectedItem.name }}?</span>
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-light me-1"
+              @click="closeModal"
+            >
+              Close
+            </button>
+            <button
+              v-if="selectedItem && selectedItem.active"
+              type="button"
+              @click="restrictAdmin"
+              class="btn btn-danger"
+            >
+              Restrict
+            </button>
+            <button
+              v-if="selectedItem && !selectedItem.active"
+              type="button"
+              @click="restoreAdmin"
+              class="btn btn-success"
+            >
+              Restore
+            </button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+    </div>
+    <!-- /.modal-dialog -->
   </div>
   <!-- /Main Wrapper -->
 </template>
@@ -192,6 +287,7 @@ const filter = ref(false);
 const currentPage = ref(1);
 const perPage = ref(50);
 const search = ref("");
+const selectedItem = ref(null);
 
 watch(search, (newValue) => {
   Search(newValue);
@@ -214,6 +310,34 @@ watch(perPage, (newValue) => {
   perPage.value = newValue;
   getUsers();
 });
+
+const openModal = (user) => {
+  var myModal = new bootstrap.Modal(document.getElementById("top-modal"), {
+    backdrop: "static",
+  });
+  myModal.show();
+
+  selectedItem.value = user;
+};
+const closeModal = () => {
+  var myModal = document.getElementById("top-modal");
+  var modalTrigger = document.querySelector('[data-bs-dismiss="modal"]');
+  modalTrigger.setAttribute("data-bs-target", "#" + myModal.id);
+  modalTrigger.click();
+};
+
+const restrictAdmin = () => {
+  store.dispatch("users/restrictUser", selectedItem.value.id).then(() => {
+    getUsers();
+  });
+  closeModal();
+};
+const restoreAdmin = () => {
+  store.dispatch("users/restoreUser", selectedItem.value.id).then(() => {
+    getUsers();
+  });
+  closeModal();
+};
 
 const paymentfilter = ["Payment Mode", "Cash", "Cheque", "Card", "Online"];
 

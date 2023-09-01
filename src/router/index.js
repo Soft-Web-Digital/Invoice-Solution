@@ -605,6 +605,14 @@ const routes = [
     },
   },
   {
+    path: "/user-activities/:id",
+    name: "user-activities",
+    component: () => import("../views/pages/user/UserActivities"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/view-estimate",
     name: "view-estimate",
     component: () => import("../views/estimate/viewestimate/ViewEstimate"),
