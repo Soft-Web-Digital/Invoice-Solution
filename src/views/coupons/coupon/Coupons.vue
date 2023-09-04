@@ -197,6 +197,18 @@
                       </tr>
                     </tbody>
                   </table>
+                  <div
+                    v-if="isFetching"
+                    class="d-flex my-5 align-items-center justify-content-center"
+                  >
+                    Loading...
+                  </div>
+                  <div
+                    v-if="length === 0"
+                    class="d-flex my-5 align-items-center justify-content-center"
+                  >
+                    No Data Available
+                  </div>
                 </div>
               </div>
             </div>
@@ -256,9 +268,6 @@
 import { ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { formatted } from "../../../assets/composables/date";
-import paymentz from "../../../assets/json/payments.json";
-
-const payments = paymentz;
 
 const store = useStore();
 const filter = ref(false);
@@ -266,6 +275,8 @@ const currentPage = ref(1);
 const perPage = ref(50);
 const search = ref("");
 const selectedItem = ref(null);
+const isFetching = ref(false);
+const length = ref(null);
 
 watch(search, (newValue) => {
   Search(newValue);
@@ -316,12 +327,21 @@ const coupons = computed(() => {
 });
 
 const getCoupons = () => {
+  isFetching.value = true;
   let data = {
     page: currentPage.value,
     per_page: perPage.value,
     query: "",
   };
-  store.dispatch("coupon/getCoupons", data);
+  store
+    .dispatch("coupon/getCoupons", data)
+    .then(() => {
+      isFetching.value = false;
+      length.value = coupons.value.data.length;
+    })
+    .catch(() => {
+      isFetching.value = false;
+    });
 };
 
 // Pagination start

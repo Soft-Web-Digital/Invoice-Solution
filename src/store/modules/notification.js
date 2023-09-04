@@ -36,6 +36,7 @@ export default {
   },
   actions: {
     async getNotifications({ commit }, { page, per_page, query }) {
+      commit("SET_NOTIFICATIONS", []);
       let result = await API.get(
         `${
           ROUTES().notifications

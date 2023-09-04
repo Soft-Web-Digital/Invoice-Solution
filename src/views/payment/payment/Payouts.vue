@@ -217,6 +217,19 @@
                     </tbody>
                   </table>
                   <div
+                    v-if="isFetching"
+                    class="d-flex my-5 align-items-center justify-content-center"
+                  >
+                    Loading
+                  </div>
+                  <div
+                    v-if="length === 0"
+                    class="d-flex my-5 align-items-center justify-content-center"
+                  >
+                    No Data Available
+                  </div>
+                  <div
+                    v-if="!isFetching && length !== 0"
                     class="d-flex align-items-center justify-content-between p-4"
                   >
                     <p v-if="transactions.meta">
@@ -275,6 +288,8 @@ const filter = ref(false);
 const currentPage = ref(1);
 const perPage = ref(50);
 const search = ref("");
+const isFetching = ref(false);
+const length = ref(null);
 
 watch(search, (newValue) => {
   Search(newValue);
@@ -306,13 +321,22 @@ const transactions = computed(() => {
 });
 
 const getTransactions = () => {
+  isFetching.value = true;
   let data = {
     page: currentPage.value,
     per_page: perPage.value,
     type: "withdrawal",
     query: "",
   };
-  store.dispatch("transaction/getTransactions", data);
+  store
+    .dispatch("transaction/getTransactions", data)
+    .then(() => {
+      isFetching.value = false;
+      length.value = transactions.value.data.length;
+    })
+    .catch(() => {
+      isFetching.value = false;
+    });
 };
 
 const approveTransaction = (id) => {

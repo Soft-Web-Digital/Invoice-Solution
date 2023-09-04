@@ -170,7 +170,6 @@ const getEstimates = () => {
     query: "",
   };
   store.dispatch("users/getUserEstimates", data).then(() => {
-    console.log(estimates.value);
     length.value = estimates.value.data.length;
   });
 };
@@ -182,20 +181,20 @@ const total = computed(() => {
 
 const setPage = (pageNumber) => {
   currentPage.value = pageNumber;
-  getInvoices();
+  getEstimates();
 };
 
 const nextPage = () => {
   if (pageNumbers.length > 1) {
     currentPage.value++;
-    getInvoices();
+    getEstimates();
   }
 };
 
 const previousPage = () => {
   if (currentPage.value != 1) {
     currentPage.value--;
-    getInvoices();
+    getEstimates();
   }
 };
 

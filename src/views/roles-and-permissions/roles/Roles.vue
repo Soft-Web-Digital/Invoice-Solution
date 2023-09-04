@@ -186,6 +186,18 @@
                       </tr>
                     </tbody>
                   </table>
+                  <div
+                    v-if="isFetching"
+                    class="d-flex my-5 align-items-center justify-content-center"
+                  >
+                    Loading...
+                  </div>
+                  <div
+                    v-if="length === 0"
+                    class="d-flex my-5 align-items-center justify-content-center"
+                  >
+                    No Data Available
+                  </div>
                 </div>
               </div>
             </div>
@@ -251,6 +263,8 @@ const currentPage = ref(1);
 const perPage = ref(50);
 const search = ref("");
 const selectedItem = ref(null);
+const isFetching = ref(false);
+const length = ref(null);
 
 watch(search, (newValue) => {
   Search(newValue);
@@ -301,13 +315,22 @@ const roles = computed(() => {
 });
 
 const getRoles = () => {
+  isFetching.value = true;
   let data = {
     page: currentPage.value,
     per_page: perPage.value,
     query: "",
   };
-  store.dispatch("roles/getRoles", data);
-  store.dispatch("roles/getPermissions");
+  store
+    .dispatch("roles/getRoles", data)
+    .then(() => {
+      isFetching.value = false;
+      length.value = roles.value.data.length;
+      store.dispatch("roles/getPermissions");
+    })
+    .catch(() => {
+      isFetching.value = false;
+    });
 };
 
 // Pagination start

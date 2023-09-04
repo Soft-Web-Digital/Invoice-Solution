@@ -55,9 +55,6 @@
         <div class="row">
           <div class="col-sm-12">
             <div class="card card-table">
-              <div class="card-header">
-                <h4 class="card-title">Users</h4>
-              </div>
               <div class="card-body">
                 <div class="table-responsive">
                   <div
@@ -147,6 +144,15 @@
                                 ><i class="fa fa-eye me-2"></i> View
                                 Settings</router-link
                               > -->
+                              <router-link
+                                :to="{
+                                  name: 'user-customers',
+                                  params: { id: user.id },
+                                }"
+                                class="dropdown-item"
+                                ><i class="fa fa-users me-2"></i> View
+                                Customers</router-link
+                              >
                               <!-- <router-link to="/" class="dropdown-item"
                                 ><i class="fa fa-bell me-2"></i> Send
                                 Notification</router-link
@@ -169,6 +175,19 @@
                     </tbody>
                   </table>
                   <div
+                    v-if="isFetching"
+                    class="d-flex my-5 align-items-center justify-content-center"
+                  >
+                    Loading
+                  </div>
+                  <div
+                    v-if="length === 0"
+                    class="d-flex my-5 align-items-center justify-content-center"
+                  >
+                    No Data Available
+                  </div>
+                  <div
+                    v-if="!isFetching && length !== 0"
                     class="d-flex align-items-center justify-content-between p-4"
                   >
                     <p v-if="users.meta">
@@ -288,6 +307,8 @@ const currentPage = ref(1);
 const perPage = ref(50);
 const search = ref("");
 const selectedItem = ref(null);
+const isFetching = ref(false);
+const length = ref(null);
 
 watch(search, (newValue) => {
   Search(newValue);
@@ -346,12 +367,21 @@ const users = computed(() => {
 });
 
 const getUsers = () => {
+  isFetching.value = true;
   let data = {
     page: currentPage.value,
     per_page: perPage.value,
     query: "",
   };
-  store.dispatch("users/getUsers", data);
+  store
+    .dispatch("users/getUsers", data)
+    .then(() => {
+      isFetching.value = false;
+      length.value = users.value.data.length;
+    })
+    .catch(() => {
+      isFetching.value = false;
+    });
 };
 
 // Pagination start

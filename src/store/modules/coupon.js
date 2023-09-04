@@ -36,6 +36,7 @@ export default {
   },
   actions: {
     async getCoupons({ commit }, { page, per_page, query }) {
+      commit("SET_COUPONS", []);
       let result = await API.get(
         `${
           ROUTES().coupons

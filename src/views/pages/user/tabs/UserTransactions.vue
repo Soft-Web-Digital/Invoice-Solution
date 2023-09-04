@@ -59,7 +59,16 @@
         </tr>
       </tbody>
     </table>
-    <div class="d-flex align-items-center justify-content-between p-4">
+    <div
+      v-if="length === 0"
+      class="d-flex my-5 align-items-center justify-content-center"
+    >
+      No Data Available
+    </div>
+    <div
+      v-if="length !== 0"
+      class="d-flex align-items-center justify-content-between p-4"
+    >
       <p v-if="transactions.meta">
         Showing {{ transactions.data.length }} of
         {{ transactions.meta.total }} estimates
@@ -132,6 +141,8 @@ const transactions = computed(() => {
   return store.getters["users/usertransactions"];
 });
 
+const length = ref(null);
+
 const getTransactions = () => {
   let data = {
     id: route.params.id,
@@ -139,7 +150,9 @@ const getTransactions = () => {
     per_page: perPage.value,
     query: "",
   };
-  store.dispatch("users/getUserTransactions", data);
+  store.dispatch("users/getUserTransactions", data).then(() => {
+    length.value = transactions.value.data.length;
+  });
 };
 
 // Pagination start

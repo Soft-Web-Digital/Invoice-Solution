@@ -144,42 +144,16 @@
                     </tbody>
                   </table>
                   <div
-                    v-if="subscriptions.meta"
-                    class="d-flex align-items-center justify-content-between p-4"
+                    v-if="isFetching"
+                    class="d-flex my-5 align-items-center justify-content-center"
                   >
-                    <p v-if="subscriptions.meta">
-                      Showing {{ subscriptions.data.length }} of
-                      {{ subscriptions.meta.total }} transactions
-                    </p>
-                    <div>
-                      <ul class="pagination mb-4">
-                        <li
-                          class="page-item"
-                          @click="previousPage"
-                          :class="{ disabled: currentPage == 1 }"
-                        >
-                          <a class="page-link" href="javascript:;" tabindex="-1"
-                            >Previous</a
-                          >
-                        </li>
-                        <li
-                          class="page-item"
-                          v-for="pageNumber in pageNumbers"
-                          :key="pageNumber"
-                          @click="setPage(pageNumber)"
-                          :class="{
-                            active: pageNumber === currentPage,
-                          }"
-                        >
-                          <a class="page-link" href="javascript:;">{{
-                            pageNumber
-                          }}</a>
-                        </li>
-                        <li class="page-item" @click="nextPage">
-                          <a class="page-link" href="javascript:;">Next</a>
-                        </li>
-                      </ul>
-                    </div>
+                    Loading...
+                  </div>
+                  <div
+                    v-if="length === 0"
+                    class="d-flex my-5 align-items-center justify-content-center"
+                  >
+                    No Data Available
                   </div>
                 </div>
               </div>
@@ -328,6 +302,8 @@ const store = useStore();
 const filter = ref(false);
 const currentPage = ref(1);
 const perPage = ref(50);
+const isFetching = ref(false);
+const length = ref(null);
 
 const toggleFilter = () => {
   filter.value = !filter.value;
@@ -345,12 +321,22 @@ const subscriptions = computed(() => {
 });
 
 const getSubscriptions = () => {
+  isFetching.value = true;
   let data = {
     page: currentPage.value,
     per_page: perPage.value,
     query: "",
   };
   store.dispatch("subscription/getSubscriptions", data);
+  store
+    .dispatch("users/getUsers", data)
+    .then(() => {
+      isFetching.value = false;
+      length.value = subscriptions.value.data.length;
+    })
+    .catch(() => {
+      isFetching.value = false;
+    });
 };
 
 // Pagination start

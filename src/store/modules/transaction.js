@@ -31,6 +31,7 @@ export default {
   },
   actions: {
     async getTransactions({ commit }, { page, per_page, type, query }) {
+      commit("SET_TRANSACTIONS", []);
       let result = await API.get(
         `${
           ROUTES().transactions
