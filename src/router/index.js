@@ -286,8 +286,8 @@ const routes = [
     },
   },
   {
-    path: "/customers",
-    name: "customers",
+    path: "/:id/customers",
+    name: "user-customers",
     component: () => import("../views/customer/customer/Customer"),
     meta: {
       requiresAuth: true,

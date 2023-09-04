@@ -37,6 +37,7 @@ export default {
   },
   actions: {
     async getRoles({ commit }, { page, per_page, query }) {
+      commit("SET_ROLES", []);
       let result = await API.get(
         `${
           ROUTES().roles

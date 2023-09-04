@@ -77,7 +77,16 @@
         </tr>
       </tbody>
     </table>
-    <div class="d-flex align-items-center justify-content-between p-4">
+    <div
+      v-if="length === 0"
+      class="d-flex my-5 align-items-center justify-content-center"
+    >
+      No Data Available
+    </div>
+    <div
+      v-if="length !== 0"
+      class="d-flex align-items-center justify-content-between p-4"
+    >
       <p v-if="invoices.meta">
         Showing {{ invoices.data.length }} of {{ invoices.meta.total }} invoices
       </p>
@@ -149,6 +158,8 @@ const invoices = computed(() => {
   return store.getters["users/userinvoices"];
 });
 
+const length = ref(null);
+
 const getInvoices = () => {
   let data = {
     id: route.params.id,
@@ -156,7 +167,9 @@ const getInvoices = () => {
     per_page: perPage.value,
     query: "",
   };
-  store.dispatch("users/getUserInvoices", data);
+  store.dispatch("users/getUserInvoices", data).then(() => {
+    length.value = invoices.value.data.length;
+  });
 };
 
 // Pagination start

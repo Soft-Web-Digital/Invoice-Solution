@@ -73,7 +73,16 @@
         </tr>
       </tbody>
     </table>
-    <div class="d-flex align-items-center justify-content-between p-4">
+    <div
+      v-if="length === 0"
+      class="d-flex my-5 align-items-center justify-content-center"
+    >
+      No Data Available
+    </div>
+    <div
+      v-if="length !== 0"
+      class="d-flex align-items-center justify-content-between p-4"
+    >
       <p v-if="expenses.meta">
         Showing {{ expenses.data.length }} of {{ expenses.meta.total }} expenses
       </p>
@@ -145,6 +154,8 @@ const expenses = computed(() => {
   return store.getters["users/userexpenses"];
 });
 
+const length = ref(null);
+
 const getExpenses = () => {
   let data = {
     id: route.params.id,
@@ -152,7 +163,9 @@ const getExpenses = () => {
     per_page: perPage.value,
     query: "",
   };
-  store.dispatch("users/getUserExpenses", data);
+  store.dispatch("users/getUserExpenses", data).then(() => {
+    length.value = expenses.value.data.length;
+  });
 };
 
 // Pagination start

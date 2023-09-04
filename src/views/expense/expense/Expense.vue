@@ -203,6 +203,19 @@
                     </tbody>
                   </table>
                   <div
+                    v-if="isFetching"
+                    class="d-flex my-5 align-items-center justify-content-center"
+                  >
+                    Loading
+                  </div>
+                  <div
+                    v-if="length === 0"
+                    class="d-flex my-5 align-items-center justify-content-center"
+                  >
+                    No Data Available
+                  </div>
+                  <div
+                    v-if="!isFetching && length !== 0"
                     class="d-flex align-items-center justify-content-between p-4"
                   >
                     <p v-if="admins.meta">
@@ -321,6 +334,8 @@ const filter = ref(false);
 const currentPage = ref(1);
 const perPage = ref(50);
 const search = ref("");
+const isFetching = ref(false);
+const length = ref(null);
 
 const selectedItem = ref(null);
 
@@ -381,12 +396,21 @@ const admins = computed(() => {
 });
 
 const getAdmins = () => {
+  isFetching.value = true;
   let data = {
     page: currentPage.value,
     per_page: perPage.value,
     query: "",
   };
-  store.dispatch("admin/getAdmins", data);
+  store
+    .dispatch("admin/getAdmins", data)
+    .then(() => {
+      isFetching.value = false;
+      length.value = admins.value.data.length;
+    })
+    .catch(() => {
+      isFetching.value = false;
+    });
 };
 
 // Pagination start

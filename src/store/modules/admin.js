@@ -29,6 +29,7 @@ export default {
   },
   actions: {
     async getAdmins({ commit }, { page, per_page, query }) {
+      commit("SET_ADMINS", []);
       let result = await API.get(
         `${
           ROUTES().admins

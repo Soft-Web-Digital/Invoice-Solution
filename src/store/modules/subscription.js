@@ -15,13 +15,6 @@ export default {
     SET_TOTALPAGES(state, data) {
       state.total = data;
     },
-    CHANGE_TRANSACTION_STATUS(state, id) {
-      const transactionIndex = state.transactions.findIndex(
-        (transaction) => transaction.id === id
-      );
-      state.transactions[transactionIndex].status =
-        result.data.data.product.verified_at;
-    },
     SET_MESSAGE(state, data) {
       state.message = data;
     },
@@ -31,6 +24,7 @@ export default {
   },
   actions: {
     async getSubscriptions({ commit }, { page, per_page, query }) {
+      commit("SET_SUBSCRIPTIONS", []);
       let result = await API.get(
         `${
           ROUTES().subscriptions

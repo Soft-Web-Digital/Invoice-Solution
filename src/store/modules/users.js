@@ -9,12 +9,15 @@ export default {
     userestimates: [],
     userexpenses: [],
     usertransactions: [],
+    usercustomers: [],
+    usertransactions: [],
     user: null,
     message: "",
     error: "",
     total: 0,
     expenses_total: null,
     transactions_total: null,
+    url: null,
   },
   mutations: {
     SET_USERS(state, data) {
@@ -31,6 +34,12 @@ export default {
     },
     SET_USERTRANSACTIONS(state, data) {
       state.usertransactions = data;
+    },
+    SET_USERCUSTOMERS(state, data) {
+      state.usercustomers = data;
+    },
+    SET_EXPORTURL(state, data) {
+      state.url = data;
     },
     SET_USER(state, data) {
       state.user = data;
@@ -157,6 +166,53 @@ export default {
         });
       return result;
     },
+    async getUserCustomers({ commit }, { id, page, per_page, query }) {
+      commit("SET_USERCUSTOMERS", []);
+      commit("SET_USERCUSTOMERS", []);
+      let result = await API.get(
+        `${
+          ROUTES().users
+        }/${id}/customers?current_page=${page}&per_page=${per_page}&query=${query}`,
+        apiConfig()
+      )
+        .then((res) => {
+          commit("SET_USERCUSTOMERS", res.data);
+          commit(
+            "SET_TOTALPAGES",
+            Math.ceil(res.data.meta.total / res.data.meta.perPage)
+          );
+        })
+        .catch((err) => {
+          if (err.response) {
+            commit("SET_ERROR", err.response.data.error);
+          }
+        });
+      return result;
+    },
+    async exportCustomers({ commit }, id) {
+      let result = await API.post(
+        `${ROUTES().users}/${id}/customers/export`,
+        { format: "excel" },
+        apiConfig()
+      )
+        .then((res) => {
+          commit("SET_EXPORTURL", res.data.data.url);
+          commit("SET_MESSAGE", res.data.message);
+          setTimeout(() => {
+            commit("SET_MESSAGE", "");
+          }, 3000);
+        })
+        .catch((err) => {
+          if (err.response) {
+            commit("SET_ERROR", err.response.data.error);
+            setTimeout(() => {
+              commit("SET_ERROR", "");
+            }, 3000);
+          }
+        });
+
+      return result;
+    },
     async getUser({ commit }, id) {
       let result = await API.get(`${ROUTES().users}/${id}`, apiConfig())
         .then((res) => {
@@ -224,6 +280,12 @@ export default {
     },
     usertransactions(state) {
       return state.usertransactions;
+    },
+    usercustomers(state) {
+      return state.usercustomers;
+    },
+    url(state) {
+      return state.url;
     },
     total(state) {
       return state.total;
