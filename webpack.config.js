@@ -1,19 +1,19 @@
 // webpack config
-const path = require('path');
-const WebpackBar = require('webpackbar');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require("path");
+const WebpackBar = require("webpackbar");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const { VueLoaderPlugin } = require('vue-loader');
+const { VueLoaderPlugin } = require("vue-loader");
 
-const publicPath = '/';
+const publicPath = "/";
 
 module.exports = (env = {}) => ({
-  context: path.resolve(__dirname, 'src'),
-  mode: env.production ? 'production' : 'development',
+  context: path.resolve(__dirname, "src"),
+  mode: env.production ? "production" : "development",
   entry: {
-    app: '../src/main.js'
+    app: "../src/main.js",
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -24,7 +24,7 @@ module.exports = (env = {}) => ({
     rules: [
       {
         test: /\.vue$/,
-        use: 'vue-loader'
+        use: "vue-loader",
       },
       // {
       //   test: /\.js$/,
@@ -34,29 +34,30 @@ module.exports = (env = {}) => ({
       {
         test: /\.mjs$/,
         include: /node_modules/,
-        type: "javascript/auto"
+        type: "javascript/auto",
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-     },
-      { // config for sass compilation
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        // config for sass compilation
         test: /\.scss$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader
+            loader: MiniCssExtractPlugin.loader,
           },
-          'css-loader',
+          "css-loader",
           {
-            loader: "sass-loader"
-          }
-        ]
+            loader: "sass-loader",
+          },
+        ],
       },
       {
         test: /\.(png|jpg|gif)$/i,
         use: [
           {
-            loader: 'url-loader',
+            loader: "url-loader",
             options: {
               limit: 8192,
             },
@@ -65,52 +66,52 @@ module.exports = (env = {}) => ({
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?limit=100000'
-    },
+        loader: "url-loader?limit=100000",
+      },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js', '.vue', '.json'],
+    extensions: [".ts", ".js", ".vue", ".json"],
     alias: {
-      'vue': '@vue/runtime-dom',
-      Assets: path.resolve(__dirname, 'src/assets/'),
-    }
+      "vue": "@vue/runtime-dom",
+      "Assets": path.resolve(__dirname, "src/assets/"),
+    },
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './public/index.html'
+      template: "./public/index.html",
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css'
+      filename: "[name].css",
     }),
     new WebpackBar(),
     new VueLoaderPlugin(),
   ],
   optimization: {
-    runtimeChunk: 'single',
+    runtimeChunk: "single",
     splitChunks: {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all'
-        }
-      }
-    }
+          name: "vendors",
+          chunks: "all",
+        },
+      },
+    },
   },
-  devtool: 'source-map',
+  devtool: "source-map",
   devServer: {
-    contentBase: path.join(__dirname, 'src/public'),
+    contentBase: path.join(__dirname, "src/public"),
     publicPath: process.env.BASE_URL,
-    index: './index.html',
+    index: "./index.html",
     hot: true,
-    stats: 'minimal',
+    stats: "minimal",
     quiet: true,
     overlay: {
       warnings: true,
-      errors: true
+      errors: true,
     },
     historyApiFallback: true,
-  }
+  },
 });

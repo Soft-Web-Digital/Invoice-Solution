@@ -1,6 +1,6 @@
 <template>
   <div class="table-responsive">
-    <div class="d-flex align-items-center justify-content-between p-4">
+    <div class="d-flex align-items-center justify-content-between py-4">
       <div>
         <span>Show</span>
         <select class="mx-1 py-1" v-model="perPage" name="" id="">
@@ -74,7 +74,13 @@
       </tbody>
     </table>
     <div
-      v-if="length === 0"
+      v-if="isFetching"
+      class="d-flex my-5 align-items-center justify-content-center"
+    >
+      Loading...
+    </div>
+    <div
+      v-if="!isFetching && length !== 0"
       class="d-flex my-5 align-items-center justify-content-center"
     >
       No Data Available
@@ -131,6 +137,8 @@ const route = useRoute();
 const currentPage = ref(1);
 const perPage = ref(50);
 const search = ref("");
+const isFetching = ref(false);
+const length = ref(null);
 
 watch(search, (newValue) => {
   Search(newValue);
@@ -154,8 +162,6 @@ const expenses = computed(() => {
   return store.getters["users/userexpenses"];
 });
 
-const length = ref(null);
-
 const getExpenses = () => {
   let data = {
     id: route.params.id,
@@ -163,9 +169,15 @@ const getExpenses = () => {
     per_page: perPage.value,
     query: "",
   };
-  store.dispatch("users/getUserExpenses", data).then(() => {
-    length.value = expenses.value.data.length;
-  });
+  store
+    .dispatch("users/getUserExpenses", data)
+    .then(() => {
+      isFetching.value = false;
+      length.value = expenses.value.data.length;
+    })
+    .catch(() => {
+      isFetching.value = false;
+    });
 };
 
 // Pagination start

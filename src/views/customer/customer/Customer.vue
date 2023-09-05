@@ -302,6 +302,7 @@ const closeModal = () => {
 };
 
 const getUserCustomers = () => {
+  isFetching.value = true;
   let data = {
     id: route.params.id,
     page: currentPage.value,
