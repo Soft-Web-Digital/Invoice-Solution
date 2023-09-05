@@ -19,7 +19,7 @@
                 <li class="breadcrumb-item">
                   <router-link to="/users">Users</router-link>
                 </li>
-                <li class="breadcrumb-item active">User activities</li>
+                <li class="breadcrumb-item active">User view</li>
               </ul>
             </div>
           </div>
@@ -31,56 +31,42 @@
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  :class="{ 'active': active === 'invoice' }"
+                  :class="{ 'active': active === 'userinfo' }"
                   href="#bottom-tab1"
                   data-bs-toggle="tab"
-                  >Invoices</a
+                  >User Information</a
                 >
               </li>
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  :class="{ 'active': active === 'estimates' }"
+                  :class="{ 'active': active === 'subscriptions' }"
                   href="#bottom-tab2"
                   data-bs-toggle="tab"
-                  >Estimates</a
+                  >Subscriptions</a
                 >
               </li>
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  :class="{ 'active': active === 'expenses' }"
+                  :class="{ 'active': active === 'bankaccounts' }"
                   href="#bottom-tab3"
                   data-bs-toggle="tab"
-                  >Expenses</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  :class="{ 'active': active === 'transactions' }"
-                  href="#bottom-tab4"
-                  data-bs-toggle="tab"
-                  >Transactions</a
+                  >Bank Accounts</a
                 >
               </li>
             </ul>
-            <div class="card bg-white">
-              <!-- <div class="card-header">
-                <h5 class="card-title" v-if="user"></h5>
-              </div> -->
-
-              <div class="card-body pt-0">
-                <div class="tab-content pt-0">
-                  <div class="tab-pane show active" id="bottom-tab1">
-                    <Invoices />
-                  </div>
-                  <div class="tab-pane" id="bottom-tab2"><Estimates /></div>
-                  <div class="tab-pane" id="bottom-tab3"><Expenses /></div>
-                  <div class="tab-pane" id="bottom-tab4"><Transactions /></div>
-                </div>
+            <!-- <div class="card bg-white">
+              <div class="card-body pt-0"> -->
+            <div class="tab-content pt-0">
+              <div class="tab-pane show active" id="bottom-tab1">
+                <UserInformation />
               </div>
+              <div class="tab-pane" id="bottom-tab2"><Subscriptions /></div>
+              <div class="tab-pane" id="bottom-tab3"><Banks /></div>
             </div>
+            <!-- </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -98,16 +84,15 @@ import { useRoute } from "vue-router";
 const store = useStore();
 const route = useRoute();
 
-const active = ref("invoice");
+const active = ref("userinfo");
 
-const Invoices = defineAsyncComponent(() => import("./tabs/UserInvoices.vue"));
-const Estimates = defineAsyncComponent(() =>
-  import("./tabs/UserEstimates.vue")
+const UserInformation = defineAsyncComponent(() =>
+  import("./tabs/UserInformation.vue")
 );
-const Expenses = defineAsyncComponent(() => import("./tabs/UserExpenses.vue"));
-const Transactions = defineAsyncComponent(() =>
-  import("./tabs/UserTransactions.vue")
+const Subscriptions = defineAsyncComponent(() =>
+  import("./tabs/UserSubscription.vue")
 );
+const Banks = defineAsyncComponent(() => import("./tabs/UserBanks.vue"));
 
 const user = computed(() => {
   return store.getters["users/user"];

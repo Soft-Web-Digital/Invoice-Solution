@@ -96,7 +96,12 @@
                       <tr v-for="user in users.data" :key="user.id">
                         <td>
                           <h2 class="table-avatar">
-                            <router-link to="/profile">
+                            <router-link
+                              :to="{
+                                name: 'user-view',
+                                params: { id: user.id },
+                              }"
+                            >
                               {{ user.name }}</router-link
                             >
                           </h2>
@@ -127,10 +132,14 @@
                               class="dropdown-menu dropdown-menu-right"
                               style="width: fit-content"
                             >
-                              <!-- <router-link to="/" class="dropdown-item"
+                              <router-link
+                                :to="{
+                                  name: 'user-view',
+                                  params: { id: user.id },
+                                }"
+                                class="dropdown-item"
                                 ><i class="fa fa-eye me-2"></i> View
-                                Users</router-link
-                              > -->
+                              </router-link>
                               <router-link
                                 :to="{
                                   name: 'user-activities',

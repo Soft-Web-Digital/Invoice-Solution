@@ -9,8 +9,11 @@ export default {
     userestimates: [],
     userexpenses: [],
     usertransactions: [],
+    usersettings: null,
     usercustomers: [],
     usertransactions: [],
+    usersubscriptions: [],
+    userbanks: [],
     user: null,
     message: "",
     error: "",
@@ -25,6 +28,15 @@ export default {
     },
     SET_USERINVOICES(state, data) {
       state.userinvoices = data;
+    },
+    SET_USERSETTINGS(state, data) {
+      state.usersettings = data;
+    },
+    SET_USERSUBSCRIPTIONS(state, data) {
+      state.usersubscriptions = data;
+    },
+    SET_USERBANKS(state, data) {
+      state.userbanks = data;
     },
     SET_USERESTIMATES(state, data) {
       state.userestimates = data;
@@ -74,6 +86,21 @@ export default {
             "SET_TOTALPAGES",
             Math.ceil(res.data.meta.total / res.data.meta.perPage)
           );
+        })
+        .catch((err) => {
+          if (err.response) {
+            commit("SET_ERROR", err.response.data.error);
+          }
+        });
+      return result;
+    },
+    async getUserSettings({ commit }, id) {
+      let result = await API.get(
+        `${ROUTES().users}/${id}/settings`,
+        apiConfig()
+      )
+        .then((res) => {
+          commit("SET_USERSETTINGS", res.data.data);
         })
         .catch((err) => {
           if (err.response) {
@@ -168,7 +195,7 @@ export default {
     },
     async getUserCustomers({ commit }, { id, page, per_page, query }) {
       commit("SET_USERCUSTOMERS", []);
-      commit("SET_USERCUSTOMERS", []);
+      commit("SET_TOTALPAGES", null);
       let result = await API.get(
         `${
           ROUTES().users
@@ -177,6 +204,50 @@ export default {
       )
         .then((res) => {
           commit("SET_USERCUSTOMERS", res.data);
+          commit(
+            "SET_TOTALPAGES",
+            Math.ceil(res.data.meta.total / res.data.meta.perPage)
+          );
+        })
+        .catch((err) => {
+          if (err.response) {
+            commit("SET_ERROR", err.response.data.error);
+          }
+        });
+      return result;
+    },
+    async getUserSubscriptions({ commit }, { id, page, per_page, query }) {
+      commit("SET_USERSUBSCRIPTIONS", []);
+      let result = await API.get(
+        `${
+          ROUTES().users
+        }/${id}/subscriptions?current_page=${page}&per_page=${per_page}&query=${query}`,
+        apiConfig()
+      )
+        .then((res) => {
+          commit("SET_USERSUBSCRIPTIONS", res.data);
+          commit(
+            "SET_TOTALPAGES",
+            Math.ceil(res.data.meta.total / res.data.meta.perPage)
+          );
+        })
+        .catch((err) => {
+          if (err.response) {
+            commit("SET_ERROR", err.response.data.error);
+          }
+        });
+      return result;
+    },
+    async getUserBanks({ commit }, { id, page, per_page, query }) {
+      commit("SET_USERBANKS", []);
+      let result = await API.get(
+        `${
+          ROUTES().users
+        }/${id}/bank-accounts?current_page=${page}&per_page=${per_page}&query=${query}`,
+        apiConfig()
+      )
+        .then((res) => {
+          commit("SET_USERBANKS", res.data);
           commit(
             "SET_TOTALPAGES",
             Math.ceil(res.data.meta.total / res.data.meta.perPage)
@@ -283,6 +354,15 @@ export default {
     },
     usercustomers(state) {
       return state.usercustomers;
+    },
+    usersettings(state) {
+      return state.usersettings;
+    },
+    usersubscriptions(state) {
+      return state.usersubscriptions;
+    },
+    userbanks(state) {
+      return state.userbanks;
     },
     url(state) {
       return state.url;

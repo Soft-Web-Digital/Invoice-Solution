@@ -79,13 +79,19 @@
       </tbody>
     </table>
     <div
+      v-if="isFetching"
+      class="d-flex my-5 align-items-center justify-content-center"
+    >
+      Loading...
+    </div>
+    <div
       v-if="length === 0"
       class="d-flex my-5 align-items-center justify-content-center"
     >
       No Data Available
     </div>
     <div
-      v-if="length !== 0"
+      v-if="!isFetching && length !== 0"
       class="d-flex align-items-center justify-content-between p-4"
     >
       <p v-if="estimates.meta">
@@ -137,6 +143,8 @@ const route = useRoute();
 const currentPage = ref(1);
 const perPage = ref(50);
 const search = ref("");
+const isFetching = ref(false);
+const length = ref(null);
 
 watch(search, (newValue) => {
   Search(newValue);
@@ -160,18 +168,23 @@ const estimates = computed(() => {
   return store.getters["users/userestimates"];
 });
 
-const length = ref(null);
-
 const getEstimates = () => {
+  isFetching.value = true;
   let data = {
     id: route.params.id,
     page: currentPage.value,
     per_page: perPage.value,
     query: "",
   };
-  store.dispatch("users/getUserEstimates", data).then(() => {
-    length.value = estimates.value.data.length;
-  });
+  store
+    .dispatch("users/getUserEstimates", data)
+    .then(() => {
+      isFetching.value = false;
+      length.value = estimates.value.data.length;
+    })
+    .catch(() => {
+      isFetching.value = false;
+    });
 };
 
 // Pagination start
