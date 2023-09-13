@@ -2,11 +2,11 @@
   <!-- Settings Menu -->
   <div class="widget settings-menu">
     <ul>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <router-link to="/settings" class="nav-link">
           <i class="far fa-user"></i> <span>Profile Settings</span>
         </router-link>
-      </li>
+      </li> -->
       <!-- <li class="nav-item">
                     <router-link to="/preferences" class="nav-link">
                         <i class="fas fa-cog"></i> <span>Preferences</span>

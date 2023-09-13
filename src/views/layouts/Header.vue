@@ -7,17 +7,17 @@
 
     <!-- <toggle /> -->
 
-    <div class="top-nav-search">
+    <!-- <div class="top-nav-search">
       <search />
-    </div>
+    </div> -->
 
     <mobilemenu />
 
     <!-- Header Menu -->
     <ul class="nav nav-tabs user-menu">
-      <flagheader />
+      <!-- <flagheader />
 
-      <notification />
+      <notification /> -->
 
       <user />
     </ul>

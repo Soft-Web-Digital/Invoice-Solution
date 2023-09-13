@@ -14,11 +14,9 @@ export default {
     },
     SET_MESSAGE(state, data) {
       state.message = data;
-      console.log("babz");
     },
     SET_ERROR(state, data) {
       state.error = data;
-      console.log("error");
     },
   },
   actions: {
@@ -49,6 +47,26 @@ export default {
             commit("SET_MESSAGE", "");
             router.push({ name: "reset-password" });
           }, 3000);
+        })
+        .catch((err) => {
+          if (err.response) {
+            commit("SET_ERROR", err.response.data.error);
+            setTimeout(() => {
+              commit("SET_ERROR", "");
+            }, 3000);
+          }
+        });
+      return result;
+    },
+    async updatePassword({ commit }, payload) {
+      let result = await API.put(ROUTES().updatepassword, payload, apiConfig())
+        .then((res) => {
+          commit("SET_MESSAGE", res.data.message);
+          setTimeout(() => {
+            commit("SET_MESSAGE", "");
+          }, 3000);
+          router.push({ name: "login" });
+          $cookies.remove("user");
         })
         .catch((err) => {
           if (err.response) {

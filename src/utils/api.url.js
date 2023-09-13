@@ -22,6 +22,7 @@ export const ROUTES = function (param = null) {
     login: "/login",
     authuser: "/user",
     resetlink: "/password/reset/send-link",
+    updatepassword: "/password/change",
     transactions: "/transactions",
     approveTransaction: `transactions/${param}/approve`,
     declineTransaction: `transactions/${param}/decline`,
