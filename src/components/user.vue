@@ -34,10 +34,10 @@ onMounted(() => {
       <span class="adminmodule"> {{ user.name }}</span>
     </a>
     <div class="dropdown-menu">
-      <router-link class="dropdown-item" to="/profile"
+      <!-- <router-link class="dropdown-item" to="/profile"
         ><i data-feather="user" class="me-1"></i> Profile</router-link
-      >
-      <router-link class="dropdown-item" to="/settings"
+      > -->
+      <router-link class="dropdown-item" to="/change-password"
         ><i data-feather="settings" class="me-1"></i> Settings</router-link
       >
       <a class="dropdown-item" href="#" @click="logoutUser"

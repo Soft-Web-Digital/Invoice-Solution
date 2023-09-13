@@ -68,13 +68,14 @@
                         <option value="200">200</option>
                         <option value="500">500</option>
                       </select>
-                      <span>transactions</span>
+                      <span>users</span>
                     </div>
 
                     <div>
                       <input
                         type="text"
                         class="form-control"
+                        v-model="search"
                         placeholder="Search"
                       />
                     </div>
@@ -85,6 +86,7 @@
                     <thead class="thead-light">
                       <tr>
                         <th>Name</th>
+                        <th>Email</th>
                         <th>Country</th>
                         <th>Balance</th>
                         <th>Registered on</th>
@@ -106,6 +108,7 @@
                             >
                           </h2>
                         </td>
+                        <td>{{ user.email }}</td>
                         <td>{{ user.country }}</td>
                         <td>{{ useCurrency(user.wallet_balance) }}</td>
                         <td>{{ formatted(user.created_at) }}</td>
