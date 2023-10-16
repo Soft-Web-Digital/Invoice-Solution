@@ -1,26 +1,26 @@
 <template>
-  <!-- Sidebar -->
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-inner">
-      <perfect-scrollbar
-        class="scroll-area"
-        :settings="settings"
-        @ps-scroll-y="scrollHanle"
-      >
-        <div id="sidebar-menu" class="sidebar-menu">
-          <ul>
-            <li class="menu-title"><span>Main</span></li>
-            <li
-              v-bind:class="{
-                active: currentPath == '/' || currentPath == '/',
-              }"
-            >
-              <router-link to="/"
-                ><i data-feather="home"></i> <span>Dashboard</span></router-link
-              >
-            </li>
+	<!-- Sidebar -->
+	<div class="sidebar" id="sidebar">
+		<div class="sidebar-inner">
+			<perfect-scrollbar
+				class="scroll-area"
+				:settings="settings"
+				@ps-scroll-y="scrollHanle"
+			>
+				<div id="sidebar-menu" class="sidebar-menu">
+					<ul>
+						<li class="menu-title"><span>Main</span></li>
+						<li
+							v-bind:class="{
+								active: currentPath == '/' || currentPath == '/',
+							}"
+						>
+							<router-link to="/"
+								><i data-feather="home"></i> <span>Dashboard</span></router-link
+							>
+						</li>
 
-            <!-- <li
+						<!-- <li
               v-bind:class="{
                 active:
                   currentPath == 'estimates' ||
@@ -34,7 +34,7 @@
                 <span>Estimates</span></router-link
               >
             </li> -->
-            <!-- <li
+						<!-- <li
               class="submenu"
               v-bind:class="{
                 active:
@@ -111,7 +111,7 @@
                 </li>
               </ul>
             </li> -->
-            <!-- <li
+						<!-- <li
               v-bind:class="{
                 active:
                   currentPath == 'invoice-items' ||
@@ -122,104 +122,110 @@
                 ><i data-feather="star"></i> <span>Items</span></router-link
               >
             </li> -->
-            <li
-              class="submenu"
-              v-bind:class="{
-                active:
-                  currentPath == 'payouts' ||
-                  currentPath == 'deposits' ||
-                  currentPath == 'transactions',
-              }"
-            >
-              <a href="javascript:void(0)"
-                ><i data-feather="credit-card"></i>
-                <span> All Transactions</span> <span class="menu-arrow"></span
-              ></a>
-              <ul>
-                <li>
-                  <router-link to="/transactions">All Transactions</router-link>
-                </li>
-                <li>
-                  <router-link to="/transactions/payouts">Payouts</router-link>
-                </li>
-                <li>
-                  <router-link to="/transactions/deposits"
-                    >Deposits</router-link
-                  >
-                </li>
-              </ul>
-            </li>
-            <li
-              v-bind:class="{
-                active: currentPath == 'users',
-              }"
-            >
-              <router-link to="/users"
-                ><i data-feather="users"></i><span>Users</span></router-link
-              >
-            </li>
-            <li
-              v-bind:class="{
-                active: currentPath == 'subscriptions',
-              }"
-            >
-              <router-link to="/subscriptions"
-                ><i data-feather="layers"></i
-                ><span>Subscriptions</span></router-link
-              >
-            </li>
-            <li
-              v-bind:class="{
-                active:
-                  currentPath == 'admin' ||
-                  currentPath == 'add-admin' ||
-                  currentPath == 'edit-admin',
-              }"
-            >
-              <router-link to="/admin"
-                ><i data-feather="users"></i> <span>Admins</span></router-link
-              >
-            </li>
-            <li
-              v-bind:class="{
-                active:
-                  currentPath == 'roles-and-permissions' ||
-                  currentPath == 'add-role' ||
-                  currentPath == 'edit-role',
-              }"
-            >
-              <router-link to="/roles-and-permissions"
-                ><i data-feather="user-plus"></i>
-                <span>Roles and Permissions</span></router-link
-              >
-            </li>
-            <li
-              v-bind:class="{
-                active:
-                  currentPath == 'coupons' ||
-                  currentPath == 'add-coupon' ||
-                  currentPath == 'edit-coupon',
-              }"
-            >
-              <router-link to="/coupons"
-                ><i data-feather="shopping-bag"></i>
-                <span>Coupon</span></router-link
-              >
-            </li>
-            <li
-              v-bind:class="{
-                active:
-                  currentPath == 'notification' ||
-                  currentPath == 'create-notification' ||
-                  currentPath == 'edit-notification',
-              }"
-            >
-              <router-link to="/notification"
-                ><i data-feather="bell"></i>
-                <span>Notification</span></router-link
-              >
-            </li>
-            <!-- <li
+						<li
+							class="submenu"
+							v-bind:class="{
+								active:
+									currentPath == 'payouts' ||
+									currentPath == 'deposits' ||
+									currentPath == 'transactions',
+							}"
+						>
+							<a href="javascript:void(0)"
+								><i data-feather="credit-card"></i>
+								<span> All Transactions</span> <span class="menu-arrow"></span
+							></a>
+							<ul>
+								<li>
+									<router-link to="/transactions">All Transactions</router-link>
+								</li>
+								<li>
+									<router-link to="/transactions/withdrawals"
+										>Withdrawals</router-link
+									>
+								</li>
+								<li>
+									<router-link to="/transactions/deposits"
+										>Deposits</router-link
+									>
+								</li>
+							</ul>
+						</li>
+						<li
+							v-bind:class="{
+								active:
+									currentPath == 'users' ||
+									currentPath == 'user-activities' ||
+									currentPath == 'user-view' ||
+									currentPath == 'user-customers',
+							}"
+						>
+							<router-link to="/users"
+								><i data-feather="users"></i><span>Users</span></router-link
+							>
+						</li>
+						<li
+							v-bind:class="{
+								active: currentPath == 'subscriptions',
+							}"
+						>
+							<router-link to="/subscriptions"
+								><i data-feather="layers"></i
+								><span>Subscriptions</span></router-link
+							>
+						</li>
+						<li
+							v-bind:class="{
+								active:
+									currentPath == 'admin' ||
+									currentPath == 'add-admin' ||
+									currentPath == 'edit-admin',
+							}"
+						>
+							<router-link to="/admin"
+								><i data-feather="users"></i> <span>Admins</span></router-link
+							>
+						</li>
+						<li
+							v-bind:class="{
+								active:
+									currentPath == 'roles-and-permissions' ||
+									currentPath == 'add-role' ||
+									currentPath == 'edit-role',
+							}"
+						>
+							<router-link to="/roles-and-permissions"
+								><i data-feather="user-plus"></i>
+								<span>Roles and Permissions</span></router-link
+							>
+						</li>
+						<li
+							v-bind:class="{
+								active:
+									currentPath == 'coupons' ||
+									currentPath == 'add-coupon' ||
+									currentPath == 'edit-coupon',
+							}"
+						>
+							<router-link to="/coupons"
+								><i data-feather="shopping-bag"></i>
+								<span>Coupon</span></router-link
+							>
+						</li>
+						<li
+							v-bind:class="{
+								active:
+									currentPath == 'notification' ||
+									currentPath == 'create-notification' ||
+									currentPath == 'edit-notification',
+							}"
+						>
+							<router-link to="/notification"
+								><i data-feather="bell"></i>
+								<span>Notification</span></router-link
+							>
+						</li>
+						<!-- <li
               class="submenu"
               v-bind:class="{
                 active:
@@ -612,83 +618,83 @@
                 </li>
               </ul>
             </li> -->
-          </ul>
-        </div>
-      </perfect-scrollbar>
-    </div>
-  </div>
-  <!-- /Sidebar -->
+					</ul>
+				</div>
+			</perfect-scrollbar>
+		</div>
+	</div>
+	<!-- /Sidebar -->
 </template>
 
 <script>
-import { PerfectScrollbar } from "vue3-perfect-scrollbar";
-import "vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css";
-import feather from "feather-icons";
-export default {
-  components: {
-    PerfectScrollbar,
-  },
-  mounted() {
-    feather.replace();
-    $("#sidebar-menu a").on("click", function (e) {
-      if ($(this).parent().hasClass("submenu")) {
-        e.preventDefault();
-      }
-      if (!$(this).hasClass("subdrop")) {
-        $("ul", $(this).parents("ul:first")).slideUp(350);
-        $("a", $(this).parents("ul:first")).removeClass("subdrop");
-        $(this).next("ul").slideDown(350);
-        $(this).addClass("subdrop");
-      } else if ($(this).hasClass("subdrop")) {
-        $(this).removeClass("subdrop");
-        $(this).next("ul").slideUp(350);
-      }
-    });
+	import { PerfectScrollbar } from "vue3-perfect-scrollbar";
+	import "vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css";
+	import feather from "feather-icons";
+	export default {
+		components: {
+			PerfectScrollbar,
+		},
+		mounted() {
+			feather.replace();
+			$("#sidebar-menu a").on("click", function (e) {
+				if ($(this).parent().hasClass("submenu")) {
+					e.preventDefault();
+				}
+				if (!$(this).hasClass("subdrop")) {
+					$("ul", $(this).parents("ul:first")).slideUp(350);
+					$("a", $(this).parents("ul:first")).removeClass("subdrop");
+					$(this).next("ul").slideDown(350);
+					$(this).addClass("subdrop");
+				} else if ($(this).hasClass("subdrop")) {
+					$(this).removeClass("subdrop");
+					$(this).next("ul").slideUp(350);
+				}
+			});
 
-    $("#sidebar-menu ul li.submenu a.active")
-      .parents("li:last")
-      .children("a:first")
-      .addClass("active")
-      .trigger("click");
-  },
-  computed: {
-    currentPath() {
-      return this.$route.name;
-    },
-    settingsPath() {
-      return (
-        this.$route.name == "settings" ||
-        this.$route.name == "preferences" ||
-        this.$route.name == "tax-types" ||
-        this.$route.name == "expense-category" ||
-        this.$route.name == "notifications" ||
-        this.$route.name == "change-password" ||
-        this.$route.name == "delete-account"
-      );
-    },
-  },
-  data() {
-    return {
-      settings: {
-        suppressScrollX: true,
-      },
-      activeClass: "active",
-    };
+			$("#sidebar-menu ul li.submenu a.active")
+				.parents("li:last")
+				.children("a:first")
+				.addClass("active")
+				.trigger("click");
+		},
+		computed: {
+			currentPath() {
+				return this.$route.name;
+			},
+			settingsPath() {
+				return (
+					this.$route.name == "settings" ||
+					this.$route.name == "preferences" ||
+					this.$route.name == "tax-types" ||
+					this.$route.name == "expense-category" ||
+					this.$route.name == "notifications" ||
+					this.$route.name == "change-password" ||
+					this.$route.name == "delete-account"
+				);
+			},
+		},
+		data() {
+			return {
+				settings: {
+					suppressScrollX: true,
+				},
+				activeClass: "active",
+			};
 
-    //  isactive : true
-  },
-  methods: {
-    scrollHanle(evt) {
-      //   console.log(evt);
-    },
-  },
-};
+			//  isactive : true
+		},
+		methods: {
+			scrollHanle(evt) {
+				//   console.log(evt);
+			},
+		},
+	};
 </script>
 <style>
-.scroll-area {
-  position: relative;
-  margin: auto;
-  height: calc(100vh - 60px);
-  background-color: transparent !important;
-}
+	.scroll-area {
+		position: relative;
+		margin: auto;
+		height: calc(100vh - 60px);
+		background-color: transparent !important;
+	}
 </style>

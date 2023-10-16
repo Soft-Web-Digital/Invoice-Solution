@@ -29,7 +29,7 @@
 						</div>
 					</div>
 					<!-- /Page Header -->
-			   
+					
 					<!-- Search Filter -->
 					<div id="filter_inputs" class="card filter-card">
 						<div class="card-body pb-0">
