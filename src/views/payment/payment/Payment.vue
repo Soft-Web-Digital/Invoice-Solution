@@ -234,10 +234,10 @@
 										v-if="isFetching"
 										class="d-flex my-5 align-items-center justify-content-center"
 									>
-										Loading
+										Loading...
 									</div>
 									<div
-										v-if="length === 0"
+										v-if="!isFetching && length === 0"
 										class="d-flex my-5 align-items-center justify-content-center"
 									>
 										No Data Available
@@ -308,13 +308,22 @@
 	watch(
 		() => searchForm.value,
 		(newValue) => {
+			isFetching.value = true;
 			let data = {
 				page: currentPage.value,
 				per_page: perPage.value,
 				type: newValue.type === "All" ? "" : newValue.type.toLowerCase(),
 				query: newValue.search,
 			};
-			store.dispatch("transaction/getTransactions", data);
+			store
+				.dispatch("transaction/getTransactions", data)
+				.then(() => {
+					isFetching.value = false;
+					length.value = transactions.value.data.length;
+				})
+				.catch(() => {
+					isFetching.value = false;
+				});
 		},
 		{ deep: true }
 	);
@@ -328,7 +337,7 @@
 		getTransactions();
 	});
 
-	const paymentfilter = ["All", "Deposit", "Withdrawal", "Others"];
+	const paymentfilter = ["All", "Deposit", "Withdrawal"];
 
 	const transactions = computed(() => {
 		return store.getters["transaction/transactions"];
@@ -339,8 +348,8 @@
 		let data = {
 			page: currentPage.value,
 			per_page: perPage.value,
-			type: "",
-			query: "",
+			type: searchForm.value.type.toLowerCase(),
+			query: searchForm.value.search,
 		};
 		store
 			.dispatch("transaction/getTransactions", data)

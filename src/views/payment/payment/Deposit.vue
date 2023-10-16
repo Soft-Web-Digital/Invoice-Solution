@@ -231,7 +231,7 @@
 										v-if="isFetching"
 										class="d-flex my-5 align-items-center justify-content-center"
 									>
-										Loading
+										Loading...
 									</div>
 									<div
 										v-if="length === 0"
@@ -303,19 +303,12 @@
 
 	const searchForm = ref({
 		search: "",
-		type: "",
 	});
 
 	watch(
 		() => searchForm.value,
 		(newValue) => {
-			let data = {
-				page: currentPage.value,
-				per_page: perPage.value,
-				type: newValue.type === "All" ? "" : newValue.type.toLowerCase(),
-				query: newValue.search,
-			};
-			store.dispatch("transaction/getTransactions", data);
+			getTransactions(newValue.search);
 		},
 		{ deep: true }
 	);
@@ -335,13 +328,13 @@
 		return store.getters["transaction/transactions"];
 	});
 
-	const getTransactions = () => {
+	const getTransactions = (keyword = "") => {
 		isFetching.value = true;
 		let data = {
 			page: currentPage.value,
 			per_page: perPage.value,
 			type: "deposit",
-			query: "",
+			query: keyword,
 		};
 		store
 			.dispatch("transaction/getTransactions", data)

@@ -131,7 +131,7 @@
 										<div>
 											<input
 												type="text"
-												v-model="search"
+												v-model="searchForm.search"
 												class="form-control"
 												placeholder="Search"
 											/>
@@ -228,10 +228,10 @@
 										v-if="isFetching"
 										class="d-flex my-5 align-items-center justify-content-center"
 									>
-										Loading
+										Loading...
 									</div>
 									<div
-										v-if="length === 0"
+										v-if="!isFetching && length === 0"
 										class="d-flex my-5 align-items-center justify-content-center"
 									>
 										No Data Available
@@ -295,23 +295,25 @@
 	const filter = ref(false);
 	const currentPage = ref(1);
 	const perPage = ref(50);
-	const search = ref("");
 	const isFetching = ref(false);
 	const length = ref(null);
 
-	watch(search, (newValue) => {
-		Search(newValue);
+	const searchForm = ref({
+		search: "",
 	});
 
-	const Search = (keyword) => {
-		let data = {
-			page: currentPage.value,
-			per_page: perPage.value,
-			type: "withdrawal",
-			query: keyword,
-		};
-		store.dispatch("transaction/getTransactions", data);
-	};
+	watch(
+		() => searchForm.value,
+		(newValue) => {
+			getTransactions(newValue.search);
+		},
+		{ deep: true }
+	);
+
+	watch(perPage, (newValue) => {
+		perPage.value = newValue;
+		getTransactions();
+	});
 
 	const toggleFilter = () => {
 		filter.value = !filter.value;
@@ -323,13 +325,13 @@
 		return store.getters["transaction/transactions"];
 	});
 
-	const getTransactions = () => {
+	const getTransactions = (keyword = "") => {
 		isFetching.value = true;
 		let data = {
 			page: currentPage.value,
 			per_page: perPage.value,
 			type: "withdrawal",
-			query: "",
+			query: keyword,
 		};
 		store
 			.dispatch("transaction/getTransactions", data)
