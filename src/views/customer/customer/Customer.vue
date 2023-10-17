@@ -117,18 +117,43 @@
 												<th>Country</th>
 												<th>State</th>
 												<th>Date added</th>
+												<th class="text-end">Action</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr v-for="item in customers.data" :key="item.id">
 												<td>
-													{{ item.name }}
+													<span
+														@click="openCustomerModal(item)"
+														style="cursor: pointer"
+														>{{ item.name }}</span
+													>
 												</td>
 												<td>{{ item.email }}</td>
 												<td>{{ `${item.country_code} ${item.phone}` }}</td>
 												<td>{{ item.country }}</td>
 												<td>{{ item.state }}</td>
 												<td>{{ formatted(item.created_at) }}</td>
+												<td class="text-center">
+													<div class="dropdown dropdown-action">
+														<a
+															class="action-icon dropdown-toggle"
+															data-bs-toggle="dropdown"
+															aria-expanded="false"
+															><i class="fas fa-ellipsis-h"></i
+														></a>
+														<div
+															class="dropdown-menu dropdown-menu-right"
+															style="width: fit-content"
+														>
+															<a
+																@click="openCustomerModal(item)"
+																class="dropdown-item"
+																><i class="fa fa-eye me-2"></i> View
+															</a>
+														</div>
+													</div>
+												</td>
 											</tr>
 										</tbody>
 									</table>
@@ -246,6 +271,80 @@
 			</div>
 		</div>
 		<!-- /.modal-dialog -->
+		<div
+			id="customer-modal"
+			class="modal fade"
+			tabindex="-1"
+			role="dialog"
+			aria-hidden="true"
+		>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="topModalLabel">Customer Information</h4>
+						<button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						></button>
+					</div>
+					<div class="modal-body" v-if="selectedCustomer">
+						<p class="card-text">
+							<strong>Name:</strong> {{ selectedCustomer.name }}
+						</p>
+						<p class="card-text">
+							<strong>Email:</strong> {{ selectedCustomer.email }}
+						</p>
+						<p class="card-text">
+							<strong>Phone:</strong>
+							{{ `${selectedCustomer.country_code} ${selectedCustomer.phone}` }}
+						</p>
+						<p class="card-text" v-if="selectedCustomer.category">
+							<strong>Category:</strong>
+							{{ selectedCustomer.category }}
+						</p>
+						<p class="card-text" v-if="selectedCustomer.whatsapp">
+							<strong>WhatsApp:</strong>
+							{{ selectedCustomer.whatsapp }}
+						</p>
+						<p class="card-text" v-if="selectedCustomer.website">
+							<strong>Website:</strong>
+							{{ selectedCustomer.website }}
+						</p>
+						<p class="card-text">
+							<strong>Amount Due:</strong>
+							{{
+								`${user.settings.currency} ${addCurrencyComma(
+									selectedCustomer.amount_due
+								)}`
+							}}
+						</p>
+						<p class="card-text" v-if="selectedCustomer.address">
+							<strong>Address:</strong>
+							{{ selectedCustomer.address }}
+						</p>
+						<p
+							class="card-text"
+							v-if="selectedCustomer.state || selectedCustomer.country"
+						>
+							<strong>Location:</strong>
+							{{
+								`${selectedCustomer.state ? selectedCustomer.state : ""} ${
+									selectedCustomer.country ? selectedCustomer.country : ""
+								}`
+							}}
+						</p>
+						<p class="card-text">
+							<strong>Date Created:</strong>
+							{{ formatted(selectedCustomer.created_at) }}
+						</p>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+		</div>
+		<!-- /.modal-dialog -->
 	</div>
 	<!-- /Main Wrapper -->
 </template>
@@ -255,6 +354,7 @@
 	import { useStore } from "vuex";
 	import { useRoute } from "vue-router";
 	import { formatted } from "../../../assets/composables/date";
+	import { addCurrencyComma } from "../../../assets/composables/currency";
 
 	const store = useStore();
 	const route = useRoute();
@@ -264,6 +364,7 @@
 	const isLoading = ref(false);
 	const isFetching = ref(false);
 	const length = ref(null);
+	const selectedCustomer = ref(null);
 
 	watch(search, (newValue) => {
 		getUserCustomers(newValue);
@@ -282,6 +383,17 @@
 		return store.getters["users/user"];
 	});
 
+	const openCustomerModal = (customer) => {
+		var myModal = new bootstrap.Modal(
+			document.getElementById("customer-modal"),
+			{
+				backdrop: "static",
+			}
+		);
+		selectedCustomer.value = customer;
+		console.log(customer);
+		myModal.show();
+	};
 	const openModal = () => {
 		var myModal = new bootstrap.Modal(document.getElementById("top-modal"), {
 			backdrop: "static",

@@ -31,6 +31,7 @@
 					<th>Date Created</th>
 					<th>Due Date</th>
 					<th>Status</th>
+					<!-- <th class="text-end">Action</th> -->
 				</tr>
 			</thead>
 			<tbody>
@@ -41,7 +42,11 @@
 					</td>
 					<td>{{ invoice.customer.name }}</td>
 					<td>
-						{{ `${invoice.currency} ${invoice.total_amount.toFixed(2)}` }}
+						{{
+							`${invoice.currency} ${addCurrencyComma(
+								invoice.total_amount
+							)}`
+						}}
 					</td>
 					<td>{{ formatted(invoice.created_at) }}</td>
 					<td>{{ formatted(invoice.due_date) }}</td>
@@ -81,6 +86,29 @@
 							>{{ invoice.status }}</span
 						>
 					</td>
+					<!-- <td class="text-center">
+						<div class="dropdown dropdown-action">
+							<a
+								class="action-icon dropdown-toggle"
+								data-bs-toggle="dropdown"
+								aria-expanded="false"
+								><i class="fas fa-ellipsis-h"></i
+							></a>
+							<div
+								class="dropdown-menu dropdown-menu-right"
+								style="width: fit-content"
+							>
+								<router-link
+									:to="{
+										name: 'user-invoice-view',
+										params: { id: invoice.id },
+									}"
+									class="dropdown-item"
+									><i class="fa fa-eye me-2"></i> View
+								</router-link>
+							</div>
+						</div>
+					</td> -->
 				</tr>
 			</tbody>
 		</table>
@@ -141,6 +169,7 @@
 	import { useStore } from "vuex";
 	import { useRoute } from "vue-router";
 	import { formatted } from "../../../../assets/composables/date";
+	import { addCurrencyComma } from "../../../../assets/composables/currency";
 
 	const store = useStore();
 	const route = useRoute();

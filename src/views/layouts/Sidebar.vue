@@ -35,82 +35,82 @@
               >
             </li> -->
 						<!-- <li
-              class="submenu"
-              v-bind:class="{
-                active:
-                  currentPath == 'view-invoice-two' ||
-                  currentPath == 'invoice-grid-two' ||
-                  currentPath == 'invoices-settings' ||
-                  currentPath == 'view-invoice' ||
-                  currentPath == 'edit-invoice' ||
-                  currentPath == 'tax-settings' ||
-                  currentPath == 'add-invoice' ||
-                  currentPath == 'invoice-grid' ||
-                  currentPath == 'invoices' ||
-                  currentPath == 'edit-invoice' ||
-                  currentPath == 'add-invoice' ||
-                  currentPath == 'invoices-recurring' ||
-                  currentPath == 'invoices-paid' ||
-                  currentPath == 'invoices-overdue' ||
-                  currentPath == 'invoices-draft' ||
-                  currentPath == 'bank-settings' ||
-                  currentPath == 'invoices-cancelled',
-              }"
-            >
-              <a href="javascript:void(0)"
-                ><i data-feather="clipboard"></i> <span> Invoices</span>
-                <span class="menu-arrow"></span
-              ></a>
-              <ul>
-                <li>
-                  <router-link
-                    to="/invoices"
-                    v-bind:class="{
-                      active:
-                        currentPath == 'invoices-recurring' ||
-                        currentPath == 'invoices-paid' ||
-                        currentPath == 'invoices-overdue' ||
-                        currentPath == 'invoices-draft' ||
-                        currentPath == 'invoices-cancelled',
-                    }"
-                    >Invoices List</router-link
-                  >
-                </li>
-                <li>
-                  <router-link to="/invoice-grid">Invoices Grid</router-link>
-                </li>
-                <li>
-                  <router-link to="/invoice-grid-two"
-                    >Invoices Grid 2</router-link
-                  >
-                </li>
-                <li>
-                  <router-link to="/add-invoice">Add Invoices</router-link>
-                </li>
-                <li>
-                  <router-link to="/edit-invoice">Edit Invoices</router-link>
-                </li>
-                <li>
-                  <router-link to="/view-invoice">Invoices Details</router-link>
-                </li>
-                <li>
-                  <router-link to="/view-invoice-two"
-                    >Invoices Details 2</router-link
-                  >
-                </li>
-                <li>
-                  <router-link
-                    to="/invoices-settings"
-                    v-bind:class="{
-                      active:
-                        currentPath == 'bank-settings' ||
-                        currentPath == 'tax-settings',
-                    }"
-                    >Invoices Settings</router-link
-                  >
-                </li>
-              </ul>
-            </li> -->
+							class="submenu"
+							v-bind:class="{
+								active:
+									currentPath == 'view-invoice-two' ||
+									currentPath == 'invoice-grid-two' ||
+									currentPath == 'invoices-settings' ||
+									currentPath == 'view-invoice' ||
+									currentPath == 'edit-invoice' ||
+									currentPath == 'tax-settings' ||
+									currentPath == 'add-invoice' ||
+									currentPath == 'invoice-grid' ||
+									currentPath == 'invoices' ||
+									currentPath == 'edit-invoice' ||
+									currentPath == 'add-invoice' ||
+									currentPath == 'invoices-recurring' ||
+									currentPath == 'invoices-paid' ||
+									currentPath == 'invoices-overdue' ||
+									currentPath == 'invoices-draft' ||
+									currentPath == 'bank-settings' ||
+									currentPath == 'invoices-cancelled',
+							}"
+						>
+							<a href="javascript:void(0)"
+								><i data-feather="clipboard"></i> <span> Invoices</span>
+								<span class="menu-arrow"></span
+							></a>
+							<ul>
+								<li>
+									<router-link
+										to="/invoices"
+										v-bind:class="{
+											active:
+												currentPath == 'invoices-recurring' ||
+												currentPath == 'invoices-paid' ||
+												currentPath == 'invoices-overdue' ||
+												currentPath == 'invoices-draft' ||
+												currentPath == 'invoices-cancelled',
+										}"
+										>Invoices List</router-link
+									>
+								</li>
+								<li>
+									<router-link to="/invoice-grid">Invoices Grid</router-link>
+								</li>
+								<li>
+									<router-link to="/invoice-grid-two"
+										>Invoices Grid 2</router-link
+									>
+								</li>
+								<li>
+									<router-link to="/add-invoice">Add Invoices</router-link>
+								</li>
+								<li>
+									<router-link to="/edit-invoice">Edit Invoices</router-link>
+								</li>
+								<li>
+									<router-link to="/view-invoice">Invoices Details</router-link>
+								</li>
+								<li>
+									<router-link to="/view-invoice-two"
+										>Invoices Details 2</router-link
+									>
+								</li>
+								<li>
+									<router-link
+										to="/invoices-settings"
+										v-bind:class="{
+											active:
+												currentPath == 'bank-settings' ||
+												currentPath == 'tax-settings',
+										}"
+										>Invoices Settings</router-link
+									>
+								</li>
+							</ul>
+						</li> -->
 						<!-- <li
               v-bind:class="{
                 active:
