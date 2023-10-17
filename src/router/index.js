@@ -613,6 +613,14 @@ const routes = [
 		},
 	},
 	{
+		path: "/user/invoice/:id",
+		name: "user-invoice-view",
+		component: () => import("../views/pages/user/view-user-invoice"),
+		meta: {
+			requiresAuth: true,
+		},
+	},
+	{
 		path: "/user-activities/:id",
 		name: "user-activities",
 		component: () => import("../views/pages/user/UserActivities"),

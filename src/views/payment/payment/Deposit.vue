@@ -164,13 +164,13 @@
 													{{ item.reference }}
 												</td>
 												<td>
-													<!-- <h2 class="table-avatar">
-                            <router-link to="/profile">
-                              {{ item.customer_name }}</router-link
-                            >
-                          </h2> -->
+													{{ item.user.name }}
 												</td>
-												<td>{{ `${item.currency} ${item.amount}` }}</td>
+												<td>
+													{{
+														`${item.currency} ${addCurrencyComma(item.amount)}`
+													}}
+												</td>
 												<td>
 													{{ formatted(item.created_at) }}
 												</td>
@@ -208,17 +208,19 @@
 															<a
 																class="dropdown-item"
 																v-if="item.status == 'pending'"
-																href="javascript:void(0);"
 																@click="approveTransaction(item.id)"
-																><i class="far fa-check-circle me-2"></i>
+																><i
+																	class="far fa-check-circle text-success me-2"
+																></i>
 																Approve</a
 															>
 															<a
 																class="dropdown-item"
 																v-if="item.status == 'pending'"
-																href="javascript:void(0);"
 																@click="declineTransaction(item.id)"
-																><i class="far fa-times-circle me-2"></i>
+																><i
+																	class="far fa-times-circle text-danger me-2"
+																></i>
 																Decline</a
 															>
 														</div>
@@ -234,7 +236,7 @@
 										Loading...
 									</div>
 									<div
-										v-if="length === 0"
+										v-if="!isFetching && length === 0"
 										class="d-flex my-5 align-items-center justify-content-center"
 									>
 										No Data Available
@@ -293,6 +295,7 @@
 	import { ref, onMounted, computed, watch } from "vue";
 	import { useStore } from "vuex";
 	import { formatted } from "../../../assets/composables/date";
+	import { addCurrencyComma } from "../../../assets/composables/currency";
 
 	const store = useStore();
 	const filter = ref(false);

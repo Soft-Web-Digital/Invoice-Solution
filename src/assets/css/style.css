@@ -430,6 +430,7 @@ table.table th {
 	justify-content: start;
 	align-items: center;
 	margin-bottom: 14px;
+	cursor: pointer;
 }
 .table .dropdown-item:last-child {
 	margin-bottom: 0;
@@ -1999,6 +2000,7 @@ button.bg-danger:hover {
 	display: flex;
 	align-items: center;
 	padding: 10px 15px;
+	cursor: pointer;
 }
 .user-menu .dropdown-menu .dropdown-item:hover {
 	color: #7638ff;

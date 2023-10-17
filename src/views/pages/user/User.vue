@@ -109,8 +109,16 @@
 													</h2>
 												</td>
 												<td>{{ user.email }}</td>
-												<td>{{ user.country }}</td>
-												<td>{{ useCurrency(user.wallet_balance) }}</td>
+												<td>{{ user.settings.currency }}</td>
+												<td>
+													{{
+														`${user.settings.currency} ${
+															user.wallet_balance
+																? addCurrencyComma(user.wallet_balance)
+																: 0
+														}`
+													}}
+												</td>
 												<td>{{ formatted(user.created_at) }}</td>
 												<td>
 													<span
@@ -190,10 +198,10 @@
 										v-if="isFetching"
 										class="d-flex my-5 align-items-center justify-content-center"
 									>
-										Loading
+										Loading...
 									</div>
 									<div
-										v-if="length === 0"
+										v-if="!isFetching && length === 0"
 										class="d-flex my-5 align-items-center justify-content-center"
 									>
 										No Data Available
@@ -311,7 +319,7 @@
 	import { ref, onMounted, computed, watch } from "vue";
 	import { useStore } from "vuex";
 	import { formatted } from "../../../assets/composables/date";
-	import { useCurrency } from "../../../assets/composables/currency";
+	import { addCurrencyComma } from "../../../assets/composables/currency";
 
 	const store = useStore();
 	const filter = ref(false);
