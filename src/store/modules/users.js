@@ -6,6 +6,7 @@ export default {
   state: {
     users: [],
     userinvoices: [],
+    invoice: [],
     userestimates: [],
     userexpenses: [],
     usertransactions: [],
@@ -28,6 +29,9 @@ export default {
     },
     SET_USERINVOICES(state, data) {
       state.userinvoices = data;
+    },
+    SET_INVOICE(state, data) {
+      state.invoice = data;
     },
     SET_USERSETTINGS(state, data) {
       state.usersettings = data;
@@ -122,6 +126,21 @@ export default {
             "SET_TOTALPAGES",
             Math.ceil(res.data.meta.total / res.data.meta.perPage)
           );
+        })
+        .catch((err) => {
+          if (err.response) {
+            commit("SET_ERROR", err.response.data.error);
+          }
+        });
+      return result;
+    },
+    async getInvoice({ commit }, { user_id, id }) {
+      let result = await API.get(
+        `${ROUTES().users}/${user_id}/invoices/${id}`,
+        apiConfig()
+      )
+        .then((res) => {
+          commit("SET_INVOICE", res.data.data);
         })
         .catch((err) => {
           if (err.response) {
@@ -342,6 +361,9 @@ export default {
     },
     userinvoices(state) {
       return state.userinvoices;
+    },
+    invoice(state) {
+      return state.invoice;
     },
     userestimates(state) {
       return state.userestimates;
