@@ -124,7 +124,7 @@ const store = useStore();
 const isLoading = ref(false);
 const form = reactive({
   email: "babatundehezekiah7@gmail.com",
-  password: "password",
+  password: "Babz12345.",
 });
 
 const loginUser = () => {
