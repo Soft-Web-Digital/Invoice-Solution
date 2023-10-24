@@ -28,8 +28,8 @@
                 <div class="invoice-item mb-4">
                   <div class="row">
                     <div class="col-md-6">
-                      <div class="invoice-logo">
-                        <img src="../../../assets/img/logo.png" alt="logo" />
+                      <div class="invoice-logo" v-if="user.settings">
+                        <img :src="user.settings.business_logo" alt="logo" />
                       </div>
                     </div>
                     <div class="col-md-6 des">
@@ -43,9 +43,9 @@
 
                 <!-- Invoice Item -->
                 <div class="invoice-item">
-                  <div class="row" v-if="user">
+                  <div class="row">
                     <div class="col-md-5">
-                      <div class="invoice-info">
+                      <div class="invoice-info" v-if="user">
                         <strong class="customer-text">Invoice From</strong>
                         <p class="invoice-details invoice-details-two">
                           {{ user.name }} <br />
@@ -57,7 +57,7 @@
                       </div>
                     </div>
                     <div class="col-md-4">
-                      <div class="invoice-info">
+                      <div class="invoice-info" v-if="invoice.customer">
                         <strong class="customer-text">Invoice To</strong>
                         <p class="invoice-details invoice-details-two">
                           {{ invoice.customer.name }} <br />
@@ -74,7 +74,7 @@
                       </div>
                     </div>
                     <div class="col-md-3">
-                      <div class="invoice-info">
+                      <div class="invoice-info" v-if="invoice.customer">
                         <p
                           class="invoice-details-two stat invoice-details text-capitalize"
                         >
@@ -153,71 +153,156 @@
 
                 <!-- Invoice Item -->
                 <div class="invoice-item invoice-table-wrap">
-                  <h5>Items</h5>
                   <div class="row">
                     <div class="col-md-12">
                       <div class="table-responsive">
                         <table class="invoice-table table table-border mb-0">
                           <thead>
                             <tr>
-                              <th class="w-75">Items</th>
-                              <th class="text-end">Quantity</th>
-                              <th class="text-end">Price</th>
-                              <th class="text-end">Total</th>
+                              <th>#</th>
+                              <th>Product / Service</th>
+                              <th>Quantity</th>
+                              <th>Price</th>
+                              <th>Discount</th>
+                              <th class="text-end">Amount</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <td class="w-50">UI/UX Designing</td>
-                              <td class="text-end">2</td>
-                              <td class="text-end">$200</td>
-                              <td class="text-end">$400</td>
+                          <tbody v-if="invoice.items">
+                            <tr
+                              v-for="(item, index) in invoice.items"
+                              :key="index"
+                            >
+                              <td>{{ index + 1 }}</td>
+                              <td>{{ item.name }}</td>
+                              <td>{{ item.quantity }}</td>
+                              <td>
+                                {{ invoice.currency.slice(0, 3) }}
+                                {{ addCurrencyComma(item.price) }}
+                              </td>
+                              <td>{{ item.discount }}%</td>
+                              <td class="text-end">
+                                {{ invoice.currency.slice(0, 3) }}
+                                {{ addCurrencyComma(item.amount) }}
+                              </td>
                             </tr>
-                            <tr>
-                              <td class="w-50">Website Development</td>
-                              <td class="text-end">1</td>
-                              <td class="text-end">$900</td>
-                              <td class="text-end">$900</td>
-                            </tr>
-                            <tr>
-                              <td class="w-50">SEO Services</td>
-                              <td class="text-end">5</td>
-                              <td class="text-end">$100</td>
-                              <td class="text-end">$500</td>
+                            <tr v-if="invoice">
+                              <td
+                                colspan="5"
+                                class="text-end text-muted border-bottom-0"
+                              >
+                                Taxable Amount
+                              </td>
+                              <td class="text-end border-bottom-0">
+                                {{ invoice.currency.slice(0, 3) }}
+                                {{ addCurrencyComma(invoice.amount) }}
+                              </td>
                             </tr>
                             <tr>
                               <td
-                                colspan="3"
+                                colspan="5"
                                 class="text-end text-muted border-bottom-0"
                               >
-                                Subtotal
+                                Discount
                               </td>
-                              <td class="text-end border-bottom-0">$1,800</td>
+                              <td class="text-end border-bottom-0">
+                                {{ invoice.currency.slice(0, 3) }}
+                                {{ totalProductDiscount.toFixed(2) }}
+                              </td>
                             </tr>
-                            <tr>
-                              <td
-                                colspan="3"
-                                class="text-end text-muted border-bottom-0"
-                              >
-                                Tax
+                            <tr v-if="invoice.tax_enabled === 1">
+                              <td colspan="5" class="text-end text-muted">
+                                {{ `VAT(${invoice.tax_percentage}%)` }}
                               </td>
-                              <td class="text-end border-bottom-0">$200</td>
+                              <td class="text-end">
+                                {{ invoice.currency.slice(0, 3) }}
+                                {{ addCurrencyComma(vat) }}
+                              </td>
                             </tr>
-                            <tr>
-                              <td colspan="3" class="text-end text-muted">
-                                Discount (11%)
+                            <tr
+                              v-for="(discount, index) in invoice.more_discount"
+                              :key="index"
+                            >
+                              <td colspan="5" class="text-end text-muted">
+                                {{ discount.description }}
                               </td>
-                              <td class="text-end">$100</td>
+                              <td class="text-end">
+                                - {{ invoice.currency.slice(0, 3) }}
+                                {{ addCurrencyComma(discount.value) }}
+                              </td>
+                            </tr>
+                            <tr
+                              v-for="(
+                                charge, index
+                              ) in invoice.additional_charges"
+                              :key="index"
+                            >
+                              <td colspan="5" class="text-end text-muted">
+                                {{ charge.description }}
+                              </td>
+                              <td class="text-end">
+                                + {{ invoice.currency.slice(0, 3) }}
+                                {{ addCurrencyComma(charge.value) }}
+                              </td>
                             </tr>
                           </tbody>
-                          <tfoot class="border-bottom border-1">
-                            <tr>
-                              <th colspan="3" class="text-end font-weight-600">
-                                Total
-                              </th>
-                              <th class="text-end font-weight-600">$2,000</th>
-                            </tr>
-                          </tfoot>
+                          <tr class="border-bottom border-top mt-4">
+                            <th class="text-muted" v-if="invoice.items">
+                              Total Items : {{ invoice.items.length }}
+                            </th>
+                            <th colspan="4" class="text-end font-weight-600">
+                              <h4>Total Amount</h4>
+                            </th>
+                            <th class="text-end font-weight-600">
+                              <h4 v-if="invoice.currency">
+                                {{ invoice.currency.slice(0, 3) }}
+                                {{ addCurrencyComma(invoice.total_amount) }}
+                              </h4>
+                            </th>
+                          </tr>
+                          <tr v-if="invoice.amount_paid != 0">
+                            <th colspan="5" class="text-end font-weight-600">
+                              Amount Paid
+                            </th>
+                            <th
+                              v-if="invoice.currency"
+                              class="text-end font-weight-600"
+                            >
+                              {{ invoice.currency.slice(0, 3) }}
+                              {{ addCurrencyComma(invoice.amount_paid) }}
+                            </th>
+                          </tr>
+                          <tr class="border-bottom">
+                            <th colspan="5" class="text-end font-weight-600">
+                              Balance
+                            </th>
+                            <th
+                              v-if="invoice.currency"
+                              class="text-end font-weight-600"
+                            >
+                              {{ invoice.currency.slice(0, 3) }}
+                              {{ addCurrencyComma(invoice.amount_due) }}
+                            </th>
+                          </tr>
+                          <tr class="border-bottom">
+                            <th colspan="6" class="text-muted">
+                              Total Amount ( in words ):
+                              <span
+                                style="
+                                  margin-left: 2px;
+                                  color: black;
+                                  text-transform: capitalize;
+                                "
+                                v-if="invoice.total_amount"
+                              >
+                                {{
+                                  amountToWords(
+                                    invoice.total_amount,
+                                    invoice.currency
+                                  )
+                                }}
+                              </span>
+                            </th>
+                          </tr>
                         </table>
                       </div>
                     </div>
@@ -225,14 +310,14 @@
                 </div>
                 <!-- /Invoice Item -->
 
-                <div class="invoice-sign text-end pb-5">
+                <div class="invoice-sign text-end py-0">
+                  <span class="d-block">{{ invoice.signatory_name }}</span>
                   <img
                     v-if="invoice.signature"
                     class="img-fluid d-inline-block"
                     :src="invoice.signature"
                     alt="sign"
                   />
-                  <span class="d-block">{{ invoice.signatory_name }}</span>
                 </div>
                 <hr v-if="invoice.terms" />
                 <div class="invoice-terms" v-if="invoice.terms">
@@ -263,10 +348,19 @@ import {
   formatted,
   formatDateToDigits,
 } from "../../../assets/composables/date";
-import { addCurrencyComma } from "../../../assets/composables/currency";
+import {
+  addCurrencyComma,
+  amountToWords,
+} from "../../../assets/composables/currency";
 
 const store = useStore();
 const route = useRoute();
+const totalCharges = ref(0);
+const totalDiscount = ref(0);
+const totalAmount = ref(0);
+const tax_percentage = ref(0);
+const vat = ref(0);
+const totalProductDiscount = ref(0);
 
 const user = computed(() => store.getters["users/user"]);
 
@@ -274,13 +368,63 @@ const invoice = computed(() => {
   return store.getters["users/invoice"];
 });
 
+const calculateCharges = () => {
+  let totalcharges = 0;
+  totalCharges.value = 0;
+  for (let i = 0; i < invoice.value.additional_charges.length; i++) {
+    const item = invoice.value.additional_charges[i];
+    totalcharges += parseInt(item.value);
+  }
+  totalCharges.value = totalcharges;
+};
+const calculateDiscount = () => {
+  let totaldiscount = 0;
+  totalDiscount.value = 0;
+  for (let i = 0; i < invoice.value.more_discount.length; i++) {
+    const item = invoice.value.more_discount[i];
+    totaldiscount += parseInt(item.value);
+  }
+  totalDiscount.value = totaldiscount;
+};
+const calculateTotalAmount = () => {
+  // Caalculate Total amount
+  let totalproductamount = 0;
+  let totalproductdiscount = 0;
+  let totalamount = 0;
+  for (let i = 0; i < invoice.value.items.length; i++) {
+    const item = invoice.value.items[i];
+    totalproductamount += item.amount;
+    totalproductdiscount += (item.discount / 100) * item.amount;
+  }
+  totalProductDiscount.value = totalproductdiscount;
+  calculateCharges();
+  calculateDiscount();
+  let T1 = totalproductamount + totalCharges.value;
+  let T2 = totalproductdiscount + totalDiscount.value;
+  totalamount = T1 - T2;
+  // Calculate Tax
+  if (invoice.value.tax_enabled === 1) {
+    vat.value = (tax_percentage.value * totalamount) / 100;
+    totalAmount.value = totalamount + vat.value;
+  } else {
+    totalAmount.value = totalamount;
+  }
+};
+
 const getInvoice = () => {
   let data = {
     user_id: route.params.user_id,
     id: route.params.id,
   };
   store.dispatch("users/getUser", route.params.user_id);
-  store.dispatch("users/getInvoice", data);
+  store
+    .dispatch("users/getInvoice", data)
+    .then(() => {
+      tax_percentage.value = invoice.value.tax_percentage;
+    })
+    .then(() => {
+      calculateTotalAmount();
+    });
 };
 
 onMounted(() => {
