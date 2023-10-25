@@ -52,14 +52,13 @@ export default {
         });
       return result;
     },
-    async approveTransaction({ commit, dispatch }, id) {
+    async approveTransaction({ commit }, id) {
       let result = API.post(ROUTES(id).approveTransaction, {}, apiConfig())
         .then((res) => {
           commit("SET_MESSAGE", res.data.message);
           setTimeout(() => {
             commit("SET_MESSAGE", "");
           }, 3000);
-          dispatch("getTransactions");
         })
         .catch((err) => {
           if (err.response) {
@@ -78,7 +77,6 @@ export default {
           setTimeout(() => {
             commit("SET_MESSAGE", "");
           }, 3000);
-          dispatch("getTransactions");
         })
         .catch((err) => {
           if (err.response) {

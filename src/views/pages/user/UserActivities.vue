@@ -31,7 +31,7 @@
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  :class="{ 'active': active === 'invoice' }"
+                  :class="{ active: active === 'invoice' }"
                   href="#bottom-tab1"
                   data-bs-toggle="tab"
                   >Invoices</a
@@ -40,7 +40,7 @@
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  :class="{ 'active': active === 'estimates' }"
+                  :class="{ active: active === 'estimates' }"
                   href="#bottom-tab2"
                   data-bs-toggle="tab"
                   >Estimates</a
@@ -49,7 +49,7 @@
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  :class="{ 'active': active === 'expenses' }"
+                  :class="{ active: active === 'expenses' }"
                   href="#bottom-tab3"
                   data-bs-toggle="tab"
                   >Expenses</a
@@ -58,7 +58,7 @@
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  :class="{ 'active': active === 'transactions' }"
+                  :class="{ active: active === 'transactions' }"
                   href="#bottom-tab4"
                   data-bs-toggle="tab"
                   >Transactions</a
@@ -101,12 +101,10 @@ const route = useRoute();
 const active = ref("invoice");
 
 const Invoices = defineAsyncComponent(() => import("./tabs/UserInvoices.vue"));
-const Estimates = defineAsyncComponent(() =>
-  import("./tabs/UserEstimates.vue")
-);
-const Expenses = defineAsyncComponent(() => import("./tabs/UserExpenses.vue"));
+const Estimates = defineAsyncComponent(() => import("./tabs/UserEstimates"));
+const Expenses = defineAsyncComponent(() => import("./tabs/UserExpenses"));
 const Transactions = defineAsyncComponent(() =>
-  import("./tabs/UserTransactions.vue")
+  import("./tabs/UserTransactions")
 );
 
 const user = computed(() => {

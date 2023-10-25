@@ -7,43 +7,17 @@
     <!-- Notification -->
     <div
       v-if="store.state.coupon.error"
-      style="
-        width: fit-content;
-        position: fixed;
-        right: 10px;
-        top: 5px;
-        z-index: 9999;
-      "
-      class="alert alert-danger alert-dismissible fade show pb-2 text-sm"
+      class="alert notify-danger alert-dismissible"
       role="alert"
     >
       <p>{{ store.state.coupon.error }}</p>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
     </div>
     <div
       v-if="store.state.coupon.message"
-      style="
-        width: fit-content;
-        position: fixed;
-        right: 10px;
-        top: 5px;
-        z-index: 9999;
-      "
-      class="alert alert-success alert-dismissible fade show pb-2 text-sm"
+      class="alert notify-success alert-dismissible"
       role="alert"
     >
       <p>{{ store.state.coupon.message }}</p>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
     </div>
     <!-- Notification end -->
 

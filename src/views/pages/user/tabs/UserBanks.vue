@@ -28,7 +28,7 @@
               <th>Status</th>
             </tr>
           </thead>
-          <tbody v-if="banks.data && banks.data !== []">
+          <tbody v-if="banks.data && banks.data.length !== 0">
             <tr v-for="(bank, index) in banks.data" :key="bank.id">
               <td>{{ index + 1 }}</td>
               <td class="text-capitalize">

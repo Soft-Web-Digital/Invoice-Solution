@@ -4,22 +4,15 @@
     <!-- Notification -->
     <div
       v-if="error || success"
-      style="width: fit-content; position: fixed; right: 10px; top: 5px"
-      class="alert alert-dismissible fade show pb-2 text-sm"
+      class="alert alert-dismissible"
       role="alert"
       :class="{
-        'alert-danger': error,
-        'alert-success': success,
+        'notify-danger': error,
+        'notify-success': success,
       }"
     >
       <p>{{ error }}</p>
       <p>{{ success }}</p>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
     </div>
     <!-- Notification end -->
     <div class="login-wrapper">
