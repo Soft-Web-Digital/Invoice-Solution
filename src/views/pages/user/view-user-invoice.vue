@@ -245,7 +245,7 @@
                               </td>
                             </tr>
                           </tbody>
-                          <tr class="border-bottom border-top mt-4">
+                          <tr class="border-bottom mt-4">
                             <th class="text-muted" v-if="invoice.items">
                               Total Items : {{ invoice.items.length }}
                             </th>
@@ -310,14 +310,34 @@
                 </div>
                 <!-- /Invoice Item -->
 
-                <div class="invoice-sign text-end py-0">
-                  <span class="d-block">{{ invoice.signatory_name }}</span>
-                  <img
-                    v-if="invoice.signature"
-                    class="img-fluid d-inline-block"
-                    :src="invoice.signature"
-                    alt="sign"
-                  />
+                <div
+                  class="d-flex mx-4 align-items-center justify-content-between"
+                >
+                  <div class="" v-if="invoice.preferred_bank">
+                    <p>
+                      Account number:
+                      <strong
+                        >{{ invoice.preferred_bank.account_number }}</strong
+                      >
+                    </p>
+                    <p>
+                      Bank name:
+                      <strong>{{ invoice.preferred_bank.bank_name }}</strong>
+                    </p>
+                    <p>
+                      Account name:
+                      <strong>{{ invoice.preferred_bank.account_name }}</strong>
+                    </p>
+                  </div>
+                  <div class="invoice-sign ms-auto text-end py-0">
+                    <span class="d-block">{{ invoice.signatory_name }}</span>
+                    <img
+                      v-if="invoice.signature"
+                      class="img-fluid d-inline-block"
+                      :src="invoice.signature"
+                      alt="sign"
+                    />
+                  </div>
                 </div>
                 <hr v-if="invoice.terms" />
                 <div class="invoice-terms" v-if="invoice.terms">

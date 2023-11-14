@@ -4,29 +4,31 @@
     <!-- Notification -->
     <div
       v-if="store.state.auth.error"
-      class="alert notify-danger alert-dismissible"
+      style="width: fit-content; position: fixed; right: 10px; top: 5px"
+      class="alert alert-danger alert-dismissible fade show pb-2 text-sm"
       role="alert"
     >
       <p>{{ store.state.auth.error }}</p>
-      <!-- <button
+      <button
         type="button"
         class="btn-close"
         data-bs-dismiss="alert"
         aria-label="Close"
-      ></button> -->
+      ></button>
     </div>
     <div
       v-if="store.state.auth.message"
-      class="alert notify-success alert-dismissible"
+      style="width: fit-content; position: fixed; right: 10px; top: 5px"
+      class="alert alert-success alert-dismissible fade show pb-2 text-sm"
       role="alert"
     >
       <p>{{ store.state.auth.message }}</p>
-      <!-- <button
+      <button
         type="button"
         class="btn-close"
         data-bs-dismiss="alert"
         aria-label="Close"
-      ></button> -->
+      ></button>
     </div>
     <!-- Notification end -->
     <div class="login-wrapper">

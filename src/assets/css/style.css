@@ -9818,7 +9818,8 @@ area .note-editable,
 .notify-success p {
   margin-bottom: 0;
 }
-.alert-dismissible .btn-close {
+.notify-danger .btn-close,
+.notify-success .btn-close {
   position: absolute;
   top: 12px;
   right: 12px;
