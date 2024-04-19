@@ -62,7 +62,7 @@
                 <li class="breadcrumb-item active">Admins</li>
               </ul>
             </div>
-            <div class="col-auto">
+            <div class="col-auto" v-show="sortPermission(['Create Admins'])">
               <router-link to="/add-admin" class="btn btn-primary me-2">
                 <i class="fas fa-plus"></i>
               </router-link>
@@ -125,7 +125,7 @@
                         <option value="200">200</option>
                         <option value="500">500</option>
                       </select>
-                      <span>admins</span>
+                      <span>admin</span>
                     </div>
 
                     <div>
@@ -328,7 +328,7 @@
 import { ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { formatted } from "../../../assets/composables/date";
-
+import { sortPermission } from "../../../assets/composables/permission";
 const store = useStore();
 const filter = ref(false);
 const currentPage = ref(1);

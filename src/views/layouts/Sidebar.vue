@@ -123,6 +123,7 @@
               >
             </li> -->
 						<li
+            v-show="sortPermission(['View Transactions'])"
 							class="submenu"
 							v-bind:class="{
 								active:
@@ -152,6 +153,7 @@
 							</ul>
 						</li>
 						<li
+            v-show="sortPermission(['View Users'])"
 							v-bind:class="{
 								active:
 									currentPath == 'users' ||
@@ -165,6 +167,7 @@
 							>
 						</li>
 						<li
+            v-show="sortPermission(['View Plans'])"
 							v-bind:class="{
 								active: currentPath == 'subscriptions',
 							}"
@@ -187,6 +190,7 @@
 							>
 						</li>
 						<li
+            v-show="sortPermission(['View Roles'])"
 							v-bind:class="{
 								active:
 									currentPath == 'roles-and-permissions' ||
@@ -200,6 +204,9 @@
 							>
 						</li>
 						<li
+            v-show="sortPermission(['View Coupons'])"
+            
+            
 							v-bind:class="{
 								active:
 									currentPath == 'coupons' ||
@@ -213,6 +220,9 @@
 							>
 						</li>
 						<li
+            v-show="sortPermission(['View Notifications'])"
+           
+            
 							v-bind:class="{
 								active:
 									currentPath == 'notification' ||
@@ -625,71 +635,57 @@
 	</div>
 	<!-- /Sidebar -->
 </template>
+<script setup>
+import { PerfectScrollbar } from "vue3-perfect-scrollbar";
+import "vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css";
+import { sortPermission } from "../../assets/composables/permission";
+import feather from "feather-icons";
+import { useRoute } from "vue-router";
+import { onMounted, ref, computed } from 'vue';
+const route = useRoute();
+const settings = ref({
+  suppressScrollX: true,
+});
 
-<script>
-	import { PerfectScrollbar } from "vue3-perfect-scrollbar";
-	import "vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css";
-	import feather from "feather-icons";
-	export default {
-		components: {
-			PerfectScrollbar,
-		},
-		mounted() {
-			feather.replace();
-			$("#sidebar-menu a").on("click", function (e) {
-				if ($(this).parent().hasClass("submenu")) {
-					e.preventDefault();
-				}
-				if (!$(this).hasClass("subdrop")) {
-					$("ul", $(this).parents("ul:first")).slideUp(350);
-					$("a", $(this).parents("ul:first")).removeClass("subdrop");
-					$(this).next("ul").slideDown(350);
-					$(this).addClass("subdrop");
-				} else if ($(this).hasClass("subdrop")) {
-					$(this).removeClass("subdrop");
-					$(this).next("ul").slideUp(350);
-				}
-			});
+const activeClass = "active";
 
-			$("#sidebar-menu ul li.submenu a.active")
-				.parents("li:last")
-				.children("a:first")
-				.addClass("active")
-				.trigger("click");
-		},
-		computed: {
-			currentPath() {
-				return this.$route.name;
-			},
-			settingsPath() {
-				return (
-					this.$route.name == "settings" ||
-					this.$route.name == "preferences" ||
-					this.$route.name == "tax-types" ||
-					this.$route.name == "expense-category" ||
-					this.$route.name == "notifications" ||
-					this.$route.name == "change-password" ||
-					this.$route.name == "delete-account"
-				);
-			},
-		},
-		data() {
-			return {
-				settings: {
-					suppressScrollX: true,
-				},
-				activeClass: "active",
-			};
+const currentPath = computed(() => route.name);
 
-			//  isactive : true
-		},
-		methods: {
-			scrollHanle(evt) {
-				//   console.log(evt);
-			},
-		},
-	};
+const settingsPath = computed(() =>
+  ["settings", "preferences", "tax-types", "expense-category", "notifications", "change-password", "delete-account"].includes(route.name)
+);
+
+
+
+const scrollHanle = (evt) => {
+  // console.log(evt);
+};
+
+onMounted(() => {
+  feather.replace();
+  $("#sidebar-menu a").on("click", function (e) {
+    if ($(this).parent().hasClass("submenu")) {
+      e.preventDefault();
+    }
+    if (!$(this).hasClass("subdrop")) {
+      $("ul", $(this).parents("ul:first")).slideUp(350);
+      $("a", $(this).parents("ul:first")).removeClass("subdrop");
+      $(this).next("ul").slideDown(350);
+      $(this).addClass("subdrop");
+    } else if ($(this).hasClass("subdrop")) {
+      $(this).removeClass("subdrop");
+      $(this).next("ul").slideUp(350);
+    }
+  });
+
+  $("#sidebar-menu ul li.submenu a.active")
+    .parents("li:last")
+    .children("a:first")
+    .addClass("active")
+    .trigger("click");
+});
 </script>
+
 <style>
 	.scroll-area {
 		position: relative;

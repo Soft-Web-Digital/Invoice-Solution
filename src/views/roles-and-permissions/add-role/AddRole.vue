@@ -88,16 +88,18 @@
                       </div>
                       <div class="form-group">
                         <label>Permissions:</label>
-                        <v-select
-                          multiple
-                          :closeOnSelect="false"
-                          v-model="form.permissions"
-                          :options="permissions"
-                          label="name"
-                          :required="true"
-                          placeholder="Select Permissions"
-                          :reduce="(permission) => permission.id"
-                        ></v-select>
+
+                        <div class="permission-container">
+                          <div
+                            class="permission-list"
+                            v-for="(permission, index) in permissions"
+                            :key="index"
+                          >
+                            <input type="checkbox"   v-model="form.permissions"
+                              :value="permission.id" />
+                            <span>{{ permission.name }}</span>
+                          </div>
+                        </div>
                       </div>
                       <div class="text-end mt-4">
                         <button
@@ -131,7 +133,7 @@
 <script setup>
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
-
+import { sortPermission } from "../../../assets/composables/permission";
 const store = useStore();
 const isLoading = ref(false);
 
@@ -155,8 +157,11 @@ const createRole = () => {
 const permissions = computed(() => {
   return store.getters["roles/permissions"];
 });
-
 onMounted(() => {
   store.dispatch("roles/getPermissions");
 });
 </script>
+
+<style >
+
+</style>

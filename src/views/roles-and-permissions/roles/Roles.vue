@@ -49,6 +49,7 @@
 
     <!-- Page Wrapper -->
     <div class="page-wrapper">
+      {{ permissions }}
       <div class="content container-fluid">
         <!-- Page Header -->
         <div class="page-header">
@@ -62,7 +63,7 @@
                 <li class="breadcrumb-item active">Roles and Permissions</li>
               </ul>
             </div>
-            <div class="col-auto">
+            <div class="col-auto" v-show="sortPermission(['Create Roles'])">
               <router-link to="/add-role" class="btn btn-primary me-2">
                 <i class="fas fa-plus"></i>
               </router-link>
@@ -77,7 +78,6 @@
             </div>
           </div>
         </div>
-
         <div v-if="filter" class="card filter-card">
           <div class="card-body pb-0">
             <div class="row">
@@ -166,6 +166,7 @@
                             <div
                               class="dropdown-menu dropdown-menu-right"
                               style="width: fit-content"
+                              v-show="sortPermission(['Update Roles'])"
                             >
                               <router-link
                                 :to="'/edit-role/' + item.id"
@@ -174,6 +175,7 @@
                                 Edit</router-link
                               >
                               <a
+                              v-show="sortPermission([''])"
                                 class="dropdown-item cursor-pointer"
                                 data-bs-toggle="modal"
                                 href="javascript:void(0);"
@@ -256,8 +258,10 @@
 import { ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { formatted } from "../../../assets/composables/date";
-
+import { sortPermission } from "../../../assets/composables/permission";
 const store = useStore();
+
+
 const filter = ref(false);
 const currentPage = ref(1);
 const perPage = ref(50);
@@ -269,6 +273,9 @@ const length = ref(null);
 watch(search, (newValue) => {
   Search(newValue);
 });
+
+
+
 
 const Search = (keyword) => {
   let data = {
@@ -313,6 +320,7 @@ const paymentfilter = ["Payment Mode", "Cash", "Cheque", "Card", "Online"];
 const roles = computed(() => {
   return store.getters["roles/roles"];
 });
+
 
 const getRoles = () => {
   isFetching.value = true;
@@ -370,7 +378,11 @@ const pageNumbers = computed(() => {
 });
 // Pagination End
 
+
 onMounted(() => {
+  store.dispatch("roles/getPermissions");
+ 
   getRoles();
+
 });
 </script>

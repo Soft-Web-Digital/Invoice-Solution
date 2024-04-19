@@ -90,16 +90,17 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Permissions:</label>
-                        <v-select
-                          multiple
-                          :closeOnSelect="false"
-                          v-model="form.permissions"
-                          :options="permissions"
-                          label="name"
-                          :required="true"
-                          placeholder="Select Permissions"
-                          :reduce="(permission) => permission.id"
-                        ></v-select>
+                        <div class="permission-container">
+                          <div
+                            class="permission-list"
+                            v-for="(permission, index) in permissions"
+                            :key="index"
+                          >
+                          <input type="checkbox" :checked="selected_permission(permission)" v-model="form.permissions" :value="permission.id"    />
+                            <span>{{ permission.name }}</span>
+                          </div>
+                        </div>
+                   
                       </div>
                       <div class="text-end mt-4">
                         <!-- <button type="submit" class="btn btn-primary">
@@ -144,7 +145,7 @@ const isLoading = ref(false);
 
 const form = ref({
   name: "",
-  permissions: "",
+  permissions: [],
 });
 
 const editRole = () => {
@@ -166,17 +167,25 @@ const editRole = () => {
 const role = computed(() => {
   return store.getters["roles/role"];
 });
-
+const selected_permission =(permission)=>{
+  form.value.permissions.includes(permission)
+}
 const getRole = () => {
   store.dispatch("roles/showRole", route.params.id).then(() => {
     form.value.name = role.value.name;
-    form.value.permissions = role.value.permissions;
+    form.value.permissions = role.value.permissions.map(permission=>
+      permission.id
+    )
   });
 };
 
 const permissions = computed(() => {
   return store.getters["roles/permissions"];
 });
+
+
+
+
 
 onMounted(() => {
   getRole();

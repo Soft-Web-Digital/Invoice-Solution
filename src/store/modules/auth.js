@@ -6,11 +6,13 @@ export default {
   state: {
     user: [],
     message: "",
+    permissions: [],
     error: "",
   },
   mutations: {
     SET_DATA(state, data) {
       state.user = data;
+      state.permissions = data.role.permissions.map(action => action.name)
     },
     SET_MESSAGE(state, data) {
       state.message = data;
@@ -39,6 +41,7 @@ export default {
 
       return result;
     },
+
     async sendPasswordReset({ commit }, payload) {
       let result = await API.post(ROUTES().resetlink, payload)
         .then((res) => {
@@ -84,13 +87,19 @@ export default {
           commit("SET_DATA", res.data.data);
         })
         .catch((err) => {
-          console.log(err);
+          console.log();
         });
     },
+    
   },
   getters: {
     user(state) {
       return state.user;
     },
+    permissions(state) {
+      return state.permissions;
+    },
   },
 };
+
+

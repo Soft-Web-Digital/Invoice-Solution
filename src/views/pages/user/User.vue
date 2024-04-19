@@ -211,7 +211,7 @@
                         </li>
                         <li
                           class="page-item"
-                          @click="nextPage"
+                         @click="getRole"
                           :class="{ disabled: pageNumbers.length <= 1 }"
                         >
                           <a class="page-link" href="javascript:;">Next</a>
@@ -349,6 +349,14 @@ const restoreAdmin = () => {
     getUsers();
   });
   closeModal();
+};
+const role = computed(() => {
+  return store.getters["roles/role"];
+});
+
+const getRole = () => {
+  
+  store.dispatch("roles/showRole", route.params.id)
 };
 
 const paymentfilter = ["Payment Mode", "Cash", "Cheque", "Card", "Online"];
