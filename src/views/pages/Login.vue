@@ -121,6 +121,8 @@ import * as Yup from "yup";
 
 const store = useStore();
 
+console.log(process.env.VUE_APP_API_BASE)
+
 const isLoading = ref(false);
 const form = reactive({
   email: "babatundehezekiah7@gmail.com",

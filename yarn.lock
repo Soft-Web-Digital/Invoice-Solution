@@ -3449,11 +3449,11 @@
     "jquery" ">=1.7"
 
 "datatables.net@^1.11.4", "datatables.net@>=1.10.13", "datatables.net@>=1.12.1":
-  "integrity" "sha512-cX5dDHsbVdLLYKsWOSE0MvuGUcV88zU5dZ/taK2puJV6F9Fw0CFsP3+U/kr+qpDSFOBLWISRyM4Q9wWWovPTNg=="
-  "resolved" "https://registry.npmjs.org/datatables.net/-/datatables.net-1.13.1.tgz"
-  "version" "1.13.1"
+  "integrity" "sha512-AE6RkMXziRaqzPcu/pl3SJXeRa6fmXQG/fVjuRESujvkzqDCYEeKTTpPMuVJSGYJpPi32WGSphVNNY1G4nSN/g=="
+  "resolved" "https://registry.npmjs.org/datatables.net/-/datatables.net-1.13.11.tgz"
+  "version" "1.13.11"
   dependencies:
-    "jquery" ">=1.7"
+    "jquery" "1.8 - 4"
 
 "date-fns@^2.22.1":
   "integrity" "sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA=="
@@ -4548,10 +4548,10 @@
   "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
   "version" "2.3.2"
 
-"function-bind@^1.1.1":
-  "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
-  "resolved" "https://registry.npmjs.org/function-bind/-/function-bind-1.1.1.tgz"
-  "version" "1.1.1"
+"function-bind@^1.1.1", "function-bind@^1.1.2":
+  "integrity" "sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA=="
+  "resolved" "https://registry.npmjs.org/function-bind/-/function-bind-1.1.2.tgz"
+  "version" "1.1.2"
 
 "function.prototype.name@^1.1.5":
   "integrity" "sha512-uN7m/BzVKQnCUF/iW8jYea67v++2u7m5UgENbHRtdDVclOUP+FMPlCNdmk0h/ysGyo2tavMJEDqJAkJdRa1vMA=="
@@ -4911,6 +4911,13 @@
   dependencies:
     "inherits" "^2.0.3"
     "minimalistic-assert" "^1.0.1"
+
+"hasown@^2.0.0":
+  "integrity" "sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ=="
+  "resolved" "https://registry.npmjs.org/hasown/-/hasown-2.0.2.tgz"
+  "version" "2.0.2"
+  dependencies:
+    "function-bind" "^1.1.2"
 
 "he@^1.2.0", "he@1.2.x":
   "integrity" "sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw=="
@@ -5289,11 +5296,18 @@
     "kind-of" "^3.0.2"
 
 "is-accessor-descriptor@^1.0.0":
-  "integrity" "sha512-m5hnHTkcVsPfqx3AKlyttIPb7J+XykHvJP2B9bZDjlhLIoEq4XoK64Vg7boZlVWYK6LUY94dYPEE7Lh0ZkZKcQ=="
-  "resolved" "https://registry.npmjs.org/is-accessor-descriptor/-/is-accessor-descriptor-1.0.0.tgz"
-  "version" "1.0.0"
+  "integrity" "sha512-YBUanLI8Yoihw923YeFUS5fs0fF2f5TSFTNiYAAzhhDscDa3lEqYuz1pDOEP5KvX94I9ey3vsqjJcLVFVU+3QA=="
+  "resolved" "https://registry.npmjs.org/is-accessor-descriptor/-/is-accessor-descriptor-1.0.1.tgz"
+  "version" "1.0.1"
   dependencies:
-    "kind-of" "^6.0.0"
+    "hasown" "^2.0.0"
+
+"is-accessor-descriptor@^1.0.1":
+  "integrity" "sha512-YBUanLI8Yoihw923YeFUS5fs0fF2f5TSFTNiYAAzhhDscDa3lEqYuz1pDOEP5KvX94I9ey3vsqjJcLVFVU+3QA=="
+  "resolved" "https://registry.npmjs.org/is-accessor-descriptor/-/is-accessor-descriptor-1.0.1.tgz"
+  "version" "1.0.1"
+  dependencies:
+    "hasown" "^2.0.0"
 
 "is-arguments@^1.0.4":
   "integrity" "sha512-8Q7EARjzEnKpt/PCD7e1cgUS0a6X8u5tdSiMqXhojOdoV9TsMsiO+9VLC5vAmO8N7/GmXn7yjR8qnA6bVAEzfA=="
@@ -5392,6 +5406,13 @@
   dependencies:
     "kind-of" "^6.0.0"
 
+"is-data-descriptor@^1.0.1":
+  "integrity" "sha512-bc4NlCDiCr28U4aEsQ3Qs2491gVq4V8G7MQyws968ImqjKuYtTJXrl7Vq7jsN7Ly/C3xj5KWFrY7sHNeDkAzXw=="
+  "resolved" "https://registry.npmjs.org/is-data-descriptor/-/is-data-descriptor-1.0.1.tgz"
+  "version" "1.0.1"
+  dependencies:
+    "hasown" "^2.0.0"
+
 "is-date-object@^1.0.1":
   "integrity" "sha512-9YQaSxsAiSwcvS33MBk3wTCVnWK+HhF8VZR2jRxehM16QcVOdHqPn4VPHmRK4lSr38n9JriurInLcP90xsYNfQ=="
   "resolved" "https://registry.npmjs.org/is-date-object/-/is-date-object-1.0.5.tgz"
@@ -5409,13 +5430,12 @@
     "kind-of" "^5.0.0"
 
 "is-descriptor@^1.0.0":
-  "integrity" "sha512-2eis5WqQGV7peooDyLmNEPUrps9+SXX5c9pL3xEB+4e9HnGuDa7mB7kHxHw4CbqS9k1T2hOH3miL8n8WtiYVtg=="
-  "resolved" "https://registry.npmjs.org/is-descriptor/-/is-descriptor-1.0.2.tgz"
-  "version" "1.0.2"
+  "integrity" "sha512-JCNNGbwWZEVaSPtS45mdtrneRWJFp07LLmykxeFV5F6oBvNF8vHSfJuJgoT472pSfk+Mf8VnlrspaFBHWM8JAw=="
+  "resolved" "https://registry.npmjs.org/is-descriptor/-/is-descriptor-1.0.3.tgz"
+  "version" "1.0.3"
   dependencies:
-    "is-accessor-descriptor" "^1.0.0"
-    "is-data-descriptor" "^1.0.0"
-    "kind-of" "^6.0.2"
+    "is-accessor-descriptor" "^1.0.1"
+    "is-data-descriptor" "^1.0.1"
 
 "is-descriptor@^1.0.2":
   "integrity" "sha512-2eis5WqQGV7peooDyLmNEPUrps9+SXX5c9pL3xEB+4e9HnGuDa7mB7kHxHw4CbqS9k1T2hOH3miL8n8WtiYVtg=="
@@ -5668,7 +5688,7 @@
   "resolved" "https://registry.npmjs.org/javascript-stringify/-/javascript-stringify-2.1.0.tgz"
   "version" "2.1.0"
 
-"jquery@^3.3.1", "jquery@^3.6.0", "jquery@>=1.7":
+"jquery@^3.3.1", "jquery@^3.6.0", "jquery@>=1.7", "jquery@1.8 - 4":
   "integrity" "sha512-opJeO4nCucVnsjiXOE+/PcCgYw9Gwpvs/a6B1LL/lQhwWwpbVEVYDZ1FokFr8PRc7ghYlrFPuyHuiiDNTQxmcw=="
   "resolved" "https://registry.npmjs.org/jquery/-/jquery-3.6.1.tgz"
   "version" "3.6.1"
@@ -6373,7 +6393,8 @@
   "version" "2.29.4"
 
 "morris.js@github:morrisjs/morris.js":
-  "resolved" "git+ssh://git@github.com/morrisjs/morris.js.git#14530d0733801d5bef1264cf3d062ecace7e326b"
+  "integrity" "sha512-1QwL4R990HvQC4haEO9DVSbzK3IujWEcXiEbuICO7Gu6SqpXH03taEu8F2sW24ik0SNiDbLgPr9tHzuSOi1Gkg=="
+  "resolved" "git+ssh://git@github.com/morrisjs/morris.js.git"
   "version" "0.5.1"
 
 "move-concurrently@^1.0.1":
