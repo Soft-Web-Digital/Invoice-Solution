@@ -24,6 +24,7 @@
     <!-- Page Wrapper -->
     <div class="page-wrapper">
       <div class="content container-fluid">
+        {{ users }}
         <userheader />
 
         <div class="row">
@@ -211,7 +212,7 @@
                         </li>
                         <li
                           class="page-item"
-                          @click="nextPage"
+                          @click="getRole"
                           :class="{ disabled: pageNumbers.length <= 1 }"
                         >
                           <a class="page-link" href="javascript:;">Next</a>
@@ -350,13 +351,19 @@ const restoreAdmin = () => {
   });
   closeModal();
 };
+const role = computed(() => {
+  return store.getters["roles/role"];
+});
+
+const getRole = () => {
+  store.dispatch("roles/showRole", route.params.id);
+};
 
 const paymentfilter = ["Payment Mode", "Cash", "Cheque", "Card", "Online"];
 
 const users = computed(() => {
   return store.getters["users/users"];
 });
-
 const getUsers = () => {
   isFetching.value = true;
   let data = {
@@ -364,8 +371,7 @@ const getUsers = () => {
     per_page: perPage.value,
     query: "",
   };
-  store
-    .dispatch("users/getUsers", data)
+  store.dispatch("users/getUsers", data)
     .then(() => {
       isFetching.value = false;
       length.value = users.value.data.length;
@@ -413,6 +419,7 @@ const pageNumbers = computed(() => {
 // Pagination End
 
 onMounted(() => {
+  store.dispatch("users/getUsers")
   getUsers();
 });
 </script>

@@ -361,6 +361,21 @@ table.table td h2 span {
 .table.table-center th {
   vertical-align: middle;
 }
+.permission-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  @media (max-width:1500px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.permission-list {
+  display:  flex;
+  place-items: center;
+  gap: 15px;
+}
+
 .table-hover tbody tr:hover {
   background-color: #f6f6f7;
 }
