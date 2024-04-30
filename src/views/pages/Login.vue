@@ -35,7 +35,7 @@
       <div class="container">
         <img
           class="img-fluid logo-dark mb-2"
-          src="../../assets/img/logo.png"
+          src="../../assets/img/logo2.png"
           alt="Logo"
         />
         <div class="loginbox">
@@ -125,8 +125,8 @@ console.log(process.env.VUE_APP_API_BASE)
 
 const isLoading = ref(false);
 const form = reactive({
-  email: "babatundehezekiah7@gmail.com",
-  password: "Babz12345.",
+  email: "",
+  password: "",
 });
 
 const loginUser = () => {
