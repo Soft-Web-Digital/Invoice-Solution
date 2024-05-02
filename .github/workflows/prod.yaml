@@ -19,11 +19,11 @@ jobs:
         node-version: '14'
 
     - name: Install Dependencies
-      run: npm install
+      run: yarn install
 
     - name: Build Staging
       run: |
-        npm run build
+        yarn build
 
     - name: Deploy to Server
       uses: appleboy/scp-action@v0.1.7
