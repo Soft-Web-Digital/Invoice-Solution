@@ -177,14 +177,17 @@
                             <div
                               class="dropdown-menu dropdown-menu-right"
                               style="width: fit-content"
+                            
                             >
+                            <a   v-show="sortPermission(['Update Admins'])">
                               <router-link
                                 :to="'/edit-admin/' + item.id"
                                 class="dropdown-item"
                                 href="javascript:void(0);"
-                                ><i class="fa fa-edit me-2"></i>
+                                ><i class="fa fa-edit me-2" ></i>
                                 Edit</router-link
                               >
+                            </a>
                               <a
                                 class="dropdown-item"
                                 href="javascript:void(0);"
