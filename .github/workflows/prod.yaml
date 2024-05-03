@@ -16,14 +16,14 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '16'
 
     - name: Install Dependencies
-      run: yarn install
+      run: npm install --legacy-peer-deps
 
     - name: Build Staging
       run: |
-        yarn build
+        npm run build
 
     - name: Deploy to Server
       uses: appleboy/scp-action@v0.1.7

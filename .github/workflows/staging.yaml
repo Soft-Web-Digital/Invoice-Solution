@@ -19,12 +19,12 @@ jobs:
         node-version: '14'
 
     - name: Install Dependencies
-      run: yarn install
+      run: npm install --legacy-peer-deps
 
     - name: Build Staging
       run: |
         cp .env.staging .env.production
-        yarn build
+        npm run build
 
     - name: Deploy to Server
       uses: appleboy/scp-action@v0.1.7
