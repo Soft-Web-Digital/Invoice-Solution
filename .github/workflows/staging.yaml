@@ -1,4 +1,4 @@
-name: Apple Boy Deployment
+name: Staging Deployment
 
 on:
   push:
