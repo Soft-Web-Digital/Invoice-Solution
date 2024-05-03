@@ -121,7 +121,7 @@ import * as Yup from "yup";
 
 const store = useStore();
 
-console.log(process.env.VUE_APP_API_BASE)
+console.log(process.env.VUE_APP_BASE_URL)
 
 const isLoading = ref(false);
 const form = reactive({

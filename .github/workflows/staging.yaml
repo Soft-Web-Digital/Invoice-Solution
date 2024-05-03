@@ -1,0 +1,37 @@
+name: Apple Boy Deployment
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install Dependencies
+      run: npm install --legacy-peer-deps
+
+    - name: Build Staging
+      run: |
+        cp .env.staging .env.production
+        npm run build
+
+    - name: Deploy to Server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.SSH_PORT }}
+        key: ${{ secrets.SSH_KEY }}
+        source: "dist/*"
+        target: '/var/www/admin-dev'

@@ -44,6 +44,7 @@
                 @click="openModal"
                 class="btn btn-primary filter-btn"
                 id="filter_search"
+                v-show="sortPermission(['Export Users Customers'])"
               >
                 <i class="feather feather-download-cloud"></i>
               </a>
@@ -329,7 +330,7 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { formatted } from "../../../assets/composables/date";
 import { addCurrencyComma } from "../../../assets/composables/currency";
-
+import { sortPermission } from "../../../assets/composables/permission";
 const store = useStore();
 const route = useRoute();
 const currentPage = ref(1);

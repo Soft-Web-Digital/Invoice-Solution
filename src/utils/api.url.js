@@ -2,7 +2,7 @@ import axios from "axios";
 // import { BASE_URL } from "../constants/index"
 
 export const API = axios.create({
-  baseURL: `https://invoice.softwebdigital.com/admin`,
+  baseURL: process.env.VUE_APP_BASE_URL,
 });
 
 export const apiConfig = (multipart = false) => {

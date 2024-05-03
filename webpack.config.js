@@ -9,6 +9,11 @@ const { VueLoaderPlugin } = require("vue-loader");
 
 const publicPath = "/";
 
+const webpack = require('webpack'); // only add this if you don't have yet
+
+// replace accordingly './.env' with the path of your .env file 
+require('dotenv').config({ path: './.env' });
+
 module.exports = (env = {}) => ({
   context: path.resolve(__dirname, "src"),
   mode: env.production ? "production" : "development",
@@ -87,6 +92,9 @@ module.exports = (env = {}) => ({
     }),
     new WebpackBar(),
     new VueLoaderPlugin(),
+    new webpack.DefinePlugin({
+      "process.env": JSON.stringify(process.env),
+    }),
   ],
   optimization: {
     runtimeChunk: "single",
