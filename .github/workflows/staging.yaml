@@ -1,4 +1,4 @@
-name: Apple Boy Deployment
+name: Staging Deployment
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
 
     - name: Build Staging
       run: |
-        cp .env.staging .env.production
+        cp .env.staging .env
         npm run build
 
     - name: Deploy to Server
