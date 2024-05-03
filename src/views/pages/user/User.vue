@@ -24,7 +24,6 @@
     <!-- Page Wrapper -->
     <div class="page-wrapper">
       <div class="content container-fluid">
-        {{ users }}
         <userheader />
 
         <div class="row">
